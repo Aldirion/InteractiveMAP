@@ -1,18 +1,17 @@
-<script setup lang="ts">
+<script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+// import * as Vue from 'vue';
+import jquery from 'jquery'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
       <nav>
         <RouterLink to="/">Главная</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/about">О проекте</RouterLink>
+        <RouterLink to="/map">Карта</RouterLink>
+        <!-- <RouterLink to="/russia">Карта России</RouterLink> -->
       </nav>
     </div>
   </header>
