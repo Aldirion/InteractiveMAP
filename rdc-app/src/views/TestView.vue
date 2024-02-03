@@ -5,7 +5,8 @@
 	  		@setActivveRegion="setActiveRegion"
 			@setTooltipCoords="setTooltipCoords"
 		/>
-		<TooltipRegionHover v-if="hoverRegion" :region="hoverRegion"
+		<!-- <h2>Регион: {{ hoverRegion }}</h2> -->
+		<ModalRegionHover v-if="hoverRegion" :region="hoverRegion"
 		:coords="tooltipCoords"/>
 	</main>
 </template>
@@ -13,7 +14,7 @@
 
 <script >
 import Map from '../components/Map.vue'
-import TooltipRegionHover from '../components/TooltipRegionHover.vue'
+import ModalRegionHover from '../components/ModalRegionHover.vue'
 
 
 export default {
@@ -38,7 +39,7 @@ export default {
 		}
 		
 	},
-	components: {Map, TooltipRegionHover}
+	components: {Map, ModalRegionHover}
 }
 
 </script>
