@@ -1,9 +1,3 @@
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-// import * as Vue from 'vue';
-import jquery from 'jquery'
-</script>
-
 <template>
   <header>
     <div class="wrapper">
@@ -11,7 +5,7 @@ import jquery from 'jquery'
         <RouterLink to="/">Главная</RouterLink>
         <RouterLink to="/about">О проекте</RouterLink>
         <RouterLink to="/map">Карта</RouterLink>
-        <!-- <RouterLink to="/russia">Карта России</RouterLink> -->
+        <a class="theme-toggle"><span class="material-symbols-outlined">dark_mode</span></a>
       </nav>
     </div>
   </header>
@@ -19,10 +13,16 @@ import jquery from 'jquery'
   <RouterView />
 </template>
 
+<script>
+import { RouterLink, RouterView } from 'vue-router'
+
+</script>
+
 <style scoped>
 header {
   line-height: 1.5;
   max-height: 100vh;
+  /* margin-top: 0; */
 }
 
 .logo {
@@ -30,11 +30,25 @@ header {
   margin: 0 auto 2rem;
 }
 
+.theme-toggle{
+  background-color: transparent;
+  color: rgba(94, 121, 221, 1);
+  border-color: transparent;
+  border-left: 2px solid var(--color-border);
+  display: flex;
+}
+.theme-toggle:hover{
+  background-color: var(--color-border);
+  border-color: transparent;
+}
+
 nav {
   width: 100%;
   font-size: 12px;
   text-align: center;
   margin-top: 2rem;
+  display:flex;
+  align-items: center;
 }
 
 nav a.router-link-exact-active {
@@ -48,7 +62,8 @@ nav a.router-link-exact-active:hover {
 nav a {
   display: inline-block;
   padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
+  border-left: 2px solid var(--color-border);
+  color: rgba(94, 121, 221, 1);
 }
 
 nav a:first-of-type {
@@ -73,8 +88,8 @@ nav a:first-of-type {
   }
 
   nav {
-    text-align: left;
-    margin-left: -1rem;
+    text-align: center;
+    /* margin-left: -1rem; */
     font-size: 1rem;
 
     padding: 1rem 0;
