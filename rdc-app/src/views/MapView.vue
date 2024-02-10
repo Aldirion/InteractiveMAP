@@ -51,7 +51,7 @@ export default {
 </script>
 
 
-<style>
+<!-- <style>
 .rf-map [data-code] {
   fill: rgb(152, 162, 189);
   stroke: rgb(245, 246, 250);
@@ -85,4 +85,4 @@ export default {
     /* text-align: center; */
   }
 }
-</style>
+</style> -->
