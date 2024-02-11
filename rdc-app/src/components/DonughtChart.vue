@@ -29,9 +29,10 @@ export default {
         },
         chartOptions: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'right'
+                    position: 'bottom'
             }
             }
             }
@@ -40,3 +41,8 @@ export default {
 }
 
 </script>
+
+
+<style>
+
+</style>

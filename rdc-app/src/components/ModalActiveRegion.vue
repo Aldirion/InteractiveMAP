@@ -53,35 +53,79 @@ export default {
 					close
 				</button>
 			</h1>
-			<div class="modal-r" style="flex-wrap: nowrap; margin-bottom: 20px;">	
-				<div class="modal-r-map">
-					<img :src="svgURL" style=" ">
+			<div class="modal-r" style="flex-wrap: wrap; margin-bottom: 20px; margin-top: 20px; ">	
+				<div class="modal-r-map" style="margin-right: 50px; ">
+					<img :src="svgURL">
 				</div>
-				<div class="modal-r-info">
+				<div class="modal-r-info" style="max-width:750px; width:100%; border-left: 2px solid var(--color-border); padding-left: 20px; align-items:center;" >
 					<div class="modal-r-container" style="width:100%">
-						<h1>Общая информация региона</h1>
-						<h2>Столица: г. Красноярск</h2>
-						<h3>Количество школ: 1100 Количество СПО: 72</h3>
-						
-						<!-- <BarChart /> -->
-						<div class="modal-r-container" >
-							<DonughtChart />
-							<!-- <LineChart /> -->
+						<!-- <h1 style="font-weight: bold;">Информация о регионе</h1>
+						<h2>Столица: г. Красноярск</h2> -->
+						<div  class="modal-r" style="margin-top: 20px; padding: 10px;">
+							<img class="avatar" src="/partners/regcor.jpeg">
+							<div class="modal-r-container" >
+								<h2>
+									Дюкарева Анна Сергеевна
+								</h2>
+								<h3>
+									Региональный координатор проекта
+								</h3>
+								<a class="modal-r-body" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
+									<span class="material-symbols-outlined" style="float:left; padding:0 5px 0 0">
+										mail
+									</span>
+									navigatory.detstva.24@rosdetcentr.ru
+								</a>
+							</div>
 						</div>
 						
+						<div 
+						style="
+						/* background-color: var(--color-border);  */
+						padding: 5px; 
+						margin-bottom: 20px;">
+						"""
+							Съешь ещё этих мягких французских булок, да выпей же чаю
+						</div>
+						<div class="modal-r" style="padding:10px">
+							<DonughtChart />
+						</div>
+						<!-- <div class="info-grid-indicators" style="width:100%">
+							<div class="modal-r-container" >
+								<div class="modal-r-indicator-small">1100</div>
+								<div style="text-align: center; font-size:large;">
+									школ
+								</div>
+								<div class="modal-r-indicator-light">690 в проекте</div>
+							</div>
+							<div class="modal-r-container" >
+								<div class="modal-r-indicator-small">72</div>
+								<div style="text-align: center; font-size:large;">
+									СПО
+								</div>
+								<div class="modal-r-indicator-light">72 в проекте</div>
+							</div>
+						</div> -->
+						<div class="info-grid-indicators" style="width:100%">
+							<div class="modal-r-container" >
+								<div class="modal-r-indicator-small">690</div>
+								<div style="text-align: center; font-size:large;">
+									школ в проекте
+								</div>
+								<div class="modal-r-indicator-light">1100 всего</div>
+							</div>
+							<div class="modal-r-container" >
+								<div class="modal-r-indicator-small">72</div>
+								<div style="text-align: center; font-size:large;">
+									СПО в проекте
+								</div>
+								<div class="modal-r-indicator-light">72 всего</div>
+							</div>
+						</div>
 					</div>
-					<!-- <Bar :data="chartData" :options="chartOptions" /> -->
 				</div>
-				<!-- <div class="modal-r-card">
-					<div class="modal-r-container">
-						<h1>Общая информация региона</h1>
-						<h2>г. Красноярск</h2>
-						<h3>Количество школ: 1100 Количество СПО: 72</h3>
-					</div>
-				</div> -->
-				
-				
 			</div>
+
 			<div class="modal-r">
 				<div class="modal-r-card">
 					<div class="modal-r-h">Региональная команда</div>
@@ -159,8 +203,6 @@ export default {
 			</div>
 			<h1>Мероприятия календарного плана воспитательной работы</h1>
 			<div class="modal-r">
-				
-
 				<div class="modal-r-container" style="width:100%">
 					<LineChart />
 					<!-- <div class="modal-r-indicator">
@@ -177,19 +219,11 @@ export default {
 			</div>
 			<h1>Партнеры</h1>
 			<div class="modal-r">
-				<!-- <div class="modal-r-container">
-					<h1>Партнеры</h1>
-					<div class="modal-r-indicator">
-						10
-					</div>
-				</div> -->
-				<!-- <div>fdjsglk</div> -->
 				<img style="padding:5px" src="/partners/unarmy.png">
 				<img style="padding:5px" src="/partners/unarmy.png">
 				<img style="padding:5px" src="/partners/unarmy.png">
 				<img style="padding:5px" src="/partners/unarmy.png">
 				<img style="padding:5px" src="/partners/unarmy.png">
-				<!-- <img style="padding:5px" src="/partners/unarmy.png"> -->
 			</div>	
 		</div>
 	</Transition>
@@ -207,14 +241,18 @@ export default {
 	background: var(--color-background);
 }
 
+.avatar {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+	object-position: top center;
+	border-radius: 50%;
+}
+
 .modal-r {
-	/* position:flex; */
 	display:flex;
 	flex-wrap: wrap;
 	max-width: 1280px;
-	/* gap: 2rem 1rem; */
-	/* margin:20px 10px; */
-	/* gap: 1rem 1rem; */
 	gap: 30px calc(3rem - 8px);
 	width: 100%;
 	border-radius: 2px;
@@ -222,12 +260,10 @@ export default {
 }
 
 .modal-r-map{
-	/* scale: auto; */
-	/* width:100%; */
 	max-width: 400px;
 	width:100%;
 	place-items: center;
-	display:inline-block;
+	display:flex;
 	gap: 1rem 2rem;
 	padding: 10px;
 }
@@ -235,9 +271,7 @@ export default {
 .modal-r-info{
 	display:flex;
 	flex-grow: 2;
-	/* gap: 10px; */
-	gap: 30px calc(10rem - 10px);
-	/* background: var(--color-background-mute); */
+	gap: 20px calc(10rem - 10px);
 }
 
 .modal-r-card{
@@ -245,7 +279,6 @@ export default {
 	flex-direction: column;
 	max-width: 400px;
 	width: 100%;
-	/* margin: 20px 5px; */
 	border-radius: 2px;
 	background: var(--color-background-soft);
 }
@@ -254,13 +287,9 @@ export default {
 	padding: 20px 10px;
 }
 
-
-
 .modal-r-h {
 	margin: 0 auto;
-	/* display: inline-block; */
 	padding: 10px;
-	/* width: 100%; */
 	color: var(--color-text);
 	text-align: center;
 	font-weight: bold;
@@ -270,22 +299,43 @@ export default {
 .modal-r-indicator {
 	margin-top: 0;
 	display: table;
-	/* position: relative; */
 	width: 100%;
 	color: rgba(149, 145, 253, 1);
 	text-align: center;
 	font-weight: bold;
 	font-size: 5rem;
-	/* font-size: 50pt; */
-	
-	/* position: absolute; */
+}
+.modal-r-indicator-small {
+	margin-top: 0;
+	display: table;
+	width: 100%;
+	color: rgba(149, 145, 253, 1);
+	text-align: center;
+	font-weight: bold;
+	font-size: 2rem;
+}
+.modal-r-indicator-light {
+	margin-top: 0;
+	display: table;
+	width: 100%;
+	color:var(--color-link);
+	text-align: center;
+	font-weight: bold;
+	font-size: 1rem;
+	border-top: 2px solid var(--color-border);
+	/* border-color: var(--color-link); */
+}
 
-
+.info-grid-indicators {
+	display: inline-grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap:20px 10px;
+	justify-content: stretch;
 }
 
 .modal-r-body {
 	margin: 20px 0;
-	color: #333;
+	color:var(--color-link)
 }
 
 .material-symbols-outlined{
@@ -318,52 +368,7 @@ export default {
 	transform: scale(1.1);
 }
 
-/* @media (min-width: 1024px) {
-	.modal-mask{
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		//text-align: center;
-	}
-} */
+
 </style>
 
 
-<!-- <style>
-/* Общий стиль тултипа */
-.tooltip-hover-region
-{
-	position: absolute;
-	min-width: 300px;
-	top: 0;
-	left: 0;
-	background: #fff;
-	border-radius: 15px;
-	box-shadow: 1px 4px 10px 1px rgba(0, 0, 0, .2);
-	/* padding: 15px; */
-	color: #333;
-	display: block;
-}
-/* Хэадер тултипа */
-.tooltip-hover-region-h
-{
-	position: static;
-	min-width: 100px;
-	width: 100%;
-	background: #5044ed;
-	border-radius: 5px 5px 0 0;
-	padding: 5px;
-	color: #f5f5f5;
-	font-weight: bold;
-}
-/* Тело тултипа */
-.tooltip-hover-region-b
-{
-	position: flex;
-	min-width: 100px;
-	width: 100%;
-	background: #fff;
-	padding: 5px 10px 5px 10px;
-	color: #333;
-}
-</style> -->
