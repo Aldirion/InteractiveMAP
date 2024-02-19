@@ -19,6 +19,8 @@ export default {
 		self.$emit('setHoverRegion', {
 			title: this.getAttribute('data-title'),
 			code: this.getAttribute('data-code'),
+			schoolCount: this.getAttribute('data-sccnt'), 
+			spoCount: this.getAttribute('data-spcnt'),
 		})
 	}
 	function setActiveRegion() {
@@ -27,6 +29,7 @@ export default {
 			code: this.getAttribute('data-code'),
 		})
 		console.log(this.getAttribute('data-title'))
+		// this.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
 	}
 	function unsetHoverRegion(e) {
 		if (!e.target.classList.contains('tooltip'))

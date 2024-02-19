@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import HomeView from '../views/HomeView.vue'
 import MapView from '../views/MapView.vue'
+import ActiveRegion from '../views/ActiveRegion.vue'
+import ModuleTestView from '../views/ModuleTestView.vue'
 // import Vue from 'vue'
 import * as Vue from 'vue'
+
+const region_code = 'RU-KYA'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,23 +17,32 @@ const router = createRouter({
       component: MapView
     },
     {
-      path: '/about',
-      name: 'about',
-      component: () => import('../views/AboutView.vue')
+      path: '/test',
+      name: 'test',
+      component: () => import('../views/TestView.vue')
     },
     {
       path: '/map',
       name: 'map',
-      component: () => import('../views/MapView.vue')
+      component: MapView,
+      // children: [
+      //   {
+      //     path: 'region/:code',
+      //     component: ActiveRegion
+      //   }
+      // ]
     },
-	{
-		path: '/test',
-		name: 'test',
-		// route level code-splitting
-		// this generates a separate chunk (About.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import('../views/TestView.vue')
-	  },
+    {
+      path: '/test/:region_code',
+      name: 'test_region',
+      component: ActiveRegion,
+      props: {activeRegion: false}
+    },
+    {
+      name: 'module_test',
+      path: '/test_module',
+      component: ModuleTestView
+    }
   ]
 })
 
