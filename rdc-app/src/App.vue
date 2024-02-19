@@ -3,8 +3,9 @@
     <div class="wrapper">
       <nav>
         <RouterLink to="/">Главная</RouterLink>
-        <RouterLink to="/about">О проекте</RouterLink>
+        <!-- <RouterLink to="/about">О проекте</RouterLink> -->
         <RouterLink to="/map">Карта</RouterLink>
+        <RouterLink to="/test">TEST</RouterLink>
         <a class="theme-toggle"><span class="material-symbols-outlined">dark_mode</span></a>
       </nav>
     </div>

@@ -1,8 +1,19 @@
 <script>
+// import { ProCalendar } from '@lbgm/pro-calendar-vue';
 // import Indicator from './cards/Indicator.vue'
-import BarChart from './BarChart.vue';
-import DonughtChart from './DonughtChart.vue';
-import LineChart from './LineChart.vue';
+import BarChart from '../components/charts/BarChart.vue';
+import DonughtChart from '../components/charts/DonughtChart.vue';
+import LineChart from '../components/charts/LineChart.vue';
+import RegionMap from '../components/map_region/RegionMap.vue';
+import TooltipHoverMunicipality from '../components/map_region/TooltipHoverMunicipality.vue';
+import {ref} from 'vue';
+import {useFloating} from '@floating-ui/vue';
+// import ProCalendar from './ProCalendar.vue';
+
+const reference = ref(null);
+const floating = ref(null);
+const {floatingStyles} = useFloating(reference, floating);
+
 export default {
 	props: {
 		region: {type: Object, default: () => ({title: ""})},
@@ -11,31 +22,44 @@ export default {
 		return {
 			baseUrl: '/regions/',
 			height: 0,
+			hoverMunicipality: null,
+			activeMunicipality: null,
+			tooltipCoords: {},
 		}
 	},
 	methods:
 	{
-		closeModal() {
-					this.$emit('close');
-			},
+		setHoverMunicipality (municipality = null) {
+			// console.log(regionCode)
+			this.hoverMunicipality = municipality
+		},
+		setActiveMunicipality (municipality = null) {
+			// console.log('hel')
+			this.activeMunicipality = municipality
+            // this.$router.push({ name: 'test_region', params: { region_code: `${this.activeRegion.code}` } })
+			console.log(municipality)
+		},
+		setTooltipCoords (mouse = null) {
+			this.tooltipCoords.x = mouse?.pageX
+			this.tooltipCoords.y = mouse?.pageY
+			// console.log("Coords", this.tooltipCoords.x, " | ", this.tooltipCoords.y)
+
+		},
+        goHome(){
+            router.push('')
+        }
 	},
 	computed: {
-		x() {
-			return this.width || 0
-		},
-		y() {
-			return this.height || 0
-		},
+
 		svgURL(){
 			return this.baseUrl + this.region.code + '.svg'
-			console
 		},
 	},
 	mounted() {
 		this.height = this.$el?.offsetHeight
 		console.log("mounted", this.region, " || ", this.height)
 	},
-	components: {BarChart, DonughtChart, LineChart}
+	components: {TooltipHoverMunicipality, BarChart, DonughtChart, LineChart, RegionMap}
 }
 
 
@@ -44,19 +68,28 @@ export default {
 
 
 <template>
-	
 	<Transition name="modal">
 		<div class="modal-mask">
+			<TooltipHoverMunicipality v-if="hoverMunicipality" :municipality="hoverMunicipality"
+					:coords="tooltipCoords"/>
 			<h1>
 				{{ region.title }}
-				<button class="material-symbols-outlined" @click="closeModal">
+				<!-- <button class="material-symbols-outlined" @click="closeModal">
 					close
-				</button>
+				</button> -->
 			</h1>
 			<div class="modal-r" style="flex-wrap: wrap; margin-bottom: 20px; margin-top: 20px; ">	
-				<div class="modal-r-map" style="margin-right: 50px; ">
-					<img :src="svgURL">
+				<div style="margin-right: 50px; ">
+					<RegionMap 
+	  					@setHoverMunicipality="setHoverMunicipality" 
+	  					@setActiveMunicipality="setActiveMunicipality"
+						@setTooltipCoords="setTooltipCoords"
+					/>
+					
+					<!-- <img :src="svgURL"> -->
+					<!-- <MapSVG v-if="region" :region="region" /> -->
 				</div>
+				
 				<div class="modal-r-info" style="max-width:750px; width:100%; border-left: 2px solid var(--color-border); padding-left: 20px; align-items:center;" >
 					<div class="modal-r-container" style="width:100%">
 						<!-- <h1 style="font-weight: bold;">Информация о регионе</h1>
@@ -192,30 +225,24 @@ export default {
 					</div>
 				</div>
 				<div class="modal-r-card">
-					<div class="modal-r-h">Орлята России</div>
+					<div class="modal-r-h">Профильные смены</div>
 					<div class="modal-r-container">
 						<div class="modal-r-indicator">
-							20000
+							1000
 						</div>
-						<h2 style="text-align: center;">Орлят</h2>
+						<h2 style="text-align: center;">Участников программ</h2>
 					</div>
 				</div>
 			</div>
 			<h1>Мероприятия календарного плана воспитательной работы</h1>
 			<div class="modal-r">
-				<div class="modal-r-container" style="width:100%">
+				<div class="modal-r-container" style="width:100%; height:30vh">
 					<LineChart />
-					<!-- <div class="modal-r-indicator">
-						График
-					</div> -->
 				</div>
 				<div class="modal-r-container">
-					<!-- <div class="modal-r-indicator">
-						Календарь
-					</div> -->
-					
+					<!-- Календарь -->
+					<!-- <ProCalendar /> -->
 				</div>
-				<!-- <div>fdjsglk</div> -->
 			</div>
 			<h1>Партнеры</h1>
 			<div class="modal-r">
@@ -227,6 +254,8 @@ export default {
 			</div>	
 		</div>
 	</Transition>
+	
+	
 </template>
 
 
@@ -266,6 +295,20 @@ export default {
 	display:flex;
 	gap: 1rem 2rem;
 	padding: 10px;
+}
+.modal-r-map [data-code] {
+  fill: rgba(149, 145, 253, 1);
+  stroke: rgb(245, 246, 250);
+
+  transition: fill 0.2s;
+  margin: 0 auto;
+}
+.modal-r-map [data-code]:hover {
+  fill: rgba(202, 200, 254, 1);
+  cursor: pointer;
+  /* width: 100%;
+	height:100%;
+  transform:scale(1.01); */
 }
 
 .modal-r-info{
