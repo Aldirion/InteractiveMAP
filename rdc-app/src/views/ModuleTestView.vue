@@ -1,11 +1,11 @@
 <template>
 	<main>
         <button @click="goHome">text</button>
-		<Map 
+		<!-- <Map 
 	  		@setHoverRegion="setHoverRegion" 
 	  		@setActiveRegion="setActiveRegion"
 			@setTooltipCoords="setTooltipCoords"
-		/>
+		/> -->
 		<TooltipHoverRegion v-if="hoverRegion" :region="hoverRegion"
 		:coords="tooltipCoords"/>
 		<!-- <ModalActiveRegion v-if="activeRegion" :region="activeRegion"  @close="closeModalReg"/> -->
@@ -19,19 +19,6 @@
 import Map from '../components/map_origin/Map.vue'
 import TooltipHoverRegion from '../components/map_origin/TooltipHoverRegion.vue'
 import ModalActiveRegion from '../components/map_origin/ModalActiveRegion.vue'
-
-// const RegionMap = {
-//   template: '<div>Регион {{$route.params.id}}</div>'
-// }
-
-// const router = new VueRouter({
-//   routes: [
-//     // динамические сегменты начинаются с двоеточия
-//     { 
-//         name: 'map',
-//         path: '/map/:id', component: RegionMap }
-//   ]
-// })
 
 export default {
 	data (){

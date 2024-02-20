@@ -9,7 +9,8 @@
 <script>
 import mitt from 'mitt'
 import RU_KYA from '../regions/RU-KYA.vue'
-import MapSVG from '../map_origin/MapSVG.vue'
+import RU_AMU from '../regions/RU-AMU.vue'
+// import MapSVG from '../map_origin/MapSVG.vue'
 import {ref} from 'vue';
 import {useFloating} from '@floating-ui/vue';
 // const reference = ref(virtualEl);
@@ -38,7 +39,12 @@ export default {
 		}
 	},
 	mounted() {
+	// 	const element=document.querySelector("#app")
+	// const getmgleft=window.getComputedStyle(element).marginLeft
+
 		console.log(this.$route.params.region_code)
+		// console.log(getmgleft)
+
 	var self = this
 
 	function setHoverMunicipality() {
@@ -76,39 +82,13 @@ export default {
 	
 
 	const municipalities = this.$el.querySelectorAll('.r-map > svg > g > *')
+	
 	for (let municipality of municipalities) {
 		municipality.addEventListener('mouseover', setHoverMunicipality)
 		municipality.addEventListener('mouseleave', unsetHoverMunicipality)
 		municipality.addEventListener('click', setActiveMunicipality)
 	}
 	window.addEventListener("mousemove", onMouseMove)
-
-// 	window.addEventListener("mousemove", ({ clientX, clientY }) => {
-//   		const virtualEl = {
-// 			getBoundingClientRect() {
-// 				return {
-// 					width: 0,
-// 					height: 0,
-// 					x: clientX,
-// 					y: clientY,
-// 					left: clientX,
-// 					right: clientX,
-// 					top: clientY,
-// 					bottom: clientY,
-// 				};
-// 			},
-//   		};
-
-//   		computePosition(virtualEl, floating, {
-// 			placement: "right-start",
-// 			middleware: [offset(5), flip(), shift()],
-// 		}).then(({ x, y }) => {
-// 			Object.assign(floating.style, {
-// 			top: `${y}px`,
-// 			left: `${x}px`,
-// 		});
-//   });
-// });
 	
 	window.addEventListener("click.self", unsetActiveMunicipality)
 	//Чистим слушатели когда уходим на другие сущности
@@ -122,7 +102,7 @@ export default {
 	})
 	
   },
-  components:{RU_KYA, MapSVG}
+  components:{RU_KYA, RU_AMU}
 }
 </script>
 

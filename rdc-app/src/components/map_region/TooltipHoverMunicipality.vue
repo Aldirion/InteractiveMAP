@@ -9,13 +9,14 @@
 			<br>
 			Кол-во СПО: {{ municipality.spoCount }}
 			<!-- <br> -->
-			{{ coords }}
+			<!-- {{ coords }} -->
 		</div>
 	</div>
   </Transition>
 </template>
 
 <script>
+const el = document.getElementById('#app')
 export default {
 	props: {
 		municipality: {type: Object, default: () => ({title: ""})},
@@ -28,8 +29,8 @@ export default {
 	},
 	computed: {
 		x() {
-			// console.log("x:",this.coords.x)
-			return this.coords.x || 0
+			// console.log("x:",this.coords.x, "mgl:", this.coords.mgl)
+			return this.coords.x - this.coords.mgl  || 0 
 		},
 		y() {
 			// console.log("y:",this.coords.y)
@@ -42,7 +43,7 @@ export default {
 	},
 	mounted() {
 		this.height = this.$el?.offsetHeight
-		console.log("mounted", this.municipality, " || ", this.height)
+		console.log("mounted", this.municipality, " || ", this.height, "||", el)
 	}
 }
 </script>

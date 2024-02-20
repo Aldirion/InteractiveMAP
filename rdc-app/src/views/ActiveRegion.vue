@@ -14,6 +14,7 @@ const reference = ref(null);
 const floating = ref(null);
 const {floatingStyles} = useFloating(reference, floating);
 
+
 export default {
 	props: {
 		region: {type: Object, default: () => ({title: ""})},
@@ -22,6 +23,7 @@ export default {
 		return {
 			baseUrl: '/regions/',
 			height: 0,
+			mgleft:0,
 			hoverMunicipality: null,
 			activeMunicipality: null,
 			tooltipCoords: {},
@@ -36,12 +38,14 @@ export default {
 		setActiveMunicipality (municipality = null) {
 			// console.log('hel')
 			this.activeMunicipality = municipality
-            // this.$router.push({ name: 'test_region', params: { region_code: `${this.activeRegion.code}` } })
+            this.$router.push({ name: 'test_municipality', params: { municipality_code: `${this.activeMunicipality.code}` } })
 			console.log(municipality)
 		},
 		setTooltipCoords (mouse = null) {
 			this.tooltipCoords.x = mouse?.pageX
 			this.tooltipCoords.y = mouse?.pageY
+			this.tooltipCoords.mgl=this.mgleft.replace("px","")
+			
 			// console.log("Coords", this.tooltipCoords.x, " | ", this.tooltipCoords.y)
 
 		},
@@ -56,8 +60,11 @@ export default {
 		},
 	},
 	mounted() {
+		const element=document.querySelector("#app")
+		this.mgleft=window.getComputedStyle(element).marginLeft
 		this.height = this.$el?.offsetHeight
 		console.log("mounted", this.region, " || ", this.height)
+		console.log("marginleft", this.mgleft)
 	},
 	components: {TooltipHoverMunicipality, BarChart, DonughtChart, LineChart, RegionMap}
 }
@@ -68,17 +75,17 @@ export default {
 
 
 <template>
+	<main>
 	<Transition name="modal">
 		<div class="modal-mask">
-			<TooltipHoverMunicipality v-if="hoverMunicipality" :municipality="hoverMunicipality"
-					:coords="tooltipCoords"/>
+			
 			<h1>
 				{{ region.title }}
 				<!-- <button class="material-symbols-outlined" @click="closeModal">
 					close
 				</button> -->
 			</h1>
-			<div class="modal-r" style="flex-wrap: wrap; margin-bottom: 20px; margin-top: 20px; ">	
+			<div class="modal-r" style="flex-wrap: wrap; margin-bottom: 20px; margin-top: 20px; align-items: center;">	
 				<div style="margin-right: 50px; ">
 					<RegionMap 
 	  					@setHoverMunicipality="setHoverMunicipality" 
@@ -252,9 +259,12 @@ export default {
 				<img style="padding:5px" src="/partners/unarmy.png">
 				<img style="padding:5px" src="/partners/unarmy.png">
 			</div>	
+			<TooltipHoverMunicipality v-if="hoverMunicipality" :municipality="hoverMunicipality"
+					:coords="tooltipCoords"/>
 		</div>
+		
 	</Transition>
-	
+</main>
 	
 </template>
 
@@ -263,7 +273,7 @@ export default {
 <style>
 .modal-mask {
 	max-width: 1280px;
-	position: absolute;
+	/* position: absolute; */
 	top:0;
 	width: 100%;
 	height: 100%;
@@ -280,6 +290,7 @@ export default {
 
 .modal-r {
 	display:flex;
+	/* align-items:center; */
 	flex-wrap: wrap;
 	max-width: 1280px;
 	gap: 30px calc(3rem - 8px);
@@ -291,24 +302,10 @@ export default {
 .modal-r-map{
 	max-width: 400px;
 	width:100%;
-	place-items: center;
+	align-items: center;
 	display:flex;
 	gap: 1rem 2rem;
 	padding: 10px;
-}
-.modal-r-map [data-code] {
-  fill: rgba(149, 145, 253, 1);
-  stroke: rgb(245, 246, 250);
-
-  transition: fill 0.2s;
-  margin: 0 auto;
-}
-.modal-r-map [data-code]:hover {
-  fill: rgba(202, 200, 254, 1);
-  cursor: pointer;
-  /* width: 100%;
-	height:100%;
-  transform:scale(1.01); */
 }
 
 .modal-r-info{

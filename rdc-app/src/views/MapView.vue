@@ -16,7 +16,7 @@
 <script >
 import Map from '../components/map_origin/Map.vue'
 import TooltipHoverRegion from '../components/map_origin/TooltipHoverRegion.vue'
-import ModalActiveRegion from '@/components/map_origin/ModalActiveRegion.vue'
+import ModalActiveRegion from '../components/map_origin/ModalActiveRegion.vue'
 
 
 export default {
