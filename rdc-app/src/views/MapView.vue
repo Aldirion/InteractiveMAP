@@ -55,3 +55,4 @@ export default {
 	components: { Map, TooltipHoverRegion}
 }
 </script>
+
