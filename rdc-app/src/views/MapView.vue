@@ -1,5 +1,6 @@
 <template>
 	<main>
+        <!-- <h1>text</h1> -->
 		<Map 
 	  		@setHoverRegion="setHoverRegion" 
 	  		@setActiveRegion="setActiveRegion"
@@ -7,7 +8,8 @@
 		/>
 		<TooltipHoverRegion v-if="hoverRegion" :region="hoverRegion"
 		:coords="tooltipCoords"/>
-		<ModalActiveRegion v-if="activeRegion" :region="activeRegion"  @close="closeModalReg"/>
+		<!-- <ModalActiveRegion v-if="activeRegion" :region="activeRegion"  @close="closeModalReg"/> -->
+        <!-- <router-link to="" v-if="activeRegion" :region="activeRegion"></router-link> -->
 
 	</main>
 </template>
@@ -16,8 +18,7 @@
 <script >
 import Map from '../components/map_origin/Map.vue'
 import TooltipHoverRegion from '../components/map_origin/TooltipHoverRegion.vue'
-import ModalActiveRegion from '../components/map_origin/ModalActiveRegion.vue'
-
+// import ModalActiveRegion from '../components/map_origin/ModalActiveRegion.vue'
 
 export default {
 	data (){
@@ -29,14 +30,15 @@ export default {
 		}
 	},
 	methods: {
-		setHoverRegion (regionCode = null) {
+		setHoverRegion (region = null) {
 			// console.log(regionCode)
-			this.hoverRegion = regionCode
+			this.hoverRegion = region
 		},
-		setActiveRegion (regionCode = null) {
+		setActiveRegion (region = null) {
 			// console.log('hel')
-			this.activeRegion = regionCode
-			// console.log(regionCode)
+			this.activeRegion = region
+            this.$router.push({ name: 'active_region', params: { region_code: `${this.activeRegion.code}` } })
+			console.log(region)
 		},
 		setTooltipCoords (mouse = null) {
 			this.tooltipCoords.x = mouse?.pageX
@@ -45,45 +47,11 @@ export default {
 		closeModalReg (){
 			this.activeRegion = null;
 		},
+        goHome(){
+            this.$router.push('')
+        }
 		
 	},
-	components: { Map, TooltipHoverRegion, ModalActiveRegion }
+	components: { Map, TooltipHoverRegion}
 }
 </script>
-
-
-<!-- <style>
-.rf-map [data-code] {
-  fill: rgb(152, 162, 189);
-  stroke: rgb(245, 246, 250);
-
-  transition: fill 0.2s;
-  margin: 0 auto;
-}
-.rf-map [data-code]:hover {
-  fill: rgb(192, 205, 239);
-  cursor: pointer;
-  /* width: 100%;
-	height:100%; */
-  /* transform:scale(1.01); */
-}
-/* path{
-	fill:white;
-	border: 2pt;
-	border-color: brown;
-	
-
-
-} */
-/* path:hover{
-	fill:violet;
-} */
-@media (min-width: 1024px) {
-  .about {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    /* text-align: center; */
-  }
-}
-</style> -->

@@ -25,9 +25,14 @@ export default {
 	data() {
 		return {
 			height: 0,
+			mgl:0
 		}
 	},
 	computed: {
+		// mgl(){
+		// 	console.log("mgl:", this.coords.mgl)
+		// 	return this.coords.mgl.replace("px","")
+		// },
 		x() {
 			// console.log("x:",this.coords.x, "mgl:", this.coords.mgl)
 			return this.coords.x - this.coords.mgl  || 0 
@@ -43,6 +48,7 @@ export default {
 	},
 	mounted() {
 		this.height = this.$el?.offsetHeight
+		this.mgl=
 		console.log("mounted", this.municipality, " || ", this.height, "||", el)
 	}
 }

@@ -1,72 +1,121 @@
-<script>
+<script defer>
 // import { ProCalendar } from '@lbgm/pro-calendar-vue';
 // import Indicator from './cards/Indicator.vue'
 import BarChart from '../components/charts/BarChart.vue';
 import DonughtChart from '../components/charts/DonughtChart.vue';
 import LineChart from '../components/charts/LineChart.vue';
-import RegionMap from '../components/map_region/RegionMap.vue';
-import TooltipHoverMunicipality from '../components/map_region/TooltipHoverMunicipality.vue';
-import {ref} from 'vue';
+import RegionMap from '../components/active_region/map_region/RegionMap.vue';
+import TooltipHoverMunicipality from '../components/active_region/map_region/TooltipHoverMunicipality.vue';
+import RRC from '../components/active_region/RRC.vue';
+import {ref, isProxy, toRaw, computed } from 'vue';
 import {useFloating} from '@floating-ui/vue';
+import { mapGetters, mapActions, mapState} from 'vuex';
+import { RouterView } from 'vue-router';
 // import ProCalendar from './ProCalendar.vue';
 
 const reference = ref(null);
 const floating = ref(null);
 const {floatingStyles} = useFloating(reference, floating);
-
-
 export default {
-	props: {
-		region: {type: Object, default: () => ({title: ""})},
-	},
+	props: ['region_code'],
 	data() {
 		return {
 			baseUrl: '/regions/',
 			height: 0,
-			mgleft:0,
+			mgleft: "",
 			hoverMunicipality: null,
 			activeMunicipality: null,
 			tooltipCoords: {},
+			activeRegion: null,
+			employees: false,
+			activeRegionId: 0,
+			rcHead: null,
 		}
+	},
+	async mounted() {
+		const element=document.querySelector("#app")
+		this.mgleft=window.getComputedStyle(element).marginLeft
+		this.height = this.$el?.offsetHeight
+		console.log("ActiveRegionROUTERPARAM", this.regionCodeGost=this.$route.params.region_code, "PROPSREGION: ", this.regionCodeGost)
+		let queryparam=""
+		queryparam+="?codegost="+this.region_code
+		console.log("ACTRQURPAR:", queryparam)
+		await this.GET_REGION(queryparam)
+		this.activeRegion=this.REGION
+		console.log("URLCODEGOST: ", this.region_code)
+		console.log("ACTIVEREGION: ", this.activeRegion)
+		// console.log(this.getRegionId)
+		if (isProxy(this.activeRegion))
+		{
+			this.getRegionId()
+		}
+		// await GET_ACTIVE_REGION(this.activeRegionId)
+		this.employees=this.EMPLOYEES
+		console.log("EMPLOYEES: ", this.employees)
+		this.rcHead =  this.rcHead_EMPLOYEE
+		
 	},
 	methods:
 	{
 		setHoverMunicipality (municipality = null) {
-			// console.log(regionCode)
 			this.hoverMunicipality = municipality
 		},
 		setActiveMunicipality (municipality = null) {
-			// console.log('hel')
 			this.activeMunicipality = municipality
-            this.$router.push({ name: 'test_municipality', params: { municipality_code: `${this.activeMunicipality.code}` } })
+            this.$router.push({ name: 'active_municipality', params: { municipality_code: `${this.activeMunicipality.code}` } })
 			console.log(municipality)
 		},
 		setTooltipCoords (mouse = null) {
 			this.tooltipCoords.x = mouse?.pageX
 			this.tooltipCoords.y = mouse?.pageY
 			this.tooltipCoords.mgl=this.mgleft.replace("px","")
-			
-			// console.log("Coords", this.tooltipCoords.x, " | ", this.tooltipCoords.y)
-
 		},
-        goHome(){
-            router.push('')
-        }
+		...mapActions([
+			'GET_REGION',
+			'GET_ACTIVE_REGION',
+		]),
+		getRegionId ()
+		{
+			if (this.activeRegion!=null)
+			{
+				for (let item of this.activeRegion)
+				{
+					// console.log("ITEM: ",item, "REGION_CODEGOST: ", this.regionCodeGost)
+					if (item.codegost==this.regionCodeGost)
+					{
+						this.activeRegionId=item.regionid
+						console.log("activeRegionID: ", this.activeRegionId)
+					}
+				}
+			}
+		},
+		regionTeam()
+		{
+			this.$router.push({ name: 'active_region_team'})
+		}
 	},
 	computed: {
-
 		svgURL(){
 			return this.baseUrl + this.region.code + '.svg'
 		},
+		...mapState ({
+			region: state => state.module.region
+		})
+		,
+		...mapGetters([
+				'REGION',
+				'EMPLOYEES',
+				'EMPLOYEE_BY_POSTID'
+		]),
+		employeesCount() {
+			return this.EMPLOYEES.length
+		},
+		rcHead_EMPLOYEE() {
+			// console.log(this.EMPLOYEE_BY_POSTID(25))
+			return this.EMPLOYEE_BY_POSTID(25)
+		}
 	},
-	mounted() {
-		const element=document.querySelector("#app")
-		this.mgleft=window.getComputedStyle(element).marginLeft
-		this.height = this.$el?.offsetHeight
-		console.log("mounted", this.region, " || ", this.height)
-		console.log("marginleft", this.mgleft)
-	},
-	components: {TooltipHoverMunicipality, BarChart, DonughtChart, LineChart, RegionMap}
+	components: {TooltipHoverMunicipality, BarChart, DonughtChart, LineChart, RegionMap, RRC}
 }
 
 
@@ -75,18 +124,20 @@ export default {
 
 
 <template>
-	<main>
-	<Transition name="modal">
-		<div class="modal-mask">
-			
+    <main>
+		<div v-if="activeRegion" class="modal-mask">	
 			<h1>
-				{{ region.title }}
+				{{ activeRegion.title }}
+				<!-- {{ activeMunicipality }} -->
+				<!-- {{ getRegion.regionid }} -->
 				<!-- <button class="material-symbols-outlined" @click="closeModal">
 					close
 				</button> -->
+				<!-- {{ getRegion.get(title) }} -->
 			</h1>
 			<div class="modal-r" style="flex-wrap: wrap; margin-bottom: 20px; margin-top: 20px; align-items: center;">	
 				<div style="margin-right: 50px; ">
+					<!-- {{ region_code }} -->
 					<RegionMap 
 	  					@setHoverMunicipality="setHoverMunicipality" 
 	  					@setActiveMunicipality="setActiveMunicipality"
@@ -96,81 +147,15 @@ export default {
 					<!-- <img :src="svgURL"> -->
 					<!-- <MapSVG v-if="region" :region="region" /> -->
 				</div>
-				
-				<div class="modal-r-info" style="max-width:750px; width:100%; border-left: 2px solid var(--color-border); padding-left: 20px; align-items:center;" >
-					<div class="modal-r-container" style="width:100%">
-						<!-- <h1 style="font-weight: bold;">Информация о регионе</h1>
-						<h2>Столица: г. Красноярск</h2> -->
-						<div  class="modal-r" style="margin-top: 20px; padding: 10px;">
-							<img class="avatar" src="/partners/regcor.jpeg">
-							<div class="modal-r-container" >
-								<h2>
-									Дюкарева Анна Сергеевна
-								</h2>
-								<h3>
-									Региональный координатор проекта
-								</h3>
-								<a class="modal-r-body" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
-									<span class="material-symbols-outlined" style="float:left; padding:0 5px 0 0">
-										mail
-									</span>
-									navigatory.detstva.24@rosdetcentr.ru
-								</a>
-							</div>
-						</div>
-						
-						<div 
-						style="
-						/* background-color: var(--color-border);  */
-						padding: 5px; 
-						margin-bottom: 20px;">
-						"""
-							Съешь ещё этих мягких французских булок, да выпей же чаю
-						</div>
-						<div class="modal-r" style="padding:10px">
-							<DonughtChart />
-						</div>
-						<!-- <div class="info-grid-indicators" style="width:100%">
-							<div class="modal-r-container" >
-								<div class="modal-r-indicator-small">1100</div>
-								<div style="text-align: center; font-size:large;">
-									школ
-								</div>
-								<div class="modal-r-indicator-light">690 в проекте</div>
-							</div>
-							<div class="modal-r-container" >
-								<div class="modal-r-indicator-small">72</div>
-								<div style="text-align: center; font-size:large;">
-									СПО
-								</div>
-								<div class="modal-r-indicator-light">72 в проекте</div>
-							</div>
-						</div> -->
-						<div class="info-grid-indicators" style="width:100%">
-							<div class="modal-r-container" >
-								<div class="modal-r-indicator-small">690</div>
-								<div style="text-align: center; font-size:large;">
-									школ в проекте
-								</div>
-								<div class="modal-r-indicator-light">1100 всего</div>
-							</div>
-							<div class="modal-r-container" >
-								<div class="modal-r-indicator-small">72</div>
-								<div style="text-align: center; font-size:large;">
-									СПО в проекте
-								</div>
-								<div class="modal-r-indicator-light">72 всего</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				<RRC :rcHead="rcHead"></RRC>
 			</div>
-
+			
 			<div class="modal-r">
-				<div class="modal-r-card">
+				<div v-if="employees" class="modal-r-card" @click="regionTeam">
 					<div class="modal-r-h">Региональная команда</div>
 						<div class="modal-r-container"><div class="modal-r-indicator">
-							710
+							<!-- 710 -->
+							{{ employeesCount }} 
 						</div>
 						<h2 style="text-align: center;">Сотрудников</h2>
 					</div>	
@@ -179,6 +164,7 @@ export default {
 					<div class="modal-r-h">Воспитательные пространства и объединения</div>
 						<div class="modal-r-container"><div class="modal-r-indicator">
 							2717
+							
 						</div>
 						<h2 style="text-align: center;">Воспитательных пространств и объединений</h2>
 					</div>	
@@ -261,11 +247,8 @@ export default {
 			</div>	
 			<TooltipHoverMunicipality v-if="hoverMunicipality" :municipality="hoverMunicipality"
 					:coords="tooltipCoords"/>
-		</div>
-		
-	</Transition>
-</main>
-	
+		</div>	
+	</main>
 </template>
 
 
@@ -273,8 +256,9 @@ export default {
 <style>
 .modal-mask {
 	max-width: 1280px;
-	/* position: absolute; */
-	top:0;
+	/* display:flex; */
+	position:relative;
+	/* top:0; */
 	width: 100%;
 	height: 100%;
 	background: var(--color-background);

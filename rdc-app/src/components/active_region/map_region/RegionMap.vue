@@ -8,11 +8,12 @@
 
 <script>
 import mitt from 'mitt'
-import RU_KYA from '../regions/RU-KYA.vue'
-import RU_AMU from '../regions/RU-AMU.vue'
+import RU_KYA from '../../regions/RU-KYA.vue'
+import RU_AMU from '../../regions/RU-AMU.vue'
 // import MapSVG from '../map_origin/MapSVG.vue'
 import {ref} from 'vue';
 import {useFloating} from '@floating-ui/vue';
+import { mapActions, mapGetters } from 'vuex';
 // const reference = ref(virtualEl);
 // const floating = ref(null);
 // const {floatingStyles} = useFloating(reference, floating);
@@ -20,7 +21,8 @@ const emitter = mitt()
 
 export default {
 	props: {
-		region: {type: Object, default: () => ({title: ""})},
+		municipality: {type: Object, default: () => ({title: ""})},
+		activeRegionId: null,
 	},
   	//Прицепили 2 события из TestView и зарегистрировали
 	emits: ['setHoverMunicipality', 'setActiveMunicipality', 'setTooltipCoords'],
@@ -34,15 +36,17 @@ export default {
 		currentRegionIs() {
 			var currentRegion = this.$route.params.region_code
 			currentRegion = currentRegion.split("-").join("_")
-			console.log("123", currentRegion)
+			// console.log("123", currentRegion)
 			return currentRegion
 		}
 	},
-	mounted() {
+	async mounted() {
+		// await this.GET_ACTIVE_REGION(this.activeRegionId)
+
 	// 	const element=document.querySelector("#app")
 	// const getmgleft=window.getComputedStyle(element).marginLeft
 
-		console.log(this.$route.params.region_code)
+		// console.log(this.$route.params.region_code)
 		// console.log(getmgleft)
 
 	var self = this
@@ -75,11 +79,7 @@ export default {
 	}
 	function onMouseMove(mouse) {
 		self.$emit('setTooltipCoords', mouse)
-	}
-	function getIndicator(){
-
-	}
-	
+	}	
 
 	const municipalities = this.$el.querySelectorAll('.r-map > svg > g > *')
 	
@@ -101,6 +101,11 @@ export default {
 		window.removeEventListener("mousemove", onMouseMove)
 	})
 	
+  },
+  methods: {
+	...mapActions([
+			'GET_ACTIVE_REGION',
+		]),
   },
   components:{RU_KYA, RU_AMU}
 }
