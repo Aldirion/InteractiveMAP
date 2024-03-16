@@ -1,108 +1,110 @@
 <template>
 	<div class="rf-map" style="position: relative">
 	  	<mapSVG ref="svg" style="width:100%"></mapSVG>
+		<!-- <div>{{ regionList }}</div> -->
 	</div>
 </template>
 
 <script>
 import mitt from 'mitt'
 import mapSVG from './MapSVG.vue'
+import axios from 'axios'
+import { mapState, mapGetters } from 'vuex'
 const emitter = mitt()
+
 
 export default {
   //Прицепили 2 события из TestView и зарегистрировали
-  emits: ['setHoverRegion', 'setActiveRegion', 'setTooltipCoords'],
-  mounted() {
-	var self = this
-
-	function setHoverRegion() {
-		self.$emit('setHoverRegion', {
-			title: this.getAttribute('data-title'),
-			code: this.getAttribute('data-code'),
-			schoolCount: this.getAttribute('data-sccnt'), 
-			spoCount: this.getAttribute('data-spcnt'),
-		})
-	}
-	function setActiveRegion() {
-		self.$emit('setActiveRegion', {
-			title: this.getAttribute('data-title'),
-			code: this.getAttribute('data-code'),
-		})
-		console.log(this.getAttribute('data-title'))
-		// this.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
-	}
-	function unsetHoverRegion(e) {
-		if (!e.target.classList.contains('tooltip'))
-			self.$emit('setHoverRegion')
-		// console.log('tooltip')
-	}
-	function unsetActiveRegion(e) {
-		if (!e.target.classList.contains('modal'))
-			self.$emit('setActiveRegion')
-	}
-	function onMouseMove(mouse) {
-		self.$emit('setTooltipCoords', mouse)
-	}
-	function getIndicator(){
-
-	}
-	
-
-	const regions = this.$el.querySelectorAll('.rf-map > svg > *')
-	for (let region of regions) {
-		region.addEventListener('mouseover', setHoverRegion)
-		region.addEventListener('mouseleave', unsetHoverRegion)
-		region.addEventListener('click', setActiveRegion)
-	}
-	window.addEventListener("mousemove", onMouseMove)
-	window.addEventListener("click.self", unsetActiveRegion)
-	//Чистим слушатели когда уходим на другие сущности
-	emitter.on('hook:beforeDestroy', () => {
-		for (let region of regions) {
-			region.removeEventListener('mouseover', setHoverRegion)
-			region.removeEventListener('mouseleave', unsetHoverRegion)
-			region.removeEventListener('click', setActiveRegion)
+	emits: ['setHoverRegion', 'setActiveRegion', 'setTooltipCoords'],
+	mounted() {
+		console.log("VITE_BURL: ", import.meta.env.VITE_BASE_URL)
+		this.$store.dispatch('GET_REGIONS')
+		var self = this
+		function setHoverRegion() {
+			self.$emit('setHoverRegion', {
+				title: this.getAttribute('data-title'),
+				code: this.getAttribute('data-code'),
+			})
 		}
-		window.removeEventListener("mousemove", onMouseMove)
-	})
-	
-  },
-  components:{mapSVG}
-}
-</script>
+		function setActiveRegion() {
+			self.$emit('setActiveRegion', {
+				title: this.getAttribute('data-title'),
+				code: this.getAttribute('data-code'),
+			})
+			console.log(this.getAttribute('data-title'))
+			// this.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
+		}
+		function unsetHoverRegion(e) {
+			if (!e.target.classList.contains('tooltip'))
+				self.$emit('setHoverRegion')
+			// console.log('tooltip')
+		}
+		function unsetActiveRegion(e) {
+			if (!e.target.classList.contains('modal'))
+				self.$emit('setActiveRegion')
+		}
+		function onMouseMove(mouse) {
+			self.$emit('setTooltipCoords', mouse)
+		}
 
-<style >
-.rf-map [data-code] {
-  fill: rgba(149, 145, 253, 1);
-  stroke: rgb(245, 246, 250);
+		const regions = this.$el.querySelectorAll('.rf-map > svg > *')
+		for (let region of regions) {
+			region.addEventListener('mouseover', setHoverRegion)
+			region.addEventListener('mouseleave', unsetHoverRegion)
+			region.addEventListener('click', setActiveRegion)
+		}
+		window.addEventListener("mousemove", onMouseMove)
+		window.addEventListener("click.self", unsetActiveRegion)
+		//Чистим слушатели когда уходим на другие сущности
+		emitter.on('hook:beforeDestroy', () => {
+			for (let region of regions) {
+				region.removeEventListener('mouseover', setHoverRegion)
+				region.removeEventListener('mouseleave', unsetHoverRegion)
+				region.removeEventListener('click', setActiveRegion)
+			}
+			window.removeEventListener("mousemove", onMouseMove)
+		})
+		
+	},
+	methods: {
+		
+	},
+	components:{mapSVG}
+	}
+	</script>
 
-  transition: fill 0.2s;
-  margin: 0 auto;
-}
-.rf-map [data-code]:hover {
-  fill: rgba(202, 200, 254, 1);
-  cursor: pointer;
-  /* width: 100%;
-	height:100%;
-  transform:scale(1.01); */
-}
-/* path{
-	fill:white;
-	border: 2pt;
-	border-color: brown;
-	
+	<style >
+	.rf-map [data-code] {
+	fill: rgba(149, 145, 253, 1);
+	stroke: rgb(245, 246, 250);
+
+	transition: fill 0.2s;
+	margin: 0 auto;
+	}
+	.rf-map [data-code]:hover {
+	fill: rgba(202, 200, 254, 1);
+	cursor: pointer;
+	/* width: 100%;
+		height:100%;
+	transform:scale(1.01); */
+	}
+	/* path{
+		fill:white;
+		border: 2pt;
+		border-color: brown;
+		
 
 
-} */
-/* path:hover{
-	fill:violet;
-} */
-@media (min-width: 1024px) {
-  .rf-map{
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    /* text-align: center; */
-  }
-}
-</style>
+	} */
+	/* path:hover{
+		fill:violet;
+	} */
+	@media (min-width: 1024px) {
+	.rf-map{
+		min-height: 100vh;
+		display: flex;
+		align-items: center;
+		/* text-align: center; */
+	}
+	}
+	</style>
