@@ -8,8 +8,10 @@
 
 <script>
 import mitt from 'mitt'
-import RU_KYA from '../../regions/RU-KYA.vue'
-import RU_AMU from '../../regions/RU-AMU.vue'
+import RU_KYA from './regions/RU-KYA.vue'
+import RU_AMU from './regions/RU-AMU.vue'
+import RU_CR from './regions/RU-CR.vue'
+import RU_ALT from './regions/RU-ALT.vue'
 // import MapSVG from '../map_origin/MapSVG.vue'
 import {ref} from 'vue';
 import {useFloating} from '@floating-ui/vue';
@@ -20,6 +22,7 @@ import { mapActions, mapGetters } from 'vuex';
 const emitter = mitt()
 
 export default {
+	components:{RU_KYA, RU_AMU, RU_CR, RU_ALT},
 	props: {
 		municipality: {type: Object, default: () => ({title: ""})},
 		activeRegionId: null,
@@ -29,7 +32,6 @@ export default {
 	
 	data(){
 		return {
-			
 		}
 	},
 	computed: {
@@ -40,7 +42,9 @@ export default {
 			return currentRegion
 		}
 	},
-	async mounted() {
+	mounted() {
+		var currentRegion=this.currentRegionIs.split("_").join("-")
+		console.log(currentRegion)
 		// await this.GET_ACTIVE_REGION(this.activeRegionId)
 
 	// 	const element=document.querySelector("#app")
@@ -53,19 +57,24 @@ export default {
 
 	function setHoverMunicipality() {
 		self.$emit('setHoverMunicipality', {
-			title: this.getAttribute('data-title'),
-			code: this.getAttribute('data-code'),
+			title: this.getAttribute('title'),
+			code: this.getAttribute('code'),
 			schoolCount: this.getAttribute('data-sccnt'), 
 			spoCount: this.getAttribute('data-spcnt'),
 		})
 		console.log(this.getAttribute('data-code'))
 	}
 	function setActiveMunicipality() {
+		var _code = this.getAttribute('code')
+		// _code=_code.toString()
+		console.log("HAHA, ", `${currentRegion}-`)
+
 		self.$emit('setActiveMunicipality', {
-			title: this.getAttribute('data-title'),
-			code: this.getAttribute('data-code'),
+			title: this.getAttribute('title'),
+			code: _code.replace(`${currentRegion}-`, ""),
+			// code: this.getAttribute('code')
 		})
-		console.log(this.getAttribute('data-title'))
+		console.log(this.getAttribute('title'))
 		// this.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
 	}
 	function unsetHoverMunicipality(e) {
@@ -107,7 +116,7 @@ export default {
 			'GET_ACTIVE_REGION',
 		]),
   },
-  components:{RU_KYA, RU_AMU}
+  
 }
 </script>
 
