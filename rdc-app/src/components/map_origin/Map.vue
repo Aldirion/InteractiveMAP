@@ -8,8 +8,6 @@
 <script>
 import mitt from 'mitt'
 import mapSVG from './MapSVG.vue'
-import axios from 'axios'
-import { mapState, mapGetters } from 'vuex'
 const emitter = mitt()
 
 
@@ -17,32 +15,38 @@ export default {
   //Прицепили 2 события из TestView и зарегистрировали
 	emits: ['setHoverRegion', 'setActiveRegion', 'setTooltipCoords'],
 	mounted() {
-		console.log("VITE_BURL: ", import.meta.env.VITE_BASE_URL)
+		// console.log("VITE_BURL: ", import.meta.env.VITE_BASE_URL)
 		this.$store.dispatch('GET_REGIONS')
 		var self = this
+
 		function setHoverRegion() {
 			self.$emit('setHoverRegion', {
 				title: this.getAttribute('data-title'),
 				code: this.getAttribute('data-code'),
 			})
 		}
+
 		function setActiveRegion() {
 			self.$emit('setActiveRegion', {
 				title: this.getAttribute('data-title'),
 				code: this.getAttribute('data-code'),
 			})
-			console.log(this.getAttribute('data-title'))
+
+			// console.log(this.getAttribute('data-title'))
 			// this.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
 		}
+
 		function unsetHoverRegion(e) {
 			if (!e.target.classList.contains('tooltip'))
 				self.$emit('setHoverRegion')
 			// console.log('tooltip')
 		}
+
 		function unsetActiveRegion(e) {
 			if (!e.target.classList.contains('modal'))
 				self.$emit('setActiveRegion')
 		}
+
 		function onMouseMove(mouse) {
 			self.$emit('setTooltipCoords', mouse)
 		}
@@ -53,8 +57,10 @@ export default {
 			region.addEventListener('mouseleave', unsetHoverRegion)
 			region.addEventListener('click', setActiveRegion)
 		}
+		
 		window.addEventListener("mousemove", onMouseMove)
 		window.addEventListener("click.self", unsetActiveRegion)
+
 		//Чистим слушатели когда уходим на другие сущности
 		emitter.on('hook:beforeDestroy', () => {
 			for (let region of regions) {
@@ -71,9 +77,8 @@ export default {
 	},
 	components:{mapSVG}
 	}
-	</script>
-
-	<style >
+	</script><style >
+	
 	.rf-map [data-code] {
 	fill: rgba(149, 145, 253, 1);
 	stroke: rgb(245, 246, 250);
