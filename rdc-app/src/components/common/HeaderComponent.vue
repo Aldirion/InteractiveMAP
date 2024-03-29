@@ -1,4 +1,4 @@
-<template lang="html">
+<template>
   <header>
       <nav class="wrapper">
         <RouterLink to="/">Главная</RouterLink>

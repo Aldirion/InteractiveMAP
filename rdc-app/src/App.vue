@@ -4,14 +4,13 @@
 </template>
 
 <script>
-  import { defineComponent } from 'vue';
   import HeaderComponent from './components/common/HeaderComponent.vue'
 
-  export default defineComponent({
+  export default {
     components: {
       HeaderComponent,
     }
-  })
+  }
 </script>
 
 <style scoped>

@@ -3,6 +3,7 @@ import MapView from '../views/MapView.vue'
 import ActiveRegion from '../views/ActiveRegion.vue'
 import ModuleTestView from '../views/ModuleTestView.vue'
 import RegionTeam from '../views/RegionTeamView.vue'
+import AuthorizationPage from '@/components/pages/AuthorizationPage.vue'
 
 // const region_code = 'RU-KYA'
 
@@ -12,7 +13,7 @@ const router = createRouter({
     {
 		path: '/',
 		name: 'home',
-		component: MapView
+		component: AuthorizationPage
     },
     {
 		path: '/map',
