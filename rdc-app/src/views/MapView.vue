@@ -1,5 +1,5 @@
 <template>
-	<main>
+	<main class="map-view">
         <!-- <h1>text</h1> -->
 		<Map 
 	  		@setHoverRegion="setHoverRegion" 
@@ -16,7 +16,7 @@
 
 
 <script >
-import Map from '../components/map_origin/Map.vue'
+import Map from '../components/map_origin/MapComponent.vue'
 import TooltipHoverRegion from '../components/map_origin/TooltipHoverRegion.vue'
 // import ModalActiveRegion from '../components/map_origin/ModalActiveRegion.vue'
 
@@ -56,3 +56,11 @@ export default {
 }
 </script>
 
+<style scoped>
+	.map-view {
+		position: relative;
+		margin: 0 auto;
+		width: 100vw;
+		height: 100vh;
+	}
+</style>

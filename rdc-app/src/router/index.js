@@ -1,12 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
 import MapView from '../views/MapView.vue'
 import ActiveRegion from '../views/ActiveRegion.vue'
 import ModuleTestView from '../views/ModuleTestView.vue'
 import RegionTeam from '../views/RegionTeamView.vue'
-// import Vue from 'vue'
-import * as Vue from 'vue'
-import TestView from '../views/TestView.vue'
 
 // const region_code = 'RU-KYA'
 
@@ -46,8 +42,6 @@ const router = createRouter({
 		name: 'active_municipality',
 		component: ModuleTestView,
 		props: {activeRegion: false}
-
-
 	},
     {
       name: 'module_test',

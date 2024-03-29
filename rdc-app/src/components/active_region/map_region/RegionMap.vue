@@ -13,9 +13,7 @@ import RU_AMU from './regions/RU-AMU.vue'
 import RU_CR from './regions/RU-CR.vue'
 import RU_ALT from './regions/RU-ALT.vue'
 // import MapSVG from '../map_origin/MapSVG.vue'
-import {ref} from 'vue';
-import {useFloating} from '@floating-ui/vue';
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 // const reference = ref(virtualEl);
 // const floating = ref(null);
 // const {floatingStyles} = useFloating(reference, floating);
@@ -47,11 +45,8 @@ export default {
 		console.log(currentRegion)
 		// await this.GET_ACTIVE_REGION(this.activeRegionId)
 
-	// 	const element=document.querySelector("#app")
-	// const getmgleft=window.getComputedStyle(element).marginLeft
-
-		// console.log(this.$route.params.region_code)
-		// console.log(getmgleft)
+	//const element=document.querySelector("#app")
+	//const getmgleft=window.getComputedStyle(element).marginLeft
 
 	var self = this
 
@@ -120,38 +115,20 @@ export default {
 }
 </script>
 
-<style >
-.r-map [data-code] {
-  fill: rgba(149, 145, 253, 1);
-  stroke: rgb(245, 246, 250);
+<style>
+	.r-map [data-code] {
+		fill: rgba(149, 145, 253, 1);
+		stroke: rgb(245, 246, 250);
+		transition: fill 0.2s linear;
+		margin: 0 auto;
+	}
+	.r-map [data-code]:hover {
+		fill: rgba(202, 200, 254, 1);
+		cursor: pointer;
+	}
 
-  transition: fill 0.2s;
-  margin: 0 auto;
-}
-.r-map [data-code]:hover {
-  fill: rgba(202, 200, 254, 1);
-  cursor: pointer;
-  /* width: 100%;
-	height:100%;
-  transform:scale(1.01); */
-}
-/* path{
-	fill:white;
-	border: 2pt;
-	border-color: brown;
-	
-
-
-} */
-/* path:hover{
-	fill:violet;
-} */
-@media (min-width: 1024px) {
-  .rf-map{
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    /* text-align: center; */
-  }
-}
+	.rf-map{
+		max-height: 100vh;
+		margin: 0 10vw;
+	}
 </style>

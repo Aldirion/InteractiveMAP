@@ -1,7 +1,6 @@
 <template>
 	<div class="rf-map" style="position: relative">
-	  	<mapSVG ref="svg" style="width:100%"></mapSVG>
-		<!-- <div>{{ regionList }}</div> -->
+	  	<mapSVG ref="svg" style="width:90%"></mapSVG>
 	</div>
 </template>
 
@@ -12,10 +11,8 @@ const emitter = mitt()
 
 
 export default {
-  //Прицепили 2 события из TestView и зарегистрировали
 	emits: ['setHoverRegion', 'setActiveRegion', 'setTooltipCoords'],
 	mounted() {
-		// console.log("VITE_BURL: ", import.meta.env.VITE_BASE_URL)
 		this.$store.dispatch('GET_REGIONS')
 		var self = this
 
@@ -32,14 +29,12 @@ export default {
 				code: this.getAttribute('data-code'),
 			})
 
-			// console.log(this.getAttribute('data-title'))
-			// this.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
+			.$router.push({ name: 'test', params: { region_code: `${this.getAttribute('data-code')}` } })
 		}
 
 		function unsetHoverRegion(e) {
 			if (!e.target.classList.contains('tooltip'))
 				self.$emit('setHoverRegion')
-			// console.log('tooltip')
 		}
 
 		function unsetActiveRegion(e) {
@@ -61,7 +56,6 @@ export default {
 		window.addEventListener("mousemove", onMouseMove)
 		window.addEventListener("click.self", unsetActiveRegion)
 
-		//Чистим слушатели когда уходим на другие сущности
 		emitter.on('hook:beforeDestroy', () => {
 			for (let region of regions) {
 				region.removeEventListener('mouseover', setHoverRegion)
@@ -77,39 +71,24 @@ export default {
 	},
 	components:{mapSVG}
 	}
-	</script><style >
+	</script>
 	
+<style>
 	.rf-map [data-code] {
-	fill: rgba(149, 145, 253, 1);
-	stroke: rgb(245, 246, 250);
-
-	transition: fill 0.2s;
-	margin: 0 auto;
+		fill: rgba(149, 145, 253, 1);
+		stroke: rgb(245, 246, 250);
+		transition: fill 0.2s linear;
+		margin: 0 auto;
 	}
+	
 	.rf-map [data-code]:hover {
-	fill: rgba(202, 200, 254, 1);
-	cursor: pointer;
-	/* width: 100%;
-		height:100%;
-	transform:scale(1.01); */
+		fill: rgba(202, 200, 254, 1);
+		cursor: pointer;
 	}
-	/* path{
-		fill:white;
-		border: 2pt;
-		border-color: brown;
-		
 
-
-	} */
-	/* path:hover{
-		fill:violet;
-	} */
-	@media (min-width: 1024px) {
 	.rf-map{
-		min-height: 100vh;
-		display: flex;
-		align-items: center;
-		/* text-align: center; */
+		padding-top: 5vh;
+		max-height: 100vh;
+		margin: 0 10vw;
 	}
-	}
-	</style>
+</style>

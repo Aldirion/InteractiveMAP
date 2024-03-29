@@ -253,7 +253,7 @@ export default {
 
 
 
-<style>
+<style scoped>
 .modal-mask {
 	max-width: 1280px;
 	/* display:flex; */
