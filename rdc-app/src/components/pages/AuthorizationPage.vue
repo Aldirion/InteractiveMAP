@@ -1,6 +1,19 @@
 <script>
 export default {
-  
+  data() {
+    return {
+      isHiddenPassword: true,
+    }
+  },
+  setup() {
+    console.log(123)
+  },
+  methods: {
+    checkPassword() {
+      console.log(this.isHiddenPassword)
+      this.isHiddenPassword = !this.isHiddenPassword
+    }
+  }
 }
 </script>
 
@@ -19,13 +32,17 @@ export default {
         <p class="subtitle-about">Пройдите авторизацию для получения доступа к данным</p>
       </div>
 
-      <div class="authorization-form">
+      <form class="authorization-form">
         <p>Авторизация пользователя</p>
         <input class="input-text size" type="text" placeholder="Введите логин">
-        <input class="input-text size" type="password" placeholder="Введите пароль"> 
-        <!-- для возможности показывать пароль инвентировать тип на текст -->
+        <div class="input-password">
+          <input class="input-text size" :type="isHiddenPassword ? 'password' : 'text'" placeholder="Введите пароль"> 
+          <svg @click="checkPassword" class="check-btn" enable-background="new 0 0 32 32" id="Editable-line" version="1.1" viewBox="0 0 32 32">
+            <path d="M16,7C9.934,7,4.798,10.776,3,16c1.798,5.224,6.934,9,13,9s11.202-3.776,13-9C27.202,10.776,22.066,7,16,7z" fill="none" id="XMLID_10_" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><circle cx="16" cy="16" fill="none" id="XMLID_12_" r="5" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
+          </svg>
+        </div>
         <button class="button size" type="submit">авторизоваться</button>
-      </div>
+      </form>
     </div>
   </div>
 </template>
@@ -72,9 +89,9 @@ export default {
   }
 
   .size {
-    width: 60%;
+    width: 15vw;
     height: 2.5rem;
-    padding: 0.375rem 0.75rem;
+    padding: 0.375rem  0.375rem;
     border-radius: .2rem;
   }
 
@@ -85,7 +102,26 @@ export default {
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #bdbdbd;
-    /* border-radius: 0.25rem; */
+    border-radius: 0.25rem;
+  }
+
+  .input-password {
+    position: relative;
+  }
+
+  .check-btn {
+    position: absolute;
+    width: 2rem;
+    opacity: .6;
+    right: 0.375rem;
+    top: 50%;
+    transform: translate(0, -50%)
+  }
+
+  .check-btn:hover {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity .4s linear;
   }
 
   .title-about {
