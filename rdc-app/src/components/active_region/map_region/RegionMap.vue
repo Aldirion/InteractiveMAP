@@ -115,7 +115,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 	.r-map [data-code] {
 		fill: rgba(149, 145, 253, 1);
 		stroke: rgb(245, 246, 250);
@@ -125,7 +125,7 @@ export default {
 	.r-map [data-code]:hover {
 		fill: rgba(202, 200, 254, 1);
 		cursor: pointer;
-	}
+	} 
 
 	.rf-map{
 		max-height: 100vh;

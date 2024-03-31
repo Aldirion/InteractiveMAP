@@ -43,6 +43,7 @@ export default {
     height: 100%;
     padding: 0 2vw;
     border-left: 2px solid var(--color-border);
+    transition: background-color .4s linear;
     color: rgb(183, 183, 185);
   }
 
@@ -67,6 +68,6 @@ export default {
   nav a:hover {
     color: rgb(94, 94, 192);
     background-color: rgba(149, 145, 253, 0.2);
-    transition: background-color .2s linear;
+    transition: background-color .4s linear;
   }
 </style>
