@@ -26,7 +26,12 @@ import { computed, ref, type Ref } from 'vue';
 
 <template>
   <div ref="container" :style="{left: `${leftPosition}px`, top: `${topPosition}px`}" class="container">
-    <slot></slot>    
+    <div class="tooltip-title">
+      <slot  name="title"></slot>
+    </div>
+    <div class="tooltip-text">
+      <slot  name="text"></slot>    
+    </div>
   </div>
 </template>
 
@@ -34,10 +39,22 @@ import { computed, ref, type Ref } from 'vue';
   .container {
     position: absolute;
     width: 200px;
-    padding: 10px;
+    height: auto;
     background-color: var(--color-text);
     color: var(--color-background-soft);
     pointer-events: none;
     z-index: 21;
+  }
+
+  .tooltip-title {
+    background-color: rgb(75, 75, 253);
+    width: 100%;
+    height: auto;
+    color: var(--color-text);
+    padding: 3px 3px 3px 10px;
+  }
+
+  .tooltip-text {
+    padding: 10px;
   }
 </style>

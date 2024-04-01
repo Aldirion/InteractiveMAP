@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { onMounted, onUnmounted, ref } from 'vue';
+  import { ref } from 'vue';
   import HatSVG from '@/assets/hat.svg';
   import EyeSVG from '@/assets/eye.svg';
 
@@ -34,11 +34,10 @@
 
 <style lang="css" scoped>
   .authorization {
-    display: flex;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-    align-items: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .authorization-container {

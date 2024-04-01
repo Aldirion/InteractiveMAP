@@ -67,9 +67,12 @@
 
 <template>
   <ToolTipComponent v-if="showToolTip" :mouse-x="mouseCoords[0]" :mouse-y="mouseCoords[1]">
-    Кол-во школ: 
-		<br>
-		Кол-во СПО: 
+    <template #title>fdfsd</template>
+    <template #text>
+      Кол-во школ: 
+      <br>
+      Кол-во СПО: 
+    </template>
   </ToolTipComponent>
 
   <MapSVG/>
@@ -88,5 +91,4 @@
 		transition: fill .5s linear;
 		cursor: pointer;
 	}
-
 </style>
