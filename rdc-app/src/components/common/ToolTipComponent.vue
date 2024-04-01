@@ -4,6 +4,7 @@ import { computed, ref, type Ref } from 'vue';
   const props = defineProps<{
     mouseX: number,
     mouseY: number,
+    title: string,
   }>();
   const container: Ref<Element | null> = ref(null);
   const topPosition = computed(() => {
@@ -27,10 +28,10 @@ import { computed, ref, type Ref } from 'vue';
 <template>
   <div ref="container" :style="{left: `${leftPosition}px`, top: `${topPosition}px`}" class="container">
     <div class="tooltip-title">
-      <slot  name="title"></slot>
+      {{ props.title }}
     </div>
     <div class="tooltip-text">
-      <slot  name="text"></slot>    
+      <slot></slot>    
     </div>
   </div>
 </template>

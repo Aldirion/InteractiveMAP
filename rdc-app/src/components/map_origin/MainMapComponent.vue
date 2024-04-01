@@ -1,24 +1,46 @@
 <script setup lang="ts">
-  import { onMounted, onUnmounted, ref } from 'vue';
+  import { watch, onMounted, onUnmounted, reactive, ref } from 'vue';
+  import { useStoreRegions } from '@/store/store'
   import ToolTipComponent from '../common/ToolTipComponent.vue';
   import MapSVG from '@/assets/map.svg';
-  
+import type { Region } from '@/interfaces/regions';
+
+  const store = useStoreRegions();
+  const { regions, getRegions, getRegionData } = store;
+
   const emit = defineEmits<{
     regionSelected: [regionCode: string]
-  }>()
+  }>();
 
   let mouseCoords = ref([0, 0]);
   let showToolTip = ref(false);
 
-  type Listeners = [Element, (event: Event) => void][];
+  let hoveredRegionCode = ref<string | null>(null);
 
+  let hoveredRegionData = ref<Region | null>(null)
+  watch(hoveredRegionCode, () => {
+    if(hoveredRegionCode.value) {
+      hoveredRegionData.value = getRegionData(hoveredRegionCode.value)!;
+    }
+  });
+
+  onMounted(async () => {
+    await getRegions();
+  });
+
+  type Listeners = [Element, (event: Event) => void][];
   let onMouseMoveListeners: Listeners = [];
   let onMouseLeaveListeners: Listeners = [];
   let onMouseClickListeners: Listeners = [];
 
-
   function onMouseMove(region: Element, event: MouseEvent) {
-    showToolTip.value = true;
+    const regionCode = region.getAttribute("data-code");
+
+    if (hoveredRegionCode.value != regionCode) {
+      showToolTip.value = true;
+      hoveredRegionCode.value = region.getAttribute("data-code");
+    }
+
     mouseCoords.value = [event.pageX, event.pageY];
   }
 
@@ -36,7 +58,10 @@
     });
 
     onMouseLeaveListeners = allRegions.map((region) => {
-      const cb = (event: Event) => showToolTip.value = false;
+      const cb = (event: Event) => {
+        showToolTip.value = false;
+        hoveredRegionCode.value = null;
+      };
       region.addEventListener("mouseleave", cb);
 
       return [region, cb];
@@ -66,13 +91,10 @@
 </script>
 
 <template>
-  <ToolTipComponent v-if="showToolTip" :mouse-x="mouseCoords[0]" :mouse-y="mouseCoords[1]">
-    <template #title>fdfsd</template>
-    <template #text>
-      Кол-во школ: 
-      <br>
-      Кол-во СПО: 
-    </template>
+  <ToolTipComponent :title="hoveredRegionData?.title ? hoveredRegionData.title : 'Загрузка...' " v-if="showToolTip" :mouse-x="mouseCoords[0]" :mouse-y="mouseCoords[1]">
+    Кол-во школ: {{ hoveredRegionData?.countschool ? hoveredRegionData.countschool : 'Загрузка...' }}
+    <br>
+    Кол-во СПО:  {{ hoveredRegionData?.countspo ? hoveredRegionData.countspo : 'Загрузка...' }}
   </ToolTipComponent>
 
   <MapSVG/>
