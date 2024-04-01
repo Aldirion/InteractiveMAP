@@ -5,10 +5,11 @@
 </template>
 
 <script setup lang="ts">
+	import router from '@/router';
 	import MainMapComponent from './MainMapComponent.vue';
 
 	function onRegionSelected(regionCode: string) {
-		console.log(regionCode);
+		router.push({ name: 'active_region', params: { region_code: `${regionCode}` }})
 	}
 </script>
 	

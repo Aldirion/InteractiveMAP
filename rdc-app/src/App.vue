@@ -1,18 +1,17 @@
 <template>
   <HeaderComponent />
-  <RouterView />
+  <div class="container">
+    <RouterView />
+  </div>
 </template>
 
-<script>
-  import HeaderComponent from './components/common/HeaderComponent.vue'
-
-  export default {
-    components: {
-      HeaderComponent,
-    }
-  }
+<script setup lang="ts">
+  import HeaderComponent from './components/common/HeaderComponent.vue';
 </script>
 
 <style scoped>
-
+	.container {
+    width: 100vw;
+    padding: 6vh 10vw 0;
+	}
 </style>
