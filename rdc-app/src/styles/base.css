@@ -19,7 +19,7 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-light-3: rgba(249, 72, 20, 1);
   --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --vt-c-text-dark-2: rgb(235, 235, 235);
   --vt-c-text-dark-3: rgba(249, 72, 20, 1);
 }
 

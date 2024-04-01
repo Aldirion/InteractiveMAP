@@ -54,9 +54,8 @@ export default {
 
 <style scoped>
 	.map-view {
-		position: relative;
-		margin: 0 auto;
-		width: 100vw;
-		height: 100vh;
+    max-width: 80vw;
+    margin: 0 10vw;
+		padding-top: 6vh;
 	}
 </style>

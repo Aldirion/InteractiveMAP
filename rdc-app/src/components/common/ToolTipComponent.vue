@@ -34,8 +34,9 @@ import { computed, ref, type Ref } from 'vue';
   .container {
     position: absolute;
     width: 200px;
-    height: 150px;
-    background-color: rgb(114, 114, 113);
+    padding: 10px;
+    background-color: var(--color-text);
+    color: var(--color-background-soft);
     pointer-events: none;
     z-index: 21;
   }

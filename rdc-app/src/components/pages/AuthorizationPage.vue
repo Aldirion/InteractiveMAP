@@ -1,33 +1,20 @@
-<script>
-export default {
-  data() {
-    return {
-      isHiddenPassword: true,
-    }
-  },
-  setup() {
-    console.log(123)
-  },
-  methods: {
-    checkPassword() {
-      console.log(this.isHiddenPassword)
-      this.isHiddenPassword = !this.isHiddenPassword
-    }
+<script setup lang="ts">
+  import { onMounted, onUnmounted, ref } from 'vue';
+  import HatSVG from '@/assets/hat.svg';
+  import EyeSVG from '@/assets/eye.svg';
+
+  let isHiddenPassword = ref(true);
+
+  function checkPassword() {
+    isHiddenPassword.value = !isHiddenPassword.value;
   }
-}
 </script>
 
 <template>
   <div class="authorization">
     <div class="authorization-container">
       <div class="authorization-title">
-        <svg viewBox="0 0 512 512" class="svg">
-          <title />
-          <path
-            d="M256,368a16,16,0,0,1-7.94-2.11L108,285.84a8,8,0,0,0-12,6.94V368a16,16,0,0,0,8.23,14l144,80a16,16,0,0,0,15.54,0l144-80A16,16,0,0,0,416,368V292.78a8,8,0,0,0-12-6.94L263.94,365.89A16,16,0,0,1,256,368Z" />
-          <path
-            d="M495.92,190.5s0-.08,0-.11a16,16,0,0,0-8-12.28l-224-128a16,16,0,0,0-15.88,0l-224,128a16,16,0,0,0,0,27.78l224,128a16,16,0,0,0,15.88,0L461,221.28a2,2,0,0,1,3,1.74V367.55c0,8.61,6.62,16,15.23,16.43A16,16,0,0,0,496,368V192A14.76,14.76,0,0,0,495.92,190.5Z" />
-        </svg>
+        <HatSVG class="svg"/>
         <h2 class="title-about">РДЦ</h2>
         <p class="subtitle-about">Пройдите авторизацию для получения доступа к данным</p>
       </div>
@@ -37,9 +24,7 @@ export default {
         <input class="input-text size" type="text" placeholder="Введите логин">
         <div class="input-password">
           <input class="input-text size" :type="isHiddenPassword ? 'password' : 'text'" placeholder="Введите пароль"> 
-          <svg @click="checkPassword" class="check-btn" enable-background="new 0 0 32 32" id="Editable-line" version="1.1" viewBox="0 0 32 32">
-            <path d="M16,7C9.934,7,4.798,10.776,3,16c1.798,5.224,6.934,9,13,9s11.202-3.776,13-9C27.202,10.776,22.066,7,16,7z" fill="none" id="XMLID_10_" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><circle cx="16" cy="16" fill="none" id="XMLID_12_" r="5" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/>
-          </svg>
+          <EyeSVG @click="checkPassword()" class="check-btn"/>
         </div>
         <button class="button size" type="submit">авторизоваться</button>
       </form>
@@ -69,8 +54,8 @@ export default {
     align-items: center;
     width: 50%;
     height: 100%;
-    color: rgb(241, 241, 241);
-    background-color: #5c48a3;
+    color: var(--color-text);
+    background-color: var(--vt-c-black-mute);
   }
 
   .authorization-form {
@@ -81,11 +66,11 @@ export default {
     gap: 2rem;
     width: 50%;
     height: 100%;
-    color: #212529cc;
+    color: var(--color-background);
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 1rem;
-    background-color: rgb(241, 241, 241);
+    background-color: var(--color-text);
   }
 
   .size {
@@ -133,12 +118,15 @@ export default {
     text-transform: uppercase;
     letter-spacing: 1px;
     border: none;
-    color: rgb(241, 241, 241);
-    background-color: #5c48a3;
+    color: var(--color-text);
+    background-color: var(--vt-c-black-mute);
+    transition: background-color .3s linear;
   }
 
   .button:hover {
     cursor: pointer;
+    background-color: #533e9c;
+    transition: background-color .3s linear;
   }
 
   .subtitle-about {
@@ -148,7 +136,7 @@ export default {
   }
 
   .svg {
-    fill: rgb(241, 241, 241);
+    fill: var(--color-text);
     width: 40%;
   }
 

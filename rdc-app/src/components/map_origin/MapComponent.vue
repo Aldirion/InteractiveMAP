@@ -14,9 +14,7 @@
 	
 <style scoped>
 	.rf-map{
-		display: flex;
-		justify-content: center;
-		padding-top: 6vh;
-		margin: 0 10vw;
+		margin: 0 auto;
+		width: 90%;
 	}
 </style>

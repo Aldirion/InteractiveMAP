@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { onMounted, onUnmounted, ref } from 'vue';
   import ToolTipComponent from '../common/ToolTipComponent.vue';
-  
   import MapSVG from '@/assets/map.svg';
   
   const emit = defineEmits<{
@@ -68,7 +67,9 @@
 
 <template>
   <ToolTipComponent v-if="showToolTip" :mouse-x="mouseCoords[0]" :mouse-y="mouseCoords[1]">
-  mkmkmkm
+    Кол-во школ: 
+		<br>
+		Кол-во СПО: 
   </ToolTipComponent>
 
   <MapSVG/>
