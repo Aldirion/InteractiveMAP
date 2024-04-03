@@ -1,130 +1,35 @@
-<script>
-import BarChart from '../components/charts/BarChart.vue';
-import DonughtChart from '../components/charts/DonughtChart.vue';
-import LineChart from '../components/charts/LineChart.vue';
-import RegionMap from '../components/active_region/map_region/RegionMap.vue';
-import RRC from '../components/active_region/RRC.vue';
-import {ref, isProxy } from 'vue';
-import {useFloating} from '@floating-ui/vue';
-import { mapGetters, mapActions, mapState} from 'vuex';
+<script setup lang="ts">
+	import router from '@/router';
+	import LineChart from '@/components/charts/LineChart.vue';
+	import RRC from '@/components/active_region/RRC.vue';
+	import MapComponent from '@/components/map_origin/MapComponent.vue'
 
-const reference = ref(null);
-const floating = ref(null);
-const {floatingStyles} = useFloating(reference, floating);
-export default {
-	props: ['region_code'],
-	data() {
-		return {
-			baseUrl: '/regions/',
-			height: 0,
-			mgleft: "",
-			hoverMunicipality: null,
-			activeMunicipality: null,
-			tooltipCoords: {},
-			activeRegion: null,
-			employees: false,
-			activeRegionId: 0,
-			rcHead: null,
-		}
-	},
-	async mounted() {
-		const element=document.querySelector("#app")
-		this.mgleft=window.getComputedStyle(element).marginLeft
-		this.height = this.$el?.offsetHeight
-		let queryparam=""
-		queryparam+="?codegost="+this.region_code
-		await this.GET_REGION(queryparam)
-		this.activeRegion=this.REGION
-		if (isProxy(this.activeRegion))
-		{
-			this.getRegionId()
-		}
-		this.employees=this.EMPLOYEES
-		console.log("EMPLOYEES: ", this.employees)
-		this.rcHead =  this.rcHead_EMPLOYEE
-	},
-	methods:
-	{
-		setHoverMunicipality (municipality = null) {
-			this.hoverMunicipality = municipality
-		},
-		setActiveMunicipality (municipality = null) {
-			this.activeMunicipality = municipality
-            this.$router.push({ name: 'active_municipality', params: { municipality_code: `${this.activeMunicipality.code}` } })
-			console.log(municipality)
-		},
-		setTooltipCoords (mouse = null) {
-			this.tooltipCoords.x = mouse?.pageX
-			this.tooltipCoords.y = mouse?.pageY
-			this.tooltipCoords.mgl=this.mgleft.replace("px","")
-		},
-		...mapActions([
-			'GET_REGION',
-			'GET_ACTIVE_REGION',
-		]),
-		getRegionId ()
-		{
-			if (this.activeRegion!=null)
-			{
-				for (let item of this.activeRegion)
-				{
-					// console.log("ITEM: ",item, "REGION_CODEGOST: ", this.regionCodeGost)
-					if (item.codegost==this.regionCodeGost)
-					{
-						this.activeRegionId=item.regionid
-						console.log("activeRegionID: ", this.activeRegionId)
-					}
-				}
-			}
-		},
-		regionTeam()
-		{
-			this.$router.push({ name: 'active_region_team'})
-		}
-	},
-	computed: {
-		svgURL(){
-			return this.baseUrl + this.region.code + '.svg'
-		},
-		...mapState ({
-			region: state => state.module.region
-		})
-		,
-		...mapGetters([
-				'REGION',
-				'EMPLOYEES',
-				'EMPLOYEE_BY_POSTID'
-		]),
-		employeesCount() {
-			return this.EMPLOYEES.length
-		},
-		rcHead_EMPLOYEE() {
-			return this.EMPLOYEE_BY_POSTID(25)
-		}
-	},
-	components: { BarChart, DonughtChart, LineChart, RegionMap, RRC}
-}
+	let regionCode = window.location.pathname.slice(5);
+	
+	function regionTeam() {
+		router.push({ name: 'active_region_team', params: { region_code: `${regionCode}` }});
+	}
+
+	function onRegionSelected(regionCode: string) {
+		router.push({ name: 'active_region', params: { region_code: `${regionCode}` }});
+	}
 </script>
 
 <template>
-	<main v-if="activeRegion" class="region">
+	<main class="region">
 		<h2 class="region-map-title">Красноярский край</h2>	
 		<div class="region-main-data">	
 			<div class="region-map">
-				<RegionMap
-					@setHoverMunicipality="setHoverMunicipality" 
-					@setActiveMunicipality="setActiveMunicipality"
-					@setTooltipCoords="setTooltipCoords"
-				/>
+				<MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode"/>
 			</div>
-			<RRC :rcHead="rcHead"/>
+			<RRC/>
 		</div>
 		
 		<div class="modal-r">
-			<div v-if="employees" class="modal-r-card" @click="regionTeam">
+			<div class="modal-r-card" @click="regionTeam()">
 				<div class="modal-r-h">Региональная команда</div>
 					<div class="modal-r-container"><div class="modal-r-indicator">
-						{{ employeesCount }} 
+						22
 					</div>
 					<h2 style="text-align: center;">Сотрудников</h2>
 				</div>	
@@ -205,7 +110,6 @@ export default {
 			</div>
 			<div class="modal-r-container">
 				<!-- Календарь -->
-				<!-- <ProCalendar /> -->
 			</div>
 		</div>
 
@@ -242,6 +146,8 @@ export default {
 	}
 
 	.region-map {
+		display: flex;
+		justify-content: center;
 		width: 40vw;
 		max-height: 700px;
 	}

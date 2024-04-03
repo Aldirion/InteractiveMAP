@@ -1,43 +1,5 @@
-<script>
-import { mapGetters } from 'vuex'
-import DonughtChart from '../charts/DonughtChart.vue'
-export default {
-    data(){
-        return {
-            dataReady:false,
-			region:null,
-        }
-    },
-    props: {
-        region_code:"",
-		rcHead: {type: Object, default: () => ({firstname: ""})}
-    },
-    mounted()
-    {
-        let queryparams = ""
-        // this.getRegion
-        // queryparams+="?regionid"+this.$router.params.region_code
-        // console.log("RRC:CODEGOST:   ", this.region_code)
-        // // queryparams+="?regionid="+this.getRegion.regionid
-        // this.$store.dispatch('GET_EMPLOYEES', queryparams)
-        // console.log("RRC: ", this.getRegion.regionid)
-		console.log("RRC: ", this.region=this.REGION[0])
-		console.log("RRCPARSED: ", this.region)
-		console.log("RCHEAD", this.rcHead)
-    },
-    computed:
-    {
-        ...mapGetters([
-				'REGION',
-				'EMPLOYEE_BY_POSTID'
-		]),
-		rcHead_EMPLOYEE() {
-			// console.log(this.EMPLOYEE_BY_POSTID(25))
-			return this.EMPLOYEE_BY_POSTID(25)
-		}
-    },
-    components:{DonughtChart}
-}
+<script setup lang="ts">
+	import DonughtChart from '../charts/DonughtChart.vue'
 </script>
 
 <template>
@@ -46,15 +8,14 @@ export default {
 			<img class="coordinator-avatar" src="/partners/regcor.jpeg">
 			<div class="about-container">
 				<h2 class="coordinator-name">
-					{{ rcHead.lastname }} {{ rcHead.firstname }} {{ rcHead.patronymic }}
+					имя
 				</h2>
 				<h3 class="coordinator-subtitle">
 					Региональный координатор проекта
 				</h3>
-				<h4>{{ rcHead.region_code }}2220-12 код</h4>
-				<a v-if="rcHead" class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
+				<a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
 					<span class="material-symbols-outlined">mail</span>
-					{{ rcHead.email }}
+					mail
 				</a>
 				<p class="coordinator-quote">
 					"""
@@ -73,14 +34,14 @@ export default {
 				<div>
 					школ в проекте
 				</div>
-				<div v-if="region" class="modal-r-indicator-light">{{ region.countschool }} всего</div>
+				<div class="modal-r-indicator-light">22 всего</div>
 			</div>
 			<div class="modal-r-container" >
 				<div class="modal-r-indicator-small">72</div>
 				<div>
 					СПО в проекте
 				</div>
-				<div v-if="region" class="modal-r-indicator-light"> {{ region.countspo }} всего</div>
+				<div class="modal-r-indicator-light">22 всего</div>
 			</div>
 		</div>
 	</div>

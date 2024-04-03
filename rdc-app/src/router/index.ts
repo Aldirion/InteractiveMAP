@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import MapComponent from '@/components/map_origin/MapComponent.vue';
+import GlobalMapComponent from '@/components/map_origin/GlobalMapComponent.vue';
 import ActiveRegion from '../views/ActiveRegion.vue';
 import ModuleTestView from '../views/ModuleTestView.vue';
 import RegionTeam from '../views/RegionTeamView.vue';
@@ -16,7 +16,7 @@ const router = createRouter({
 	{
 		path: '/map',
 		name: 'map',
-		component: MapComponent,
+		component: GlobalMapComponent,
 	},
 	{
 		path: '/map/:region_code',
