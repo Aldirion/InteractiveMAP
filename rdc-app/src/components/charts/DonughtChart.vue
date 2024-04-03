@@ -20,10 +20,6 @@ export default {
                     data:[482,690],
                     backgroundColor: ['rgba(202, 200, 254, 1)', 'rgba(149, 145, 253, 1)'],
                 },
-                // {
-                //     data:[1172],
-                //     backgroundColor: ['rgba(50, 47, 116, 1)']
-                // },
             ],
             labels: [`Не охваченных учреждений`,`Учреждения в контуре РДЦ`,],
         },
@@ -39,10 +35,6 @@ export default {
         }
     }
 }
-
 </script>
 
-
-<style>
-
-</style>
+<style></style>

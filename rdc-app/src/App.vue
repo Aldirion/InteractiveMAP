@@ -1,17 +1,10 @@
 <template>
   <HeaderComponent />
-  <div class="container">
-    <RouterView />
-  </div>
+  <RouterView />
 </template>
 
 <script setup lang="ts">
   import HeaderComponent from './components/common/HeaderComponent.vue';
 </script>
 
-<style scoped>
-	.container {
-    width: 100vw;
-    padding: 6vh 10vw 0;
-	}
-</style>
+<style scoped></style>

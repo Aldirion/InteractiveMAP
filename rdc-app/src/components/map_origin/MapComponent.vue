@@ -1,6 +1,6 @@
 <template>
 	<div class="rf-map">
-		<MainMapComponent v-on:regionSelected="onRegionSelected" ref="svg"/>
+		<MainMapComponent v-on:regionSelected="onRegionSelected"/>
 	</div>
 </template>
 
