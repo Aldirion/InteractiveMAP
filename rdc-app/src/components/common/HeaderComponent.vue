@@ -1,3 +1,13 @@
+<script setup lang="ts">
+  import { ref } from 'vue';
+
+  let currentTheme = ref("dark_mode");
+
+  function changeTheme() {
+    currentTheme.value = currentTheme.value === "dark_mode" ? "light_mode" : "dark_mode";
+  }
+</script>
+
 <template>
   <header>
       <nav class="wrapper">
@@ -5,16 +15,10 @@
         <RouterLink to="/map">Карта</RouterLink>
       </nav>
       <a class="theme-toggle">
-          <span class="material-symbols-outlined">dark_mode</span>
+          <span @click="changeTheme()" class="material-symbols-outlined">{{ currentTheme }}</span>
       </a>
   </header>
 </template>
-
-<script>
-export default {
-  
-}
-</script>
 
 <style lang="css" scoped>
   header {

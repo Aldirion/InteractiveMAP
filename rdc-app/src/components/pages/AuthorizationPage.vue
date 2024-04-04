@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import LogoSVG from '@/assets/logo.svg';
-  import EyeSVG from '@/assets/eye.svg';
 
   let isHiddenPassword = ref(true);
 
@@ -22,7 +21,8 @@
         <input class="input-text size" type="text" placeholder="Введите логин">
         <div class="input-password">
           <input class="input-text size" :type="isHiddenPassword ? 'password' : 'text'" placeholder="Введите пароль"> 
-          <EyeSVG @click="checkPassword()" class="check-btn"/>
+          <span v-if="isHiddenPassword" @click="checkPassword()" class="material-symbols-outlined check-btn">visibility_off</span>
+          <span v-else @click="checkPassword()" class="material-symbols-outlined check-btn">visibility</span>
         </div>
         <button class="button size" type="submit">авторизоваться</button>
       </form>
@@ -96,11 +96,11 @@
 
   .check-btn {
     position: absolute;
-    width: 2rem;
+    font-size: 2rem;
     opacity: .6;
     right: 0.375rem;
     top: 50%;
-    transform: translate(0, -50%)
+    transform: translate(0, -50%);
   }
 
   .check-btn:hover {
