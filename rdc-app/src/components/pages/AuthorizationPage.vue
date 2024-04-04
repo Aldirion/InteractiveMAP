@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { ref } from 'vue';
-  import HatSVG from '@/assets/hat.svg';
+  import LogoSVG from '@/assets/logo.svg';
   import EyeSVG from '@/assets/eye.svg';
 
   let isHiddenPassword = ref(true);
@@ -14,9 +14,7 @@
   <div class="authorization">
     <div class="authorization-container">
       <div class="authorization-title">
-        <HatSVG class="svg"/>
-        <h2 class="title-about">РДЦ</h2>
-        <p class="subtitle-about">Пройдите авторизацию для получения доступа к данным</p>
+        <LogoSVG class="svg"/>
       </div>
 
       <form class="authorization-form">
@@ -34,13 +32,16 @@
 
 <style lang="css" scoped>
   .authorization {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 80vh;
+    position: relative;
   }
 
   .authorization-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     width: 45vw;
     height: 60vh;
@@ -108,11 +109,6 @@
     transition: opacity .4s linear;
   }
 
-  .title-about {
-    font-size: 2rem;
-    letter-spacing: 2px;
-  }
-
   .button {
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -128,15 +124,8 @@
     transition: background-color .3s linear;
   }
 
-  .subtitle-about {
-    font-size: .8rem;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-
   .svg {
-    fill: var(--color-text);
-    width: 40%;
+    width: 90%;
   }
 
 </style>
