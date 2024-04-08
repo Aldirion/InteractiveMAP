@@ -49,9 +49,11 @@
     justify-content: space-around;
     align-items: start;
     gap: 50px;
-    margin-top: 20vh;
+    margin-top: 200px;
+    padding: 0 10vw;
     width: 100%;
     height: 250px;
+    background-color: var(--color-background-soft);
   }
 
   .about-company {
@@ -66,12 +68,13 @@
 
   .about-company-text {
     font-size: 14px;
-    color: rgb(188, 188, 189);
+    color: var(--color-text);
     line-height: 1.3;
   }
 
   .footer-title {
     font-size: 18px;
+    font-weight: ;
     padding-top: 50px;
     padding-bottom: 20px;
   }
@@ -101,7 +104,7 @@
 
   .logo {
     width: 40px;
-    fill: var(--vt-c-text-dark-2);
+    fill: var(--color-text);
   }
 
   .logo:hover {
@@ -110,7 +113,7 @@
 
   .footer-link {
     text-decoration: none;
-    color: var(--vt-c-text-dark-2);
+    color: var(--color-text);
   }
 
   .footer-link:hover {

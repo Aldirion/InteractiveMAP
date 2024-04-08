@@ -1,6 +1,8 @@
 <template>
   <HeaderComponent />
-  <RouterView />
+  <div class="app">
+    <RouterView />
+  </div>
   <FooterComponent />
 </template>
 
@@ -9,4 +11,8 @@
   import FooterComponent from './components/common/FooterComponent.vue';
 </script>
 
-<style scoped></style>
+<style scoped>
+  .app {
+    padding: 6vh 10vw 0;
+  }
+</style>

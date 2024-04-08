@@ -1,10 +1,38 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { onMounted, ref } from 'vue';
 
-  let currentTheme = ref("dark_mode");
+  let currentThemeIcon = ref("light_mode");
+  let currentTheme = ref('');
+
+  onMounted(() => {
+    const localTheme = localStorage.getItem('theme');
+    if (localTheme) {
+      currentTheme.value = localTheme === "dark" ? "dark" : "light";
+      currentThemeIcon.value = localTheme === "dark" ? "dark_mode" : "light_mode";
+    } else {
+      const prefersDarkColorScheme = window && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+      currentTheme.value = prefersDarkColorScheme ? "dark" : "light";
+      currentThemeIcon.value = prefersDarkColorScheme ? "dark_mode" : "light_mode";
+    }
+    setTheme();
+  });
 
   function changeTheme() {
-    currentTheme.value = currentTheme.value === "dark_mode" ? "light_mode" : "dark_mode";
+    if (currentThemeIcon.value === "dark_mode") {
+      currentTheme.value = "light";
+      currentThemeIcon.value = "light_mode";
+    } else {
+      currentTheme.value = "dark";
+      currentThemeIcon.value = "dark_mode";
+    }
+    setTheme();
+  }
+
+  function setTheme() {
+    let app = document.querySelector('#app');
+    app?.setAttribute('data-theme', currentTheme.value)
+    localStorage.setItem('theme', currentTheme.value);
   }
 </script>
 
@@ -15,7 +43,7 @@
         <RouterLink to="/map">Карта</RouterLink>
       </nav>
       <a class="theme-toggle">
-          <span @click="changeTheme()" class="material-symbols-outlined">{{ currentTheme }}</span>
+          <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
       </a>
   </header>
 </template>
@@ -31,7 +59,7 @@
     justify-content: center;
     padding: 0 10vw;
     z-index: 20;
-    background-color: var(--color-background);
+    background-color: var(--color-background-soft);
   }
 
   .wrapper {
@@ -48,7 +76,7 @@
     padding: 0 2vw;
     border-left: 2px solid var(--color-border);
     transition: background-color .4s linear;
-    color: rgb(183, 183, 185);
+    color: var(--color-text);
   }
 
   nav a:first-of-type {

@@ -66,11 +66,11 @@
     gap: 2rem;
     width: 50%;
     height: 100%;
-    color: var(--color-background);
+    color: var(--color-text);
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 1rem;
-    background-color: var(--color-text);
+    background-color: var(--color-background-soft);
   }
 
   .size {

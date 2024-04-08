@@ -3,8 +3,10 @@
 
 #app {
   width: 100%;
-  padding: 6vh 10vw 0;
   font-weight: normal;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: background .2s linear, color .2s linear;
 }
 
 a {

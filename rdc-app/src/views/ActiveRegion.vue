@@ -134,7 +134,7 @@
 
 	.region-title {
 		text-align: center;
-		margin: 50px 0;
+		margin: 100px 0;
 		font-size: 24px;
 	}
 	
@@ -142,12 +142,10 @@
 		display: flex;
 		width: 100%;
 		gap: 2vw;
-		margin-bottom: 50px;
+		margin-bottom: 150px;
 	}
 
 	.region-map {
-		display: flex;
-		justify-content: center;
 		width: 40vw;
 		max-height: 700px;
 	}

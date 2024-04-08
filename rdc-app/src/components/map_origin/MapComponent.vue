@@ -127,5 +127,7 @@
   .map-container {
     width: 100%;
     max-height: 700px;
+    display: flex;
+    justify-content: center;
   }
 </style>
