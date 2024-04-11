@@ -1,10 +1,7 @@
 <script setup lang="ts">
-  import { watch, onMounted, onUnmounted, reactive, ref } from 'vue';
+  import { watch, onMounted, onUnmounted, ref } from 'vue';
   import { useStoreRegions } from '@/store/store'
   import ToolTipComponent from '../common/ToolTipComponent.vue';
-  import AmuSVG from '@/assets/regions/RU-AMU.svg';
-  import KyaSvg from '@/assets/regions/RU-KYA.svg';
-  import TomSvg from '@/assets/regions/RU-AD.svg';
   import type { Region } from '@/interfaces/regions';
   // @ts-ignore
   import { svgLoad } from 'virtual:svg-loader';
@@ -125,8 +122,6 @@
 	}
 
   .map-container {
-    width: 100%;
-    max-height: 700px;
     display: flex;
     justify-content: center;
   }

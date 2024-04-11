@@ -74,7 +74,7 @@
 
   .footer-title {
     font-size: 18px;
-    font-weight: ;
+    font-weight: bold;
     padding-top: 50px;
     padding-bottom: 20px;
   }
@@ -125,5 +125,89 @@
     display: flex;
     gap: 15px;
     padding-top: 10px;
+  }
+
+  @media only screen and (max-width: 1130px){
+    .footer {
+      height: 300px;
+    }
+    
+    .social-container {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .about-container {
+      width: 200px;
+    }
+  }
+
+  @media only screen and (max-width: 820px){
+    .about-company {
+      flex-direction: column;
+    }
+
+    .about-container {
+      order: 1;
+    }
+
+    .company-logo-container {
+      order: 2;
+      margin-top: 0px;
+    }
+
+    .company-logo-container {
+      width: 100px;
+      height: 100px;
+    }
+
+    .about-company-text {
+      display: none;
+    }
+  }
+
+  @media only screen and (max-width: 620px){
+    .footer {
+      gap: 20px;
+      margin-top: 100px;
+    }
+
+    .footer-link, .footer-title {
+      text-align: center;
+    }
+
+    .logo {
+      width: 30px;
+    }
+
+    .footer-title {
+      font-size: 16px;
+    }
+
+    .about-container {
+      width: 120px;
+      text-align: center;
+    }
+  }
+
+  @media only screen and (max-width: 420px){
+    .company-logo-container {
+      width: 80px;
+      height: 80px;
+    }
+
+    .main-logo {
+      width: 150px;
+      height: 150px;
+    }
+
+    .footer-link {
+      font-size: 14px;
+    }
+
+    .footer-title {
+      font-size: 15px;
+    }
+
   }
 </style>

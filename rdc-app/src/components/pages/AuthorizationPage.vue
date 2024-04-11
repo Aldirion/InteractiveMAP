@@ -43,8 +43,9 @@
     left: 50%;
     transform: translate(-50%, -50%);
     display: flex;
-    width: 45vw;
+    width: 50vw;
     height: 60vh;
+    transition: width .3s linear;
   }
 
   .authorization-title {
@@ -56,6 +57,7 @@
     height: 100%;
     color: var(--color-text);
     background-color: var(--vt-c-black-mute);
+    transition: width .2s linear, height .2s linear;
   }
 
   .authorization-form {
@@ -71,6 +73,7 @@
     letter-spacing: 1px;
     font-size: 1rem;
     background-color: var(--color-background-soft);
+    transition: width .2s linear, height .2s linear;
   }
 
   .size {
@@ -78,6 +81,7 @@
     height: 2.5rem;
     padding: 0.375rem  0.375rem;
     border-radius: .2rem;
+    transition: width .3s linear;
   }
 
   .input-text {
@@ -97,23 +101,23 @@
   .check-btn {
     position: absolute;
     font-size: 2rem;
-    opacity: .6;
     right: 0.375rem;
     top: 50%;
     transform: translate(0, -50%);
+    color: var(--vt-c-divider-dark-2);
   }
 
   .check-btn:hover {
     cursor: pointer;
-    opacity: 1;
-    transition: opacity .4s linear;
+    color: var(--vt-c-divider-dark-1);
+    transition: color .4s linear;
   }
 
   .button {
     text-transform: uppercase;
     letter-spacing: 1px;
     border: none;
-    color: var(--color-text);
+    color: var(--vt-c-white-soft);
     background-color: var(--vt-c-black-mute);
     transition: background-color .3s linear;
   }
@@ -128,4 +132,53 @@
     width: 90%;
   }
 
+  @media only screen and (max-width: 1430px){
+    .authorization-container {
+      width: 80%;
+    }
+
+    .size {
+      width: 18vw;
+    }
+  }
+
+  @media only screen and (max-width: 1130px){
+    .authorization-container {
+      display: block;
+    }
+
+    .authorization-title {
+      width: 100%;
+      height: 40%;
+    }
+
+    .authorization-form {
+      width: 100%;
+      height: 80%;
+    }
+
+    .size {
+      width: 300px;
+    }
+  }
+
+  @media only screen and (max-width: 600px){
+    .authorization-container {
+      width: 100%;
+    }
+
+    .authorization {
+      height: 90vh;
+    }
+    
+    .size {
+      width: 250px;
+    }
+  }
+
+  @media only screen and (max-width: 360px){
+    .size {
+      width: 220px;
+    }
+  }
 </style>

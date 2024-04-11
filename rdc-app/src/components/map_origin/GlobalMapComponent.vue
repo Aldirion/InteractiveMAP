@@ -16,6 +16,25 @@
 <style scoped>
 	.rf-map{
 		margin: 0 auto;
-		width: 90%;
+		width: 100%;
+		height: 80vh;
+	}
+
+	@media only screen and (max-width: 1440px){
+		.rf-map{
+			height: 70vh;
+		}
+	}
+
+	@media only screen and (max-width: 1280px){
+		.rf-map{
+			height: 60vh;
+		}
+	}
+
+	@media only screen and (max-width: 1280px){
+		.rf-map{
+			height: 50vh;
+		}
 	}
 </style>
