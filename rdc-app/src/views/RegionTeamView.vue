@@ -1,11 +1,5 @@
-<script>
-
-export default {
-
-}
-</script>
-
+<script setup lang="ts"></script>
 
 <template>
-    <div>ХАХАХА</div>
+  <div>ХАХАХА</div>
 </template>
