@@ -41,8 +41,8 @@ const leftPosition = computed(() => {
   position: absolute;
   width: 200px;
   height: auto;
-  background-color: var(--color-text);
-  color: var(--color-background-soft);
+  background-color: var(--vt-c-text-dark-2);
+  color: var(--vt-c-black-soft);
   pointer-events: none;
   z-index: 21;
 }
@@ -51,7 +51,7 @@ const leftPosition = computed(() => {
   background-color: rgb(75, 75, 253);
   width: 100%;
   height: auto;
-  color: var(--color-text);
+  color: var(--vt-c-text-dark-2);
   padding: 3px 3px 3px 10px;
 }
 

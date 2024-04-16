@@ -36,7 +36,7 @@ import DonughtChart from '../charts/DonughtChart.vue';
   </div>
 </template>
 
-<style>
+<style scoped lang="css">
 .coordinator-avatar {
   width: 150px;
   height: 150px;
@@ -75,35 +75,6 @@ import DonughtChart from '../charts/DonughtChart.vue';
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.modal-r-indicator {
-  margin-top: 0;
-  display: table;
-  width: 100%;
-  color: rgba(149, 145, 253, 1);
-  text-align: center;
-  font-weight: bold;
-  font-size: 5rem;
-}
-.modal-r-indicator-small {
-  margin-top: 0;
-  display: table;
-  width: 100%;
-  color: rgba(149, 145, 253, 1);
-  text-align: center;
-  font-weight: bold;
-  font-size: 2rem;
-}
-.modal-r-indicator-light {
-  margin-top: 0;
-  display: table;
-  width: 100%;
-  color: var(--color-link);
-  text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-  border-top: 2px solid var(--color-border);
 }
 
 .info-grid-indicators {

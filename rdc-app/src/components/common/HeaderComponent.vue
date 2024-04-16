@@ -46,7 +46,7 @@ function setTheme() {
       <RouterLink to="/map">Карта</RouterLink>
     </nav>
     <div class="theme-toggle">
-      <span class="material-symbols-outlined">group</span>
+      <span class="material-symbols-outlined">person</span>
       <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
     </div>
   </header>

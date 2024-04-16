@@ -106,7 +106,7 @@ function checkPassword() {
 
 .check-btn {
   position: absolute;
-  font-size: 2rem;
+  font-size: 1.5rem;
   right: 0.375rem;
   top: 50%;
   transform: translate(0, -50%);

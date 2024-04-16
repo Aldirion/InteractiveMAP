@@ -119,13 +119,12 @@ onUnmounted(() => {
 [data-code] {
   fill: rgba(149, 145, 253, 1);
   stroke: rgb(245, 246, 250);
-  transition: fill 0.5s linear;
+  transition: fill 0.3s linear;
   margin: 0 auto;
 }
 
 [data-code]:hover {
   fill: rgb(99, 94, 138);
-  transition: fill 0.5s linear;
   cursor: pointer;
 }
 

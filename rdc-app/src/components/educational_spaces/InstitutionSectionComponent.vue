@@ -56,7 +56,7 @@ let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
   align-items: center;
   gap: 10px;
   background-color: var(--color-background-soft);
-  border-radius: 0px 0px 5px 5px;
+  border-radius: 5px;
 }
 
 .section-element-title {
