@@ -107,9 +107,9 @@ onUnmounted(() => {
     :mouse-x="mouseCoords[0]"
     :mouse-y="mouseCoords[1]"
   >
-    Кол-во школ: {{ hoveredRegionData?.countschool ? hoveredRegionData.countschool : 'Загрузка...' }}
+    Кол-во школ: {{ hoveredRegionData?.count_school ? hoveredRegionData.count_school : 'Загрузка...' }}
     <br />
-    Кол-во СПО: {{ hoveredRegionData?.countspo ? hoveredRegionData.countspo : 'Загрузка...' }}
+    Кол-во СПО: {{ hoveredRegionData?.count_spo ? hoveredRegionData.count_spo : 'Загрузка...' }}
   </ToolTipComponent>
 
   <div class="map-container" v-html="mapSvg"></div>

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import router from '@/router';
+import { useStoreRegions } from '@/store/store';
+import { computed, onMounted, reactive, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
+const store = useStoreRegions();
+const { getRegionData } = store;
 
 const pathTitles: { [key: string]: { title: string; url: string } } = {
   map: {
@@ -23,25 +27,33 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
 };
 
 const path = route.fullPath.split('/');
-let titles: { title: string; url: string }[] = [];
 path.shift();
+let regionName: Ref<string | null> = ref(null);
 let regionCode = path[1];
-console.log(path);
 
-path.forEach((pageName, idx) => {
-  if (pageName in pathTitles) {
-    titles.push({
-      title: pathTitles[pageName].title,
-      url: pathTitles[pageName].url,
-    });
-  }
+onMounted(async () => {
+  regionName.value = (await getRegionData(regionCode)).title;
+});
 
-  if (pageName.includes('RU-') || idx === 1) {
-    titles.push({
-      title: pathTitles['region'].title,
-      url: pathTitles['region'].url.replace('region', regionCode),
-    });
-  }
+let titlesRoute = computed(() => {
+  let titles: { title: string; url: string }[] = reactive([]);
+
+  path.forEach((pageName, idx) => {
+    if (pageName in pathTitles) {
+      titles.push({
+        title: pathTitles[pageName].title,
+        url: pathTitles[pageName].url.replace('region', regionCode),
+      });
+    }
+
+    if (pageName.includes('RU-') || idx === 1) {
+      titles.push({
+        title: pathTitles['region'].title.replace('region', regionName.value!),
+        url: pathTitles['region'].url.replace('region', regionCode),
+      });
+    }
+  });
+  return titles;
 });
 
 function redirectTopage(pagePath: string) {
@@ -51,13 +63,12 @@ function redirectTopage(pagePath: string) {
 
 <template>
   <div class="router-container">
-    <template v-for="(pageName, idx) in titles" :key="pageName.title">
+    <template v-for="(pageName, idx) in titlesRoute" :key="pageName.title">
       <a class="page" @click="redirectTopage(pageName.url)">
         {{ pageName.title }}
       </a>
-      <div v-if="idx != titles.length - 1">>></div>
+      <div v-if="idx != titlesRoute.length - 1">>></div>
     </template>
-
   </div>
 </template>
 

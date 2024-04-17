@@ -8,8 +8,8 @@ export type Region = {
   regionheadid: null | string;
   rcid: null;
   indicator: null;
-  countschool: number | null;
-  countspo: number | null;
+  count_school: number | null;
+  count_spo: number | null;
   dsid: number;
 };
 
