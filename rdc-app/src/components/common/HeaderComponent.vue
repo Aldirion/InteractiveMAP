@@ -4,6 +4,7 @@ import LogoSVG from '@/assets/logo-min.svg';
 
 let currentThemeIcon = ref('light_mode');
 let currentTheme = ref('');
+let isOpenHeader = ref(false);
 
 onMounted(() => {
   const localTheme = localStorage.getItem('theme');
@@ -36,20 +37,26 @@ function setTheme() {
   app?.setAttribute('data-theme', currentTheme.value);
   localStorage.setItem('theme', currentTheme.value);
 }
+
+function toggleHeader() {
+  isOpenHeader.value = !isOpenHeader.value;
+}
 </script>
 
 <template>
   <header>
     <LogoSVG />
-    <nav class="wrapper">
+    <nav class="wrapper" :class="{ 'wrapper-phone-open': isOpenHeader, 'wrapper-phone-close': !isOpenHeader }">
       <RouterLink to="/">Главная</RouterLink>
       <RouterLink to="/map">Карта</RouterLink>
     </nav>
     <div class="theme-toggle">
       <span class="material-symbols-outlined">person</span>
       <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
+      <span class="material-symbols-outlined menu" @click="toggleHeader">{{ !isOpenHeader ? 'menu' : 'close' }}</span>
     </div>
   </header>
+  <div class="pop-up-back" :style="{ display: isOpenHeader ? 'block' : 'none' }"></div>
 </template>
 
 <style lang="css" scoped>
@@ -57,7 +64,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  height: 5vh;
+  height: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
@@ -70,6 +77,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 2vw;
   width: 100%;
   font-size: 18px;
 }
@@ -78,7 +86,6 @@ nav a {
   display: flex;
   align-items: center;
   height: 100%;
-  padding: 0 2vw;
   letter-spacing: 1.4px;
   transition: background-color 0.4s linear;
   color: var(--color-text);
@@ -104,6 +111,55 @@ nav a:hover {
   transition: background-color 0.4s linear;
 }
 
+.menu {
+  display: none;
+}
+
+.pop-up-back {
+  display: none;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  right: 0px;
+  background-color: rgba(0, 0, 0, 0.507);
+  transition: display 0.3s linear;
+}
+
+.wrapper-phone-open {
+  right: 0px;
+}
+
+.wrapper-phone-close {
+  right: -50vw;
+}
+
 @media only screen and (max-width: 1130px) {
+  header {
+    height: 40px;
+    justify-content: space-between;
+    padding: 0 10vw;
+  }
+
+  .wrapper {
+    position: absolute;
+    flex-direction: column;
+    width: 100%;
+    top: 40px;
+    width: 50vw;
+    height: calc(100vh - 40px);
+    background-color: var(--color-background-soft);
+    transition: right 0.2s linear;
+  }
+
+  nav a {
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+  }
+
+  .menu {
+    display: block;
+  }
 }
 </style>
