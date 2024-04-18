@@ -69,3 +69,9 @@ const chartOptions = {
   maintainAspectRatio: false,
 };
 </script>
+
+<style scoped lang="css">
+#my-chart-id {
+  width: 100%;
+}
+</style>

@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import router from '@/router';
+import { useRoute } from 'vue-router';
 import { onMounted, ref, type Ref } from 'vue';
 import { useStoreRegions } from '@/store/store';
 import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
 
+const route = useRoute();
 const store = useStoreRegions();
 const { getRegionData } = store;
 
-let regionCode = window.location.pathname.split('/')[2];
+let regionCode = route.fullPath.split('/')[2];
 let regionName: Ref<string | null> = ref(null);
 
 onMounted(async () => {
@@ -161,14 +163,23 @@ function onRegionSelected(regionCode: string) {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 1280px;
   gap: 30px calc(3rem - 8px);
 }
 
 .modal-r-card {
-  width: 400px;
+  width: 30%;
   border-radius: 0px 0px 5px 5px;
   background: var(--color-background-soft);
+  text-align: center;
+  font-weight: bold;
+}
+
+.modal-r-h {
+  padding: 10px;
+  color: var(--color-text);
+  font-size: 1rem;
+  background: var(--color-background-mute);
+  border-radius: 5px 5px 0px 0px;
 }
 
 .modal-r-container {
@@ -176,46 +187,61 @@ function onRegionSelected(regionCode: string) {
   padding: 20px 10px;
 }
 
-.modal-r-h {
-  padding: 10px;
-  color: var(--color-text);
-  text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-  background: var(--color-background-mute);
-  border-radius: 5px 5px 0px 0px;
-}
-
 .modal-r-indicator {
-  margin-top: 0;
-  display: table;
-  width: 100%;
   color: rgba(149, 145, 253, 1);
-  text-align: center;
-  font-weight: bold;
   font-size: 5rem;
-}
-.modal-r-indicator-small {
-  margin-top: 0;
-  display: table;
-  width: 100%;
-  color: rgba(149, 145, 253, 1);
-  text-align: center;
-  font-weight: bold;
-  font-size: 2rem;
-}
-.modal-r-indicator-light {
-  margin-top: 0;
-  display: table;
-  width: 100%;
-  color: var(--color-link);
-  text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-  border-top: 2px solid var(--color-border);
 }
 
 .hover-component:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 1050px) {
+  .modal-r {
+    gap: 20px;
+  }
+
+  .region-title {
+    margin: 50px 0;
+  }
+
+  .region-main-data {
+    margin-bottom: 80px;
+  }
+}
+
+@media only screen and (max-width: 1050px) {
+  .region-main-data {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .region-map {
+    order: 2;
+  }
+
+  .region-info {
+    order: 1;
+  }
+
+  .modal-r-indicator {
+    font-size: 4rem;
+  }
+
+  .modal-r-card {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 865px) {
+  .modal-r-card {
+    width: 250px;
+  }
+}
+
+@media only screen and (max-width: 675px) {
+  .modal-r-card {
+    width: 100%;
+  }
 }
 </style>

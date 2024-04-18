@@ -5,7 +5,9 @@ import DonughtChart from '../charts/DonughtChart.vue';
 <template>
   <div class="region-info">
     <div class="coordinator-about">
-      <img class="coordinator-avatar" src="/partners/regcor.jpeg" />
+      <div class="img-container">
+        <img class="coordinator-avatar" src="/partners/regcor.jpeg" />
+      </div>
       <div class="about-container">
         <h2 class="coordinator-name">имя</h2>
         <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
@@ -37,6 +39,11 @@ import DonughtChart from '../charts/DonughtChart.vue';
 </template>
 
 <style scoped lang="css">
+.img-container {
+  width: 150px;
+  height: 150px;
+}
+
 .coordinator-avatar {
   width: 150px;
   height: 150px;
@@ -82,5 +89,55 @@ import DonughtChart from '../charts/DonughtChart.vue';
   justify-content: center;
   gap: 50px;
   margin-top: 30px;
+}
+
+.modal-r-container {
+  width: 100%;
+  padding: 20px 10px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.modal-r-indicator {
+  color: rgba(149, 145, 253, 1);
+  font-size: 5rem;
+}
+
+.modal-r-indicator-small {
+  color: rgba(149, 145, 253, 1);
+  font-size: 2rem;
+}
+
+.modal-r-indicator-light {
+  color: var(--color-link);
+  font-size: 1rem;
+  font-weight: lighter;
+  border-top: 2px solid var(--color-border);
+}
+
+@media only screen and (max-width: 520px) {
+  .img-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .coordinator-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .coordinator-about {
+    gap: 15px;
+    margin-bottom: 50px;
+  }
+
+  .info-grid-indicators {
+    gap: 30px;
+    margin-top: 15px;
+  }
+
+  .modal-r-indicator-small {
+    font-size: 1.5rem;
+  }
 }
 </style>

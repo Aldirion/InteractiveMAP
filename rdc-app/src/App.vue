@@ -15,4 +15,10 @@ import FooterComponent from './components/common/FooterComponent.vue';
 .app {
   padding: 6vh 10vw 0;
 }
+
+@media only screen and (max-width: 520px) {
+  .app {
+    padding: 6vh 5vw 0;
+  }
+}
 </style>

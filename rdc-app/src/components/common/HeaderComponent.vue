@@ -118,8 +118,8 @@ nav a:hover {
 .pop-up-back {
   display: none;
   position: fixed;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   top: 0px;
   right: 0px;
   background-color: rgba(0, 0, 0, 0.507);
@@ -131,7 +131,7 @@ nav a:hover {
 }
 
 .wrapper-phone-close {
-  right: -50vw;
+  right: -60%;
 }
 
 @media only screen and (max-width: 1130px) {
@@ -142,12 +142,11 @@ nav a:hover {
   }
 
   .wrapper {
-    position: absolute;
+    position: fixed;
     flex-direction: column;
-    width: 100%;
     top: 40px;
-    width: 50vw;
-    height: calc(100vh - 40px);
+    width: 60%;
+    height: 100%;
     background-color: var(--color-background-soft);
     transition: right 0.2s linear;
   }

@@ -141,6 +141,10 @@ import LogoSVG from '@/assets/logo-min.svg';
   .about-container {
     width: 200px;
   }
+
+  .footer {
+    margin-top: 100px;
+  }
 }
 
 @media only screen and (max-width: 820px) {
