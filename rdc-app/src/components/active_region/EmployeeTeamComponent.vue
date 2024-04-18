@@ -1,70 +1,20 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import EmployeeComponent from '@/components/active_region/EmployeeComponent.vue';
+import type { EmployeeTeamData } from '@/interfaces/regions';
+
+const props = defineProps<{
+  title: string | number;
+  team: EmployeeTeamData;
+}>();
 
 let isShowMembers = ref(false);
-const members = [
-  {
-    id: 1,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 2,
-    name: 'Фамилия Имя',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 3,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 4,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 5,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 6,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 7,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 8,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 9,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-  {
-    id: 10,
-    name: 'ФИО',
-    phone: '+79999999999',
-    email: 'navigatory.detstva.70@rosdetcentr.ru',
-  },
-];
+
+onMounted(() => {
+  if (props.team.count <= 3) {
+    isShowMembers.value = true;
+  }
+});
 
 function showMembers() {
   isShowMembers.value = !isShowMembers.value;
@@ -73,13 +23,13 @@ function showMembers() {
 <template>
   <div class="team-elem">
     <div class="team-elem-title" @click="showMembers">
-      <p>РК (5)</p>
+      <p>{{ title }} ({{ team.count }})</p>
       <span class="material-symbols-outlined arrow" v-if="isShowMembers">arrow_drop_down</span>
       <span class="material-symbols-outlined arrow" v-else>arrow_drop_up</span>
     </div>
     <Transition>
-      <div class="team-members" v-if="isShowMembers">
-        <EmployeeComponent v-for="member in members" :memberData="member" :key="member.id" />
+      <div v-if="isShowMembers" :class="{ 'team-members': team.count > 3, 'team-members-low': team.count <= 3 }">
+        <EmployeeComponent v-for="member in team.data" :memberData="member" :key="member.id" />
       </div>
     </Transition>
   </div>
@@ -98,7 +48,8 @@ function showMembers() {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--color-background-soft);
+  background-color: var(--vt-c-black-mute);
+  color: var(--vt-c-white);
   transition: background-color 0.2s ease;
   border-radius: 5px;
   font-size: 1.2rem;
@@ -106,7 +57,6 @@ function showMembers() {
 
 .team-elem-title:hover {
   cursor: pointer;
-  background-color: var(--vt-c-divider-light-2);
 }
 
 .team-members {
@@ -115,6 +65,12 @@ function showMembers() {
   flex-direction: column;
   overflow: hidden;
   overflow-y: scroll;
+  gap: 10px;
+}
+
+.team-members-low {
+  display: flex;
+  flex-direction: column;
   gap: 10px;
 }
 

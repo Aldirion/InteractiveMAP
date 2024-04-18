@@ -1,20 +1,16 @@
 <script setup lang="ts">
-const props = defineProps<{
-  memberData: {
-    id: number;
-    name: string;
-    phone: string;
-    email: string;
-  };
+import type { EmployeeData } from '@/interfaces/regions';
+
+defineProps<{
+  memberData: EmployeeData;
 }>();
 </script>
 
 <template>
   <div class="team-member">
     <div class="member-about">
-      <p class="member-name">{{ props.memberData.name }}</p>
-      <p class="member-phone">{{ props.memberData.phone }}</p>
-      <p class="member-email">{{ props.memberData.email }}</p>
+      <p class="member-name">{{ memberData.lastname }} {{ memberData.firstname }} {{ memberData.patronymic }}</p>
+      <p class="member-email">{{ memberData.email }} {{ memberData.region_id }}</p>
     </div>
     <div class="member-img"></div>
   </div>
@@ -27,14 +23,13 @@ const props = defineProps<{
   background-color: var(--color-background-soft);
   border-radius: 5px;
   padding: 10px;
-  margin-right: 10px;
 }
 
 .member-img {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: var(--vt-c-black-mute);
+  background-color: var(--vt-c-divider-dark-1);
 }
 
 .member-name {

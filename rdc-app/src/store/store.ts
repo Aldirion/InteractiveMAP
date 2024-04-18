@@ -1,20 +1,34 @@
-import type { Region, RegionCardData } from '@/interfaces/regions';
+import type { EmployeeTeam, Region, RegionCardData } from '@/interfaces/regions';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
+const URL = 'http://localhost:8000/api/v1';
+
 export const useStoreRegions = defineStore('storeRigions', () => {
   const regions = ref<Region[] | null>(null);
-  const activeRegion = ref<string | null>(null);
+  const employeeTeam = ref<EmployeeTeam | null>(null);
 
   async function getRegions(): Promise<Region[]> {
     if (regions.value === null) {
-      const response = await fetch('http://localhost:8000/api/v1/region');
+      const response = await fetch(`${URL}/region`);
       const data: Region[] = await response.json();
       regions.value = data;
 
       return data;
     } else {
       return regions.value;
+    }
+  }
+
+  async function getEmployeeByRegionCode(regionCode: number): Promise<EmployeeTeam> {
+    if (employeeTeam.value === null) {
+      const response = await fetch(`${URL}/region/${regionCode}/employee`);
+      const data: EmployeeTeam = await response.json();
+      employeeTeam.value = data;
+
+      return data;
+    } else {
+      return employeeTeam.value;
     }
   }
 
@@ -143,5 +157,13 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     ];
   }
 
-  return { regions, getRegions, getRegionSPOData, getRegionSchoolData, getRegionData, activeRegion };
+  return {
+    regions,
+    employeeTeam,
+    getRegions,
+    getEmployeeByRegionCode,
+    getRegionSPOData,
+    getRegionSchoolData,
+    getRegionData,
+  };
 });

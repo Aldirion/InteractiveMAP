@@ -11,13 +11,11 @@ const props = defineProps<{
 }>();
 
 const store = useStoreRegions();
-const { getRegions, getRegionData } = store;
+const { getRegionData } = store;
 
 const emit = defineEmits<{
   regionSelected: [regionCode: string];
 }>();
-
-onMounted(async () => await getRegions());
 
 let mouseCoords = ref([0, 0]);
 let showToolTip = ref(false);
