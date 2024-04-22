@@ -9,13 +9,12 @@ import LineChart from '@/components/charts/LineChart.vue';
 
 const route = useRoute();
 const store = useStoreRegions();
-const { getRegionData } = store;
 
 let regionCode = route.fullPath.split('/')[2];
 let regionName: Ref<string | null> = ref(null);
 
 onMounted(async () => {
-  regionName.value = (await getRegionData(regionCode)).title;
+  regionName.value = (await store.getRegionData(regionCode)).title;
 });
 
 function regionTeam() {

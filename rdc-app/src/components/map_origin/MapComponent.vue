@@ -11,7 +11,6 @@ const props = defineProps<{
 }>();
 
 const store = useStoreRegions();
-const { getRegionData } = store;
 
 const emit = defineEmits<{
   regionSelected: [regionCode: string];
@@ -27,7 +26,7 @@ let hoveredRegionData = ref<Region | null>(null);
 
 watch(hoveredRegionCode, async () => {
   if (hoveredRegionCode.value) {
-    hoveredRegionData.value = await getRegionData(hoveredRegionCode.value)!;
+    hoveredRegionData.value = await store.getRegionData(hoveredRegionCode.value)!;
   }
 });
 

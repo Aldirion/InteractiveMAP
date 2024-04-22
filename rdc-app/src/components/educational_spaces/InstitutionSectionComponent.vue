@@ -8,14 +8,13 @@ const props = defineProps<{
 }>();
 
 const store = useStoreRegions();
-const { getRegionSchoolData, getRegionSPOData } = store;
 
 let schoolSectionData: Ref<RegionCardData[]> = ref([]);
 let spoSectionData: Ref<RegionCardData[]> = ref([]);
 
 onMounted(async () => {
-  schoolSectionData.value = await getRegionSchoolData();
-  spoSectionData.value = await getRegionSPOData();
+  schoolSectionData.value = await store.getRegionSchoolData();
+  spoSectionData.value = await store.getRegionSPOData();
 });
 
 let sectionData: ComputedRef<RegionCardData[]> = computed(() => {

@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import LogoSVG from '@/assets/logo-min.svg';
+import { useStoreAuthorization } from '@/store/authorization';
+
+const store = useStoreAuthorization();
 
 let currentThemeIcon = ref('light_mode');
 let currentTheme = ref('');
@@ -41,18 +44,28 @@ function setTheme() {
 function toggleHeader() {
   isOpenHeader.value = !isOpenHeader.value;
 }
+
+function logout() {
+  localStorage.removeItem('access');
+  localStorage.removeItem('refresh');
+}
 </script>
 
 <template>
   <header>
     <LogoSVG />
     <nav class="wrapper" :class="{ 'wrapper-phone-open': isOpenHeader, 'wrapper-phone-close': !isOpenHeader }">
-      <RouterLink to="/">Главная</RouterLink>
-      <RouterLink to="/map">Карта</RouterLink>
+      <RouterLink to="/map" v-if="store.isAuthorized">Карта</RouterLink>
+      <RouterLink to="/personal-account" class="account" v-if="store.isAuthorized">
+        <span class="material-symbols-outlined">person</span>
+        <span>Кабинет</span>
+      </RouterLink>
+      <RouterLink to="/" class="logout" @click="logout" v-if="store.isAuthorized">
+        <span class="material-symbols-outlined">logout</span>
+        <span>Выйти</span>
+      </RouterLink>
     </nav>
     <div class="theme-toggle">
-      <span class="material-symbols-outlined">logout</span>
-      <span class="material-symbols-outlined">person</span>
       <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
       <span class="material-symbols-outlined menu" @click="toggleHeader">{{ !isOpenHeader ? 'menu' : 'close' }}</span>
     </div>
@@ -69,6 +82,7 @@ header {
   width: 100%;
   display: flex;
   justify-content: center;
+  gap: 30px;
   padding: 0 10vw;
   z-index: 20;
   background-color: var(--color-background-soft);
@@ -77,7 +91,7 @@ header {
 .wrapper {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: right;
   gap: 2vw;
   width: 100%;
   font-size: 18px;
@@ -86,16 +100,16 @@ header {
 nav a {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
-  letter-spacing: 1.4px;
-  transition: background-color 0.4s linear;
+  transition: color 0.2s linear;
   color: var(--color-text);
 }
 
 .theme-toggle {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
 }
 
 .theme-toggle:hover {
@@ -106,10 +120,9 @@ nav a.router-link-exact-active {
   color: rgb(70, 70, 182);
 }
 
-nav a:hover {
+nav a:hover,
+.logout:hover {
   color: rgb(94, 94, 192);
-  background-color: rgba(149, 145, 253, 0.2);
-  transition: background-color 0.4s linear;
 }
 
 .menu {
@@ -123,6 +136,7 @@ nav a:hover {
   height: 100%;
   top: 0px;
   right: 0px;
+  z-index: 19;
   background-color: rgba(0, 0, 0, 0.507);
   transition: display 0.3s linear;
 }
@@ -133,6 +147,14 @@ nav a:hover {
 
 .wrapper-phone-close {
   right: -60%;
+}
+
+.logout,
+.account {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: color 0.2s linear;
 }
 
 @media only screen and (max-width: 1130px) {
@@ -148,6 +170,7 @@ nav a:hover {
     top: 40px;
     width: 60%;
     height: 100%;
+    justify-content: center;
     background-color: var(--color-background-soft);
     transition: right 0.2s linear;
   }

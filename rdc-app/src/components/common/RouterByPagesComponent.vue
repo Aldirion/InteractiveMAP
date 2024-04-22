@@ -5,7 +5,6 @@ import { computed, onMounted, reactive, ref, type Ref } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
 const store = useStoreRegions();
-const { getRegionData } = store;
 
 const pathTitles: { [key: string]: { title: string; url: string } } = {
   map: {
@@ -32,7 +31,7 @@ let regionName: Ref<string | null> = ref(null);
 let regionCode = path[1];
 
 onMounted(async () => {
-  regionName.value = (await getRegionData(regionCode)).title;
+  regionName.value = (await store.getRegionData(regionCode)).title;
 });
 
 let titlesRoute = computed(() => {

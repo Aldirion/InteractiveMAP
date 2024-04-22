@@ -5,6 +5,7 @@ import RegionTeam from '../views/RegionTeamView.vue';
 import EducateSpacesComponent from '@/components/educational_spaces/EducateSpacesComponent.vue';
 import AuthorizationPage from '@/components/pages/AuthorizationPage.vue';
 import { useStoreAuthorization } from '@/store/authorization';
+import PersonalAccountPage from '@/components/pages/PersonalAccountPage.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -39,6 +40,12 @@ const router = createRouter({
       component: RegionTeam,
       meta: { requiresAuth: true },
     },
+    {
+      path: '/personal-account',
+      name: 'personal_account',
+      component: PersonalAccountPage,
+      meta: { requiresAuth: true },
+    },
     // {
     // 	path: '/map/:region_code/:municipality_code',
     // 	name: 'active_municipality',
@@ -50,9 +57,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const store = useStoreAuthorization();
-  const { checkIfUserIsAuthenticated } = store;
 
-  const isAuthenticated = await checkIfUserIsAuthenticated();
+  const isAuthenticated = await store.checkIfUserIsAuthenticated();
 
   if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
     next('/');

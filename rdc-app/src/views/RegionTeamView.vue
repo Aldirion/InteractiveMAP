@@ -11,14 +11,11 @@ const regionCode = route.fullPath.split('/')[2];
 let employeeTeam = ref<EmployeeTeam | null>(null);
 
 const store = useStoreRegions();
-const { getRegionData, getEmployeeByRegionCode } = store;
 
 onMounted(async () => {
-  const regionId = (await getRegionData(regionCode)).id;
-  console.log(regionId);
-  employeeTeam.value = await getEmployeeByRegionCode(regionId);
+  const regionId = (await store.getRegionData(regionCode)).id;
+  employeeTeam.value = await store.getEmployeeByRegionCode(regionId);
 });
-console.log(employeeTeam);
 </script>
 
 <template>

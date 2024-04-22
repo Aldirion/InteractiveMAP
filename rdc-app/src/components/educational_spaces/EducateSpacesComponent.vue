@@ -6,13 +6,13 @@ import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.v
 import { Section } from '@/interfaces/regions';
 
 const store = useStoreRegions();
-const { getRegionData } = store;
+
 let regionCode = window.location.pathname.split('/')[2];
 let activeSection: Ref<Section> = ref(Section.SCHOOL);
 let regionName: Ref<string | null> = ref(null);
 
 onMounted(async () => {
-  regionName.value = (await getRegionData(regionCode)).title;
+  regionName.value = (await store.getRegionData(regionCode)).title;
 });
 </script>
 
