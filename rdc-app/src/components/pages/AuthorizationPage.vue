@@ -1,35 +1,81 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import LogoSVG from '@/assets/logo.svg';
+import router from '@/router';
+import { BASE_URL } from '@/interfaces/variables';
 
 let isHiddenPassword = ref(true);
+let isHiddenError = ref(false);
+
+let login = defineModel('login');
+let password = defineModel('password');
 
 function checkPassword() {
   isHiddenPassword.value = !isHiddenPassword.value;
 }
+
+function authorization() {
+  fetch(`${BASE_URL}/auth/token/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: login.value,
+      password: password.value,
+    }),
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      return Promise.reject(response);
+    })
+    .then((json) => {
+      localStorage.setItem('refresh', json.refresh);
+      localStorage.setItem('access', json.access);
+      isHiddenError.value = false;
+      router.push('/map');
+    })
+    .catch((response) => {
+      isHiddenError.value = true;
+
+      if (response.status !== 401) {
+        console.log('Server error');
+      }
+    });
+}
 </script>
 
 <template>
-  <div class="authorization">
+  <main class="authorization">
     <div class="authorization-container">
       <div class="authorization-title">
         <LogoSVG class="svg" />
       </div>
 
-      <form class="authorization-form">
+      <form class="authorization-form" @submit.prevent="authorization">
         <p>Авторизация пользователя</p>
-        <input class="input-text size" type="text" placeholder="Введите логин" />
+        <input class="input-text size" type="text" placeholder="Введите логин" v-model="login" />
         <div class="input-password">
-          <input class="input-text size" :type="isHiddenPassword ? 'password' : 'text'" placeholder="Введите пароль" />
+          <input
+            class="input-text size"
+            v-model="password"
+            :type="isHiddenPassword ? 'password' : 'text'"
+            placeholder="Введите пароль"
+            name="password"
+            autocomplete="on"
+          />
           <span v-if="isHiddenPassword" @click="checkPassword()" class="material-symbols-outlined check-btn"
             >visibility_off</span
           >
           <span v-else @click="checkPassword()" class="material-symbols-outlined check-btn">visibility</span>
         </div>
+        <p class="error" v-if="isHiddenError">Неправильный логин или пароль</p>
         <button class="button size" type="submit">авторизоваться</button>
       </form>
     </div>
-  </div>
+  </main>
 </template>
 
 <style lang="css" scoped>
@@ -137,6 +183,16 @@ function checkPassword() {
 
 .svg {
   width: 90%;
+}
+
+.error {
+  display: block;
+  font-weight: lighter;
+  color: red;
+  width: 300px;
+  text-align: center;
+  line-height: 22px;
+  font-size: 0.8rem;
 }
 
 @media only screen and (max-width: 1430px) {

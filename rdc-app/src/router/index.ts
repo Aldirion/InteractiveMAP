@@ -4,6 +4,7 @@ import ActiveRegion from '../views/ActiveRegion.vue';
 import RegionTeam from '../views/RegionTeamView.vue';
 import EducateSpacesComponent from '@/components/educational_spaces/EducateSpacesComponent.vue';
 import AuthorizationPage from '@/components/pages/AuthorizationPage.vue';
+import { useStoreAuthorization } from '@/store/authorization';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -17,22 +18,26 @@ const router = createRouter({
       path: '/map',
       name: 'map',
       component: GlobalMapComponent,
+      meta: { requiresAuth: true },
     },
     {
       path: '/map/:region_code',
       name: 'active_region',
       component: ActiveRegion,
       props: true,
+      meta: { requiresAuth: true },
     },
     {
       path: '/map/:region_code/educational-spaces',
       name: 'active_region_educate',
       component: EducateSpacesComponent,
+      meta: { requiresAuth: true },
     },
     {
       path: '/map/:region_code/team',
       name: 'active_region_team',
       component: RegionTeam,
+      meta: { requiresAuth: true },
     },
     // {
     // 	path: '/map/:region_code/:municipality_code',
@@ -41,6 +46,19 @@ const router = createRouter({
     // 	props: {activeRegion: false}
     // },
   ],
+});
+
+router.beforeEach(async (to, from, next) => {
+  const store = useStoreAuthorization();
+  const { checkIfUserIsAuthenticated } = store;
+
+  const isAuthenticated = await checkIfUserIsAuthenticated();
+
+  if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
+    next('/');
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -1,8 +1,7 @@
 import type { EmployeeTeam, Region, RegionCardData } from '@/interfaces/regions';
+import { BASE_URL } from '@/interfaces/variables';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-
-const URL = 'http://localhost:8000/api/v1';
 
 export const useStoreRegions = defineStore('storeRigions', () => {
   const regions = ref<Region[] | null>(null);
@@ -10,7 +9,7 @@ export const useStoreRegions = defineStore('storeRigions', () => {
 
   async function getRegions(): Promise<Region[]> {
     if (regions.value === null) {
-      const response = await fetch(`${URL}/region`);
+      const response = await fetch(`${BASE_URL}/region`);
       const data: Region[] = await response.json();
       regions.value = data;
 
@@ -21,15 +20,11 @@ export const useStoreRegions = defineStore('storeRigions', () => {
   }
 
   async function getEmployeeByRegionCode(regionCode: number): Promise<EmployeeTeam> {
-    if (employeeTeam.value === null) {
-      const response = await fetch(`${URL}/region/${regionCode}/employee`);
-      const data: EmployeeTeam = await response.json();
-      employeeTeam.value = data;
+    const response = await fetch(`${BASE_URL}/region/${regionCode}/employee`);
+    const data: EmployeeTeam = await response.json();
+    employeeTeam.value = data;
 
-      return data;
-    } else {
-      return employeeTeam.value;
-    }
+    return data;
   }
 
   async function getRegionData(regionCode: string): Promise<Region> {

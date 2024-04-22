@@ -51,6 +51,7 @@ function toggleHeader() {
       <RouterLink to="/map">Карта</RouterLink>
     </nav>
     <div class="theme-toggle">
+      <span class="material-symbols-outlined">logout</span>
       <span class="material-symbols-outlined">person</span>
       <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
       <span class="material-symbols-outlined menu" @click="toggleHeader">{{ !isOpenHeader ? 'menu' : 'close' }}</span>
