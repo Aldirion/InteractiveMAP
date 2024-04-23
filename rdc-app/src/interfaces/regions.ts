@@ -10,6 +10,7 @@ export type Region = {
   count_spo: number;
   comp_count_spo: number;
   comp_count_school: number;
+  comp_indicator_count_eduinst: number;
 };
 
 export type EmployeeData = {
