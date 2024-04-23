@@ -16,7 +16,7 @@ const chartData = {
   datasets: [
     {
       data: [props.notCoveredInstitutions, props.countInstitutions],
-      backgroundColor: ['rgba(249, 72, 20, 1)', 'rgba(149, 145, 253, 1)'],
+      backgroundColor: ['rgba(253, 119, 80, 1)', 'rgba(149, 145, 253, 1)'],
     },
   ],
   labels: [`Не охваченных учреждений`, `Учреждения в контуре РДЦ`],

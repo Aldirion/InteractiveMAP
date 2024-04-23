@@ -5,6 +5,7 @@ import type { Region } from '@/interfaces/regions';
 const props = defineProps<{
   regionData: Region;
 }>();
+
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
 </script>
@@ -117,7 +118,7 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
 }
 
 .modal-r-indicator-light {
-  color: var(--color-link);
+  color: var(--vt-orage-light);
   font-size: 1rem;
   font-weight: lighter;
   border-top: 2px solid var(--color-border);
