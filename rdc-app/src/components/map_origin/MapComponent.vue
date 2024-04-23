@@ -5,6 +5,7 @@ import ToolTipComponent from '../common/ToolTipComponent.vue';
 import type { Region } from '@/interfaces/regions';
 
 import { svgLoad } from 'virtual:svg-loader';
+import { BASE_MAP_COLORS } from '@/interfaces/variables';
 
 const props = defineProps<{
   componentRegionCode: string;
@@ -46,11 +47,31 @@ function onMouseMove(region: Element, event: MouseEvent) {
   mouseCoords.value = [event.pageX, event.pageY];
 }
 
-onMounted(() => {
+onMounted(async () => {
   const allRegions = [
-    ...Array.from(document.querySelectorAll('path[data-code]')),
-    ...Array.from(document.querySelectorAll('g[data-code]')),
+    ...Array.from(document.querySelectorAll<SVGElement>('path[data-code]')),
+    ...Array.from(document.querySelectorAll<SVGElement>('g[data-code]')),
   ];
+  const regionsData = (await store.getRegions()).reduce<{ [codegost: string]: Region }>((d, region) => {
+    d[region.codegost] = region;
+    return d;
+  }, {});
+
+  allRegions.forEach(async (region) => {
+    BASE_MAP_COLORS.forEach((color) => {
+      const currentRegion = regionsData[region.dataset.code!];
+
+      if (!currentRegion) {
+        return;
+      }
+
+      const value = currentRegion.comp_indicator_count_eduinst;
+
+      if (value >= color.from && value <= color.to) {
+        region.style.fill = color.color;
+      }
+    });
+  });
 
   onMouseMoveListeners = allRegions.map((region) => {
     const cb = (event: Event) => onMouseMove(region, event as MouseEvent);
@@ -99,14 +120,14 @@ onUnmounted(() => {
 
 <template>
   <ToolTipComponent
-    :title="hoveredRegionData?.title ? hoveredRegionData.title : 'Загрузка...'"
+    :title="hoveredRegionData?.title ?? 'Загрузка...'"
     v-if="showToolTip"
     :mouse-x="mouseCoords[0]"
     :mouse-y="mouseCoords[1]"
   >
-    Кол-во школ: {{ hoveredRegionData?.count_school ? hoveredRegionData.count_school : 'Загрузка...' }}
+    Кол-во школ: {{ hoveredRegionData?.comp_count_school ?? 'Загрузка...' }}
     <br />
-    Кол-во СПО: {{ hoveredRegionData?.count_spo ? hoveredRegionData.count_spo : 'Загрузка...' }}
+    Кол-во СПО: {{ hoveredRegionData?.comp_count_spo ?? 'Загрузка...' }}
   </ToolTipComponent>
 
   <div class="map-container" v-html="mapSvg"></div>

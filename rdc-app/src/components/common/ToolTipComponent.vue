@@ -13,7 +13,7 @@ const topPosition = computed(() => {
     return props.mouseY + 25;
   }
 
-  return props.mouseY - height;
+  return props.mouseY - height - 5;
 });
 const leftPosition = computed(() => {
   const width = container.value?.clientWidth!;

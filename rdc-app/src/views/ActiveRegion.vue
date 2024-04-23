@@ -6,15 +6,17 @@ import { useStoreRegions } from '@/store/store';
 import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
+import type { Region } from '@/interfaces/regions';
+import type LoaderComponent from '@/components/common/LoaderComponent.vue';
 
 const route = useRoute();
 const store = useStoreRegions();
 
 let regionCode = route.fullPath.split('/')[2];
-let regionName: Ref<string | null> = ref(null);
+let regionData: Ref<Region | null> = ref(null);
 
 onMounted(async () => {
-  regionName.value = (await store.getRegionData(regionCode)).title;
+  regionData.value = await store.getRegionData(regionCode);
 });
 
 function regionTeam() {
@@ -32,12 +34,13 @@ function onRegionSelected(regionCode: string) {
 
 <template>
   <main class="region">
-    <h2 class="region-map-title">{{ regionName }}</h2>
+    <h1 class="region-map-title">{{ regionData?.title }}</h1>
     <div class="region-main-data">
       <div class="region-map">
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
-      <RRC />
+      <RRC v-if="regionData" :region-data="regionData!" />
+      <LoaderComponent v-else />
     </div>
 
     <div class="modal-r">

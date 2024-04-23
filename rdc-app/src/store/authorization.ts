@@ -22,6 +22,7 @@ export const useStoreAuthorization = defineStore('storeAuthorization', () => {
 
       if (tokenVerify.status === 401) {
         refreshToken();
+        router.push('/map');
       }
 
       return response;

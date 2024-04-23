@@ -2,12 +2,14 @@
 import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
 import { useStoreRegions } from '@/store/store';
 import { Section, type RegionCardData } from '@/interfaces/regions';
+import LoaderComponent from '@/components/common/LoaderComponent.vue';
 
 const props = defineProps<{
   institutionSection: Section;
 }>();
 
 const store = useStoreRegions();
+let isLoaded = ref(false);
 
 let schoolSectionData: Ref<RegionCardData[]> = ref([]);
 let spoSectionData: Ref<RegionCardData[]> = ref([]);
@@ -15,6 +17,7 @@ let spoSectionData: Ref<RegionCardData[]> = ref([]);
 onMounted(async () => {
   schoolSectionData.value = await store.getRegionSchoolData();
   spoSectionData.value = await store.getRegionSPOData();
+  isLoaded.value = true;
 });
 
 let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
@@ -31,7 +34,10 @@ let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
 
 <template>
   <div class="school-title">Воспитательные пространства и объединения</div>
-  <div class="school-section">
+
+  <LoaderComponent v-if="!isLoaded" />
+
+  <div class="school-section" v-if="isLoaded">
     <div class="section-element" v-for="elem in sectionData" :key="elem.title">
       <div class="section-element-title">{{ elem.title }}</div>
       <div class="section-element-count">{{ elem.value }}</div>

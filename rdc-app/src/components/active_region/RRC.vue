@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import DonughtChart from '../charts/DonughtChart.vue';
+import type { Region } from '@/interfaces/regions';
+
+const props = defineProps<{
+  regionData: Region;
+}>();
+
+const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
+const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
 </script>
 
 <template>
@@ -20,19 +28,19 @@ import DonughtChart from '../charts/DonughtChart.vue';
     </div>
 
     <div class="modal-r">
-      <DonughtChart />
+      <DonughtChart :not-covered-institutions="notCoveredInstitunions" :count-institutions="allInstitunions" />
     </div>
 
     <div class="info-grid-indicators">
       <div class="modal-r-container">
-        <div class="modal-r-indicator-small">690</div>
+        <div class="modal-r-indicator-small">{{ regionData.comp_count_school }}</div>
         <div>школ в проекте</div>
-        <div class="modal-r-indicator-light">22 всего</div>
+        <div class="modal-r-indicator-light">{{ regionData.count_school }} всего</div>
       </div>
       <div class="modal-r-container">
-        <div class="modal-r-indicator-small">72</div>
+        <div class="modal-r-indicator-small">{{ regionData.comp_count_spo }}</div>
         <div>СПО в проекте</div>
-        <div class="modal-r-indicator-light">22 всего</div>
+        <div class="modal-r-indicator-light">{{ regionData.count_spo }} всего</div>
       </div>
     </div>
   </div>
@@ -89,6 +97,7 @@ import DonughtChart from '../charts/DonughtChart.vue';
   justify-content: center;
   gap: 50px;
   margin-top: 30px;
+  user-select: none;
 }
 
 .modal-r-container {
@@ -109,7 +118,7 @@ import DonughtChart from '../charts/DonughtChart.vue';
 }
 
 .modal-r-indicator-light {
-  color: var(--color-link);
+  color: var(--vt-orage-light);
   font-size: 1rem;
   font-weight: lighter;
   border-top: 2px solid var(--color-border);

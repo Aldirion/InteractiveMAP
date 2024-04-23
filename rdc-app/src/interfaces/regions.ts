@@ -1,17 +1,16 @@
 export type Region = {
   id: number;
   regionid: number;
+  district: 15;
   title: string;
   codegibdd: string;
   codegost: string;
-  capital: string;
   population: number;
-  regionheadid: null | string;
-  rcid: null;
-  indicator: null;
-  count_school: number | null;
-  count_spo: number | null;
-  dsid: number;
+  count_school: number;
+  count_spo: number;
+  comp_count_spo: number;
+  comp_count_school: number;
+  comp_indicator_count_eduinst: number;
 };
 
 export type EmployeeData = {
