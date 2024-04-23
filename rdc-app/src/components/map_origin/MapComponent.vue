@@ -48,8 +48,8 @@ function onMouseMove(region: Element, event: MouseEvent) {
 
 onMounted(() => {
   const allRegions = [
-    ...Array.from(document.querySelectorAll('path[data-code]')),
-    ...Array.from(document.querySelectorAll('g[data-code]')),
+    ...Array.from(document.querySelectorAll<SVGElement>('path[data-code]')),
+    ...Array.from(document.querySelectorAll<SVGElement>('g[data-code]')),
   ];
 
   onMouseMoveListeners = allRegions.map((region) => {
