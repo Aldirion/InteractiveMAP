@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useStoreAuthorization } from '@/store/authorization';
 import GlobalMapComponent from '@/components/map_origin/GlobalMapComponent.vue';
 import ActiveRegion from '../views/ActiveRegion.vue';
 import RegionTeam from '../views/RegionTeamView.vue';
 import EducateSpacesComponent from '@/components/educational_spaces/EducateSpacesComponent.vue';
 import AuthorizationPage from '@/components/pages/AuthorizationPage.vue';
-import { useStoreAuthorization } from '@/store/authorization';
 import PersonalAccountPage from '@/components/pages/PersonalAccountPage.vue';
+import ErrorPage from '@/components/pages/ErrorPage.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -14,6 +15,7 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: AuthorizationPage,
+      meta: { requiresAuth: false },
     },
     {
       path: '/map',
@@ -46,12 +48,12 @@ const router = createRouter({
       component: PersonalAccountPage,
       meta: { requiresAuth: true },
     },
-    // {
-    // 	path: '/map/:region_code/:municipality_code',
-    // 	name: 'active_municipality',
-    // 	component: ModuleTestView,
-    // 	props: {activeRegion: false}
-    // },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'error_page',
+      component: ErrorPage,
+      props: { requiresAuth: true },
+    },
   ],
 });
 
@@ -59,8 +61,9 @@ router.beforeEach(async (to, from, next) => {
   const store = useStoreAuthorization();
 
   const isAuthenticated = await store.checkIfUserIsAuthenticated();
-
-  if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
+  if (to.name === 'home' && isAuthenticated) {
+    next('/map');
+  } else if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
     next('/');
   } else {
     next();
