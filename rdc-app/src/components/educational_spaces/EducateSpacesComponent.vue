@@ -4,10 +4,13 @@ import { onMounted, ref, type Ref } from 'vue';
 import InstitutionSectionComponent from './InstitutionSectionComponent.vue';
 import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.vue';
 import { Section } from '@/interfaces/regions';
+import { useRoute } from 'vue-router';
 
 const store = useStoreRegions();
 
-let regionCode = window.location.pathname.split('/')[2];
+const route = useRoute();
+const regionCode = route.fullPath.split('/')[2];
+
 let activeSection: Ref<Section> = ref(Section.SCHOOL);
 let regionName: Ref<string | null> = ref(null);
 
@@ -19,9 +22,6 @@ onMounted(async () => {
 <template>
   <RouterByPagesComponent />
   <div class="educate-rout">
-    <!-- <div class="region-educate title">
-      {{ !!regionName ? regionName : 'Загрузка...' }}
-    </div> -->
     <div
       :class="{ active: activeSection == Section.SCHOOL }"
       class="region-educate border-l"
