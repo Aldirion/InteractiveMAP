@@ -7,13 +7,11 @@ import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
 import type { Region } from '@/interfaces/regions';
-import type LoaderComponent from '@/components/common/LoaderComponent.vue';
 
 const route = useRoute();
 const store = useStoreRegions();
 
 let regionCode = route.fullPath.split('/')[2];
-console.log(regionCode);
 let regionData: Ref<Region | null> = ref(null);
 let allInstitutionsCount: Ref<number | null> = ref(null);
 let allEmployeeCount: Ref<number | null> = ref(null);
@@ -51,7 +49,6 @@ function onRegionSelected(regionCode: string) {
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
       <RRC v-if="regionData" :region-data="regionData!" />
-      <LoaderComponent v-else />
     </div>
 
     <div class="modal-r">
