@@ -13,10 +13,21 @@ const route = useRoute();
 const store = useStoreRegions();
 
 let regionCode = route.fullPath.split('/')[2];
+console.log(regionCode);
 let regionData: Ref<Region | null> = ref(null);
+let allInstitutionsCount: Ref<number | null> = ref(null);
+let allEmployeeCount: Ref<number | null> = ref(null);
 
 onMounted(async () => {
   regionData.value = await store.getRegionData(regionCode);
+  allInstitutionsCount.value = regionData.value.count_school + regionData.value.count_spo;
+
+  let employee = await store.getEmployeeByRegionCode(regionData.value.id);
+  let totalCount = 0;
+  for (const post in employee) {
+    totalCount += employee[post].count;
+  }
+  allEmployeeCount.value = totalCount;
 });
 
 function regionTeam() {
@@ -47,7 +58,7 @@ function onRegionSelected(regionCode: string) {
       <div class="modal-r-card hover-component" @click="regionTeam()">
         <div class="modal-r-h">Региональная команда</div>
         <div class="modal-r-container">
-          <div class="modal-r-indicator">22</div>
+          <div class="modal-r-indicator">{{ allEmployeeCount ?? 'Загрузка...' }}</div>
           <h2 style="text-align: center">Сотрудников</h2>
         </div>
       </div>
@@ -55,7 +66,7 @@ function onRegionSelected(regionCode: string) {
       <div class="modal-r-card hover-component" @click="educationalSpaces()">
         <div class="modal-r-h">Воспитательные пространства и объединения</div>
         <div class="modal-r-container">
-          <div class="modal-r-indicator">2717</div>
+          <div class="modal-r-indicator">{{ allInstitutionsCount ?? 'Загрузка...' }}</div>
           <h2 style="text-align: center">Воспитательных пространств и объединений</h2>
         </div>
       </div>
