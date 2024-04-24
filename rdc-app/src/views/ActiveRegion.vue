@@ -6,13 +6,16 @@ import { useStoreRegions } from '@/store/store';
 import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
-import type { Region } from '@/interfaces/regions';
+import type { EmployeeData, Region } from '@/interfaces/regions';
+import LoaderComponent from '@/components/common/LoaderComponent.vue';
 
 const route = useRoute();
 const store = useStoreRegions();
 
 let regionCode = route.fullPath.split('/')[2];
 let regionData: Ref<Region | null> = ref(null);
+let supervizorData: Ref<EmployeeData | null> = ref(null);
+
 let allInstitutionsCount: Ref<number | null> = ref(null);
 let allEmployeeCount: Ref<number | null> = ref(null);
 
@@ -26,6 +29,7 @@ onMounted(async () => {
     totalCount += employee[post].count;
   }
   allEmployeeCount.value = totalCount;
+  supervizorData.value = employee['Главный эксперт'].data[0];
 });
 
 function regionTeam() {
@@ -48,7 +52,8 @@ function onRegionSelected(regionCode: string) {
       <div class="region-map">
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
-      <RRC v-if="regionData" :region-data="regionData!" />
+      <RRC v-if="regionData && supervizorData" :region-data="regionData" :supervizor-data="supervizorData" />
+      <LoaderComponent v-else />
     </div>
 
     <div class="modal-r">

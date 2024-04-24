@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import DonughtChart from '../charts/DonughtChart.vue';
-import type { Region } from '@/interfaces/regions';
+import type { EmployeeData, Region } from '@/interfaces/regions';
 
 const props = defineProps<{
   regionData: Region;
+  supervizorData: EmployeeData;
 }>();
 
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
@@ -14,14 +15,16 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
   <div class="region-info">
     <div class="coordinator-about">
       <div class="img-container">
-        <img class="coordinator-avatar" src="/partners/regcor.jpeg" />
+        <span class="material-symbols-outlined icon">account_circle</span>
       </div>
       <div class="about-container">
-        <h2 class="coordinator-name">имя</h2>
+        <h2 class="coordinator-name">
+          {{ supervizorData.lastname }} {{ supervizorData.firstname }} {{ supervizorData.patronymic }}
+        </h2>
         <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
         <a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
           <span class="material-symbols-outlined">mail</span>
-          mail
+          {{ supervizorData.email }}
         </a>
         <p class="coordinator-quote">""" Съешь ещё этих мягких французских булок, да выпей же чаю</p>
       </div>
@@ -50,6 +53,10 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
 .img-container {
   width: 150px;
   height: 150px;
+}
+
+.icon {
+  font-size: 150px;
 }
 
 .coordinator-avatar {
@@ -105,11 +112,6 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
   padding: 20px 10px;
   text-align: center;
   font-weight: bold;
-}
-
-.modal-r-indicator {
-  color: rgba(149, 145, 253, 1);
-  font-size: 5rem;
 }
 
 .modal-r-indicator-small {
