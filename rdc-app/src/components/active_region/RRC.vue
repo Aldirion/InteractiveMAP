@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import router from '@/router';
 import DonughtChart from '../charts/DonughtChart.vue';
 import type { EmployeeData, Region } from '@/interfaces/regions';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
   regionData: Region;
   supervizorData: EmployeeData;
 }>();
-
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
+const route = useRoute();
+
+function checkoutToSchools() {
+  router.push(`${route.fullPath}/schools`);
+}
 </script>
 
 <template>
@@ -26,7 +32,7 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
           <span class="material-symbols-outlined">mail</span>
           {{ supervizorData.email }}
         </a>
-        <p class="coordinator-quote">""" Съешь ещё этих мягких французских булок, да выпей же чаю</p>
+        <p class="coordinator-quote" v-if="supervizorData.quote !== 'nan'">{{ supervizorData?.quote }}</p>
       </div>
     </div>
 
@@ -35,7 +41,7 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
     </div>
 
     <div class="info-grid-indicators">
-      <div class="modal-r-container">
+      <div class="modal-r-container" @click="checkoutToSchools()">
         <div class="modal-r-indicator-small">{{ regionData.comp_count_school }}</div>
         <div>школ в проекте</div>
         <div class="modal-r-indicator-light">{{ regionData.count_school }} всего</div>
@@ -57,6 +63,7 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
 
 .icon {
   font-size: 150px;
+  color: var(--color-background-mute);
 }
 
 .coordinator-avatar {
@@ -112,6 +119,10 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
   padding: 20px 10px;
   text-align: center;
   font-weight: bold;
+}
+
+.modal-r-container:hover {
+  cursor: pointer;
 }
 
 .modal-r-indicator-small {
