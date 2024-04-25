@@ -32,6 +32,37 @@ export type EmployeeTeam = {
   [key: string]: EmployeeTeamData;
 };
 
+export type DataSchool = {
+  id: number;
+  sign: string;
+  title: string;
+  contingent: null;
+  address: string;
+};
+
+export type SchoolsData = {
+  count: number;
+  schools: DataSchool[];
+};
+
+export type SPOData = {
+  count: number;
+  spo: DataSchool[];
+};
+
+export type RegionSPOData = {
+  [key: string]: SPOData;
+};
+
+export type RegionSchoolsData = {
+  [key: string]: SchoolsData;
+};
+
+export type RegionSchool = {
+  count_schools: number;
+  data: RegionSchoolsData;
+};
+
 export interface RegionCardData {
   title: string;
   value: number;

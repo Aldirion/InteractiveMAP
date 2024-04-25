@@ -7,6 +7,8 @@ import EducateSpacesComponent from '@/components/educational_spaces/EducateSpace
 import AuthorizationPage from '@/components/pages/AuthorizationPage.vue';
 import PersonalAccountPage from '@/components/pages/PersonalAccountPage.vue';
 import ErrorPage from '@/components/pages/ErrorPage.vue';
+import SchoolsRegionData from '@/components/educational_spaces/SchoolsRegionData.vue';
+import SPORegionData from '@/components/educational_spaces/SPORegionData.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -28,6 +30,18 @@ const router = createRouter({
       name: 'active_region',
       component: ActiveRegion,
       props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/schools',
+      name: 'active_region_schools',
+      component: SchoolsRegionData,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/spo',
+      name: 'active_region_spo',
+      component: SPORegionData,
       meta: { requiresAuth: true },
     },
     {

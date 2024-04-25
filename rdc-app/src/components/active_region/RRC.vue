@@ -15,6 +15,10 @@ const route = useRoute();
 function checkoutToSchools() {
   router.push(`${route.fullPath}/schools`);
 }
+
+function checkoutToSPO() {
+  router.push(`${route.fullPath}/spo`);
+}
 </script>
 
 <template>
@@ -46,7 +50,7 @@ function checkoutToSchools() {
         <div>школ в проекте</div>
         <div class="modal-r-indicator-light">{{ regionData.count_school }} всего</div>
       </div>
-      <div class="modal-r-container">
+      <div class="modal-r-container" @click="checkoutToSPO()">
         <div class="modal-r-indicator-small">{{ regionData.comp_count_spo }}</div>
         <div>СПО в проекте</div>
         <div class="modal-r-indicator-light">{{ regionData.count_spo }} всего</div>
@@ -81,12 +85,6 @@ function checkoutToSchools() {
   margin-bottom: 50px;
 }
 
-.about-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 .coordinator-name {
   font-size: 18px;
 }
@@ -104,6 +102,7 @@ function checkoutToSchools() {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 20px;
 }
 
 .info-grid-indicators {

@@ -26,6 +26,7 @@
   --vt-c-subtext-light-1: rgb(102, 102, 102);
   --vt-c-subtext-dark-1: rgb(192, 192, 192);
   --vt-orage-light: rgba(253, 119, 80, 1);
+  --vt-purple-light: #9591FD;
 }
 
 [data-theme='light'] {

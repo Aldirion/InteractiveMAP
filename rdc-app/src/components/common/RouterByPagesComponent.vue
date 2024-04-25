@@ -23,6 +23,14 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
     title: 'Региональная команда',
     url: '/map/region/team',
   },
+  schools: {
+    title: 'Школы',
+    url: '/map/region/schools',
+  },
+  spo: {
+    title: 'СПО',
+    url: '/map/region/spo',
+  },
 };
 
 const path = route.fullPath.split('/');

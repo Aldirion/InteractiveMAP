@@ -1,4 +1,4 @@
-import type { EmployeeTeam, Region, RegionCardData } from '@/interfaces/regions';
+import type { EmployeeTeam, Region, RegionCardData, RegionSPOData, RegionSchoolsData } from '@/interfaces/regions';
 import { BASE_URL } from '@/interfaces/variables';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -25,6 +25,20 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     employeeTeam.value = data;
 
     return data;
+  }
+
+  async function getSchoolsByRegionCode(regionCode: number): Promise<RegionSchoolsData> {
+    const response = await fetch(`${BASE_URL}/region/${regionCode}/eduinstitutions/schools`);
+    const data = await response.json();
+
+    return data.data;
+  }
+
+  async function getSPOByRegionCode(regionCode: number): Promise<RegionSPOData> {
+    const response = await fetch(`${BASE_URL}/region/${regionCode}/eduinstitutions/spo`);
+    const data = await response.json();
+
+    return data.data;
   }
 
   async function getRegionData(regionCode: string): Promise<Region> {
@@ -160,5 +174,7 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     getRegionSPOData,
     getRegionSchoolData,
     getRegionData,
+    getSchoolsByRegionCode,
+    getSPOByRegionCode,
   };
 });

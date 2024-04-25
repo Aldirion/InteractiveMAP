@@ -104,7 +104,7 @@ import WebSVG from '@/assets/web.svg';
 
 .logo {
   width: 40px;
-  fill: var(--color-text);
+  fill: var(--vt-purple-light);
 }
 
 .logo:hover {
