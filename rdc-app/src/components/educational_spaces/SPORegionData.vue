@@ -16,7 +16,9 @@ let isLoaded = ref(false);
 let spoData = ref<RegionSPOData | null>(null);
 
 onMounted(async () => {
-  const regionId = (await store.getRegionData(regionCode)).id;
+  const regionsData = await store.getRegions();
+
+  const regionId = regionsData[regionCode].id;
   spoData.value = await store.getSPOByRegionCode(regionId);
 
   isLoaded.value = true;

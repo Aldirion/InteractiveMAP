@@ -26,8 +26,9 @@ let hoveredRegionCode = ref<string | null>(null);
 let hoveredRegionData = ref<Region | null>(null);
 
 watch(hoveredRegionCode, async () => {
+  const regionsData = await store.getRegions();
   if (hoveredRegionCode.value) {
-    hoveredRegionData.value = await store.getRegionData(hoveredRegionCode.value)!;
+    hoveredRegionData.value = regionsData[hoveredRegionCode.value];
   }
 });
 
@@ -52,10 +53,8 @@ onMounted(async () => {
     ...Array.from(document.querySelectorAll<SVGElement>('path[data-code]')),
     ...Array.from(document.querySelectorAll<SVGElement>('g[data-code]')),
   ];
-  const regionsData = (await store.getRegions()).reduce<{ [codegost: string]: Region }>((d, region) => {
-    d[region.codegost] = region;
-    return d;
-  }, {});
+
+  const regionsData = await store.getRegions();
 
   allRegions.forEach(async (region) => {
     BASE_MAP_COLORS.forEach((color) => {
@@ -69,6 +68,7 @@ onMounted(async () => {
 
       if (value >= color.from && value <= color.to) {
         region.style.fill = color.color;
+        region.style.stroke = 'var(--color-text)';
       }
     });
   });

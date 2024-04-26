@@ -20,7 +20,9 @@ let allInstitutionsCount: Ref<number | null> = ref(null);
 let allEmployeeCount: Ref<number | null> = ref(null);
 
 onMounted(async () => {
-  regionData.value = await store.getRegionData(regionCode);
+  const regionsData = await store.getRegions();
+
+  regionData.value = regionsData[regionCode];
   allInstitutionsCount.value = regionData.value.count_school + regionData.value.count_spo;
 
   let employee = await store.getEmployeeByRegionCode(regionData.value.id);
@@ -171,7 +173,7 @@ function onRegionSelected(regionCode: string) {
 .region-map-title {
   text-align: center;
   font-size: 24px;
-  padding: 20px 0;
+  padding: 20px 0 50px;
 }
 
 .modal-r {

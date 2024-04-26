@@ -13,6 +13,18 @@ export type Region = {
   comp_indicator_count_eduinst: number;
 };
 
+export type Municipalities = {
+  id: number;
+  title: string;
+  region: number;
+  oktmo5: string;
+  count_school: null;
+  count_spo: null;
+  comp_count_school: number;
+  comp_count_spo: number;
+  comp_indicator_count_eduinst: number;
+};
+
 export type EmployeeData = {
   id: number;
   firstname: string;

@@ -16,7 +16,9 @@ let isLoaded = ref(false);
 const store = useStoreRegions();
 
 onMounted(async () => {
-  const regionId = (await store.getRegionData(regionCode)).id;
+  const regionsData = await store.getRegions();
+
+  const regionId = regionsData[regionCode].id;
   schoolsData.value = await store.getSchoolsByRegionCode(regionId);
 
   isLoaded.value = true;

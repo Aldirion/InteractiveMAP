@@ -39,7 +39,9 @@ let regionName: Ref<string | null> = ref(null);
 let regionCode = path[1];
 
 onMounted(async () => {
-  regionName.value = (await store.getRegionData(regionCode)).title;
+  const regionsData = await store.getRegions();
+
+  regionName.value = regionsData[regionCode].title;
 });
 
 let titlesRoute = computed(() => {

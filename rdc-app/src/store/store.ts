@@ -1,22 +1,49 @@
-import type { EmployeeTeam, Region, RegionCardData, RegionSPOData, RegionSchoolsData } from '@/interfaces/regions';
+import type {
+  EmployeeTeam,
+  Municipalities,
+  Region,
+  RegionCardData,
+  RegionSPOData,
+  RegionSchoolsData,
+} from '@/interfaces/regions';
 import { BASE_URL } from '@/interfaces/variables';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useStoreRegions = defineStore('storeRigions', () => {
-  const regions = ref<Region[] | null>(null);
+  const regions = ref<{ [key: string]: Region } | null>(null);
   const employeeTeam = ref<EmployeeTeam | null>(null);
 
-  async function getRegions(): Promise<Region[]> {
+  async function getRegions(): Promise<{ [key: string]: Region }> {
     if (regions.value === null) {
       const response = await fetch(`${BASE_URL}/region`);
       const data: Region[] = await response.json();
-      regions.value = data;
 
-      return data;
+      const regionData = data.reduce<{ [key: string]: Region }>((acc, curr) => {
+        acc[curr.codegost] = curr;
+
+        return acc;
+      }, {});
+
+      regions.value = regionData;
+
+      return regionData;
     } else {
       return regions.value;
     }
+  }
+
+  async function getMunicipalities(regionCode: number): Promise<{ [key: string]: Municipalities }> {
+    const response = await fetch(`${BASE_URL}/region/${regionCode}/municipalities/`);
+    const data: Municipalities[] = await response.json();
+
+    const municipalityData = data.reduce<{ [key: string]: Municipalities }>((acc, curr) => {
+      acc[curr.title] = curr;
+
+      return acc;
+    }, {});
+
+    return municipalityData;
   }
 
   async function getEmployeeByRegionCode(regionCode: number): Promise<EmployeeTeam> {
@@ -39,11 +66,6 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     const data = await response.json();
 
     return data.data;
-  }
-
-  async function getRegionData(regionCode: string): Promise<Region> {
-    const regions = await getRegions();
-    return regions.find((reg) => reg.codegost === regionCode)!;
   }
 
   async function getRegionSchoolData(): Promise<RegionCardData[]> {
@@ -173,8 +195,8 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     getEmployeeByRegionCode,
     getRegionSPOData,
     getRegionSchoolData,
-    getRegionData,
     getSchoolsByRegionCode,
     getSPOByRegionCode,
+    getMunicipalities,
   };
 });
