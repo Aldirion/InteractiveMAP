@@ -2,7 +2,7 @@
 import { watch, onMounted, onUnmounted, ref } from 'vue';
 import { useStoreRegions } from '@/store/store';
 import ToolTipComponent from '../common/ToolTipComponent.vue';
-import type { Region } from '@/interfaces/regions';
+import type { Municipalities, Region } from '@/interfaces/regions';
 
 import { svgLoad } from 'virtual:svg-loader';
 import { BASE_MAP_COLORS } from '@/interfaces/variables';
@@ -23,11 +23,12 @@ let showToolTip = ref(false);
 const mapSvg = svgLoad[props.componentRegionCode];
 
 let hoveredRegionCode = ref<string | null>(null);
-let hoveredRegionData = ref<Region | null>(null);
+let hoveredRegionData = ref<Region | Municipalities | null>(null);
 
 watch(hoveredRegionCode, async () => {
   const regionsData = await store.getRegions();
-  if (hoveredRegionCode.value) {
+
+  if (hoveredRegionCode.value && props.componentRegionCode === 'global') {
     hoveredRegionData.value = regionsData[hoveredRegionCode.value];
   }
 });

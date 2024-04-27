@@ -48,7 +48,7 @@ export type DataSchool = {
   id: number;
   sign: string;
   title: string;
-  contingent: null;
+  contingent: null | number;
   address: string;
 };
 

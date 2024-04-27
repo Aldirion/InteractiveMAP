@@ -41,7 +41,7 @@ onMounted(async () => {
           <p class="item-sub">{{ school.sign }}</p>
           <p class="item-address">{{ school.address }}</p>
         </div>
-        <div class="item-count">кол-во учащихся</div>
+        <div class="item-count" v-if="school.contingent">{{ school.contingent }} учащихся</div>
       </ListItemComponent>
     </ListComponent>
   </div>
