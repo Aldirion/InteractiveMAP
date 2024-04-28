@@ -1,7 +1,9 @@
 :root {
   --vt-c-white: #ffffff;
-  --vt-c-white-soft: #e4e4e4;
-  --vt-c-white-mute: #f2f2f2;
+  /* --vt-c-white-soft: #e4e4e4; */
+  --vt-c-white-soft: #f1f1fa;
+  /* --vt-c-white-mute: #f2f2f2; */
+  --vt-c-white-mute: #CAC8FE;
 
   --vt-c-black: #181818;
   --vt-c-black-soft: #222222;
@@ -14,16 +16,17 @@
   --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
   --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
 
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
+  --vt-c-text-light-1: #2f2e33;
+  --vt-c-text-light-2: rgba(56, 53, 59, 0.66);
   --vt-c-text-light-3: rgba(249, 72, 20, 1);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgb(235, 235, 235);
   --vt-c-text-dark-3: rgba(249, 72, 20, 1);
 
-  --vt-c-subtext-light-1: rgb(102, 102, 102);
+  --vt-c-subtext-light-1: rgb(153, 153, 153);
   --vt-c-subtext-dark-1: rgb(192, 192, 192);
   --vt-orage-light: rgba(253, 119, 80, 1);
+  --vt-purple-light: #9591FD;
 }
 
 [data-theme='light'] {

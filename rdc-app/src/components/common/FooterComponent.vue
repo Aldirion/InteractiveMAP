@@ -2,14 +2,13 @@
 import VkSVG from '@/assets/vk.svg';
 import TelegramSVG from '@/assets/telegram.svg';
 import WebSVG from '@/assets/web.svg';
-import LogoSVG from '@/assets/logo-min.svg';
 </script>
 
 <template>
   <footer class="footer">
     <div class="about-company">
       <div class="company-logo-container">
-        <LogoSVG class="main-logo" />
+        <img class="main-logo" src="../../assets/logo_purple.png" alt="logotype" />
       </div>
       <div class="about-container">
         <h4 class="footer-title">ФГБУ «Росдетцентр»</h4>
@@ -93,8 +92,8 @@ import LogoSVG from '@/assets/logo-min.svg';
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
+  width: 80%;
+  height: 80%;
 }
 
 .navigation {
@@ -105,7 +104,7 @@ import LogoSVG from '@/assets/logo-min.svg';
 
 .logo {
   width: 40px;
-  fill: var(--color-text);
+  fill: var(--vt-purple-light);
 }
 
 .logo:hover {
@@ -200,11 +199,6 @@ import LogoSVG from '@/assets/logo-min.svg';
   .company-logo-container {
     width: 80px;
     height: 80px;
-  }
-
-  .main-logo {
-    width: 150px;
-    height: 150px;
   }
 
   .footer-link {

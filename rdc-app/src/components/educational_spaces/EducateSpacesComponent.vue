@@ -1,22 +1,10 @@
 <script setup lang="ts">
-import { useStoreRegions } from '@/store/store';
-import { onMounted, ref, type Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import InstitutionSectionComponent from './InstitutionSectionComponent.vue';
 import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.vue';
 import { Section } from '@/interfaces/regions';
-import { useRoute } from 'vue-router';
-
-const store = useStoreRegions();
-
-const route = useRoute();
-const regionCode = route.fullPath.split('/')[2];
 
 let activeSection: Ref<Section> = ref(Section.SCHOOL);
-let regionName: Ref<string | null> = ref(null);
-
-onMounted(async () => {
-  regionName.value = (await store.getRegionData(regionCode)).title;
-});
 </script>
 
 <template>

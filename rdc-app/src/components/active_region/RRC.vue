@@ -1,29 +1,42 @@
 <script setup lang="ts">
+import router from '@/router';
 import DonughtChart from '../charts/DonughtChart.vue';
-import type { Region } from '@/interfaces/regions';
+import type { EmployeeData, Region } from '@/interfaces/regions';
+import { useRoute } from 'vue-router';
 
 const props = defineProps<{
   regionData: Region;
+  supervizorData: EmployeeData;
 }>();
-
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
+const route = useRoute();
+
+function checkoutToSchools() {
+  router.push(`${route.fullPath}/schools`);
+}
+
+function checkoutToSPO() {
+  router.push(`${route.fullPath}/spo`);
+}
 </script>
 
 <template>
   <div class="region-info">
     <div class="coordinator-about">
       <div class="img-container">
-        <img class="coordinator-avatar" src="/partners/regcor.jpeg" />
+        <span class="material-symbols-outlined icon">account_circle</span>
       </div>
       <div class="about-container">
-        <h2 class="coordinator-name">имя</h2>
+        <h2 class="coordinator-name">
+          {{ supervizorData.lastname }} {{ supervizorData.firstname }} {{ supervizorData.patronymic }}
+        </h2>
         <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
         <a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
           <span class="material-symbols-outlined">mail</span>
-          mail
+          {{ supervizorData.email }}
         </a>
-        <p class="coordinator-quote">""" Съешь ещё этих мягких французских булок, да выпей же чаю</p>
+        <p class="coordinator-quote" v-if="supervizorData.quote !== 'nan'">{{ supervizorData?.quote }}</p>
       </div>
     </div>
 
@@ -32,12 +45,12 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
     </div>
 
     <div class="info-grid-indicators">
-      <div class="modal-r-container">
+      <div class="modal-r-container" @click="checkoutToSchools()">
         <div class="modal-r-indicator-small">{{ regionData.comp_count_school }}</div>
         <div>школ в проекте</div>
         <div class="modal-r-indicator-light">{{ regionData.count_school }} всего</div>
       </div>
-      <div class="modal-r-container">
+      <div class="modal-r-container" @click="checkoutToSPO()">
         <div class="modal-r-indicator-small">{{ regionData.comp_count_spo }}</div>
         <div>СПО в проекте</div>
         <div class="modal-r-indicator-light">{{ regionData.count_spo }} всего</div>
@@ -50,6 +63,11 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
 .img-container {
   width: 150px;
   height: 150px;
+}
+
+.icon {
+  font-size: 150px;
+  color: var(--color-background-mute);
 }
 
 .coordinator-avatar {
@@ -65,12 +83,6 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
   gap: 30px;
   align-items: center;
   margin-bottom: 50px;
-}
-
-.about-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .coordinator-name {
@@ -90,6 +102,7 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 20px;
 }
 
 .info-grid-indicators {
@@ -107,9 +120,8 @@ const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_sc
   font-weight: bold;
 }
 
-.modal-r-indicator {
-  color: rgba(149, 145, 253, 1);
-  font-size: 5rem;
+.modal-r-container:hover {
+  cursor: pointer;
 }
 
 .modal-r-indicator-small {

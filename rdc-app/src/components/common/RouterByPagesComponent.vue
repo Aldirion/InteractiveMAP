@@ -23,6 +23,14 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
     title: 'Региональная команда',
     url: '/map/region/team',
   },
+  schools: {
+    title: 'Школы',
+    url: '/map/region/schools',
+  },
+  spo: {
+    title: 'СПО',
+    url: '/map/region/spo',
+  },
 };
 
 const path = route.fullPath.split('/');
@@ -31,7 +39,9 @@ let regionName: Ref<string | null> = ref(null);
 let regionCode = path[1];
 
 onMounted(async () => {
-  regionName.value = (await store.getRegionData(regionCode)).title;
+  const regionsData = await store.getRegions();
+
+  regionName.value = regionsData[regionCode].title;
 });
 
 let titlesRoute = computed(() => {

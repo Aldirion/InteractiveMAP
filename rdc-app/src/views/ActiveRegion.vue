@@ -6,17 +6,32 @@ import { useStoreRegions } from '@/store/store';
 import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
-import type { Region } from '@/interfaces/regions';
-import type LoaderComponent from '@/components/common/LoaderComponent.vue';
+import type { EmployeeData, Region } from '@/interfaces/regions';
+import LoaderComponent from '@/components/common/LoaderComponent.vue';
 
 const route = useRoute();
 const store = useStoreRegions();
 
 let regionCode = route.fullPath.split('/')[2];
 let regionData: Ref<Region | null> = ref(null);
+let supervizorData: Ref<EmployeeData | null> = ref(null);
+
+let allInstitutionsCount: Ref<number | null> = ref(null);
+let allEmployeeCount: Ref<number | null> = ref(null);
 
 onMounted(async () => {
-  regionData.value = await store.getRegionData(regionCode);
+  const regionsData = await store.getRegions();
+
+  regionData.value = regionsData[regionCode];
+  allInstitutionsCount.value = regionData.value.count_school + regionData.value.count_spo;
+
+  let employee = await store.getEmployeeByRegionCode(regionData.value.id);
+  let totalCount = 0;
+  for (const post in employee) {
+    totalCount += employee[post].count;
+  }
+  allEmployeeCount.value = totalCount;
+  supervizorData.value = employee['Главный эксперт'].data[0];
 });
 
 function regionTeam() {
@@ -39,7 +54,7 @@ function onRegionSelected(regionCode: string) {
       <div class="region-map">
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
-      <RRC v-if="regionData" :region-data="regionData!" />
+      <RRC v-if="regionData && supervizorData" :region-data="regionData" :supervizor-data="supervizorData" />
       <LoaderComponent v-else />
     </div>
 
@@ -47,7 +62,7 @@ function onRegionSelected(regionCode: string) {
       <div class="modal-r-card hover-component" @click="regionTeam()">
         <div class="modal-r-h">Региональная команда</div>
         <div class="modal-r-container">
-          <div class="modal-r-indicator">22</div>
+          <div class="modal-r-indicator">{{ allEmployeeCount ?? 'Загрузка...' }}</div>
           <h2 style="text-align: center">Сотрудников</h2>
         </div>
       </div>
@@ -55,7 +70,7 @@ function onRegionSelected(regionCode: string) {
       <div class="modal-r-card hover-component" @click="educationalSpaces()">
         <div class="modal-r-h">Воспитательные пространства и объединения</div>
         <div class="modal-r-container">
-          <div class="modal-r-indicator">2717</div>
+          <div class="modal-r-indicator">{{ allInstitutionsCount ?? 'Загрузка...' }}</div>
           <h2 style="text-align: center">Воспитательных пространств и объединений</h2>
         </div>
       </div>
@@ -158,7 +173,7 @@ function onRegionSelected(regionCode: string) {
 .region-map-title {
   text-align: center;
   font-size: 24px;
-  padding: 20px 0;
+  padding: 20px 0 50px;
 }
 
 .modal-r {

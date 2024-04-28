@@ -2,7 +2,7 @@
 import { watch, onMounted, onUnmounted, ref } from 'vue';
 import { useStoreRegions } from '@/store/store';
 import ToolTipComponent from '../common/ToolTipComponent.vue';
-import type { Region } from '@/interfaces/regions';
+import type { Municipalities, Region } from '@/interfaces/regions';
 
 import { svgLoad } from 'virtual:svg-loader';
 import { BASE_MAP_COLORS } from '@/interfaces/variables';
@@ -23,11 +23,13 @@ let showToolTip = ref(false);
 const mapSvg = svgLoad[props.componentRegionCode];
 
 let hoveredRegionCode = ref<string | null>(null);
-let hoveredRegionData = ref<Region | null>(null);
+let hoveredRegionData = ref<Region | Municipalities | null>(null);
 
 watch(hoveredRegionCode, async () => {
-  if (hoveredRegionCode.value) {
-    hoveredRegionData.value = await store.getRegionData(hoveredRegionCode.value)!;
+  const regionsData = await store.getRegions();
+
+  if (hoveredRegionCode.value && props.componentRegionCode === 'global') {
+    hoveredRegionData.value = regionsData[hoveredRegionCode.value];
   }
 });
 
@@ -52,10 +54,8 @@ onMounted(async () => {
     ...Array.from(document.querySelectorAll<SVGElement>('path[data-code]')),
     ...Array.from(document.querySelectorAll<SVGElement>('g[data-code]')),
   ];
-  const regionsData = (await store.getRegions()).reduce<{ [codegost: string]: Region }>((d, region) => {
-    d[region.codegost] = region;
-    return d;
-  }, {});
+
+  const regionsData = await store.getRegions();
 
   allRegions.forEach(async (region) => {
     BASE_MAP_COLORS.forEach((color) => {
@@ -69,6 +69,7 @@ onMounted(async () => {
 
       if (value >= color.from && value <= color.to) {
         region.style.fill = color.color;
+        region.style.stroke = 'var(--color-text)';
       }
     });
   });

@@ -13,6 +13,18 @@ export type Region = {
   comp_indicator_count_eduinst: number;
 };
 
+export type Municipalities = {
+  id: number;
+  title: string;
+  region: number;
+  oktmo5: string;
+  count_school: null;
+  count_spo: null;
+  comp_count_school: number;
+  comp_count_spo: number;
+  comp_indicator_count_eduinst: number;
+};
+
 export type EmployeeData = {
   id: number;
   firstname: string;
@@ -30,6 +42,37 @@ export type EmployeeTeamData = {
 
 export type EmployeeTeam = {
   [key: string]: EmployeeTeamData;
+};
+
+export type DataSchool = {
+  id: number;
+  sign: string;
+  title: string;
+  contingent: null | number;
+  address: string;
+};
+
+export type SchoolsData = {
+  count: number;
+  schools: DataSchool[];
+};
+
+export type SPOData = {
+  count: number;
+  spo: DataSchool[];
+};
+
+export type RegionSPOData = {
+  [key: string]: SPOData;
+};
+
+export type RegionSchoolsData = {
+  [key: string]: SchoolsData;
+};
+
+export type RegionSchool = {
+  count_schools: number;
+  data: RegionSchoolsData;
 };
 
 export interface RegionCardData {

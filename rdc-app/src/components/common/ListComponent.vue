@@ -1,42 +1,30 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import EmployeeComponent from '@/components/active_region/EmployeeComponent.vue';
-import type { EmployeeTeamData } from '@/interfaces/regions';
+import { ref } from 'vue';
 
 const props = defineProps<{
   title: string | number;
-  team: EmployeeTeamData;
+  opened: boolean;
 }>();
 
-let isShowMembers = ref(false);
-
-onMounted(() => {
-  if (props.team.count <= 3) {
-    isShowMembers.value = true;
-  }
-});
-
-function showMembers() {
-  isShowMembers.value = !isShowMembers.value;
-}
+const isOpened = ref(props.opened);
 </script>
 <template>
-  <div class="team-elem">
-    <div class="team-elem-title" @click="showMembers">
-      <p>{{ title }} ({{ team.count }})</p>
-      <span class="material-symbols-outlined arrow" v-if="isShowMembers">arrow_drop_down</span>
+  <div class="list-elem">
+    <div class="list-elem-title" @click="() => (isOpened = !isOpened)">
+      <p>{{ title }}</p>
+      <span class="material-symbols-outlined arrow" v-if="isOpened">arrow_drop_down</span>
       <span class="material-symbols-outlined arrow" v-else>arrow_drop_up</span>
     </div>
     <Transition>
-      <div v-if="isShowMembers" :class="{ 'team-members': team.count > 3, 'team-members-low': team.count <= 3 }">
-        <EmployeeComponent v-for="member in team.data" :memberData="member" :key="member.id" />
+      <div v-if="isOpened" :class="{ 'list-elem-few ': opened, 'list-elem-a-lot': !opened }">
+        <slot></slot>
       </div>
     </Transition>
   </div>
 </template>
 
 <style lang="css" scoped>
-.team-elem {
+.list-elem {
   width: 70%;
   display: flex;
   flex-direction: column;
@@ -44,31 +32,32 @@ function showMembers() {
   transition: 0.5s ease;
 }
 
-.team-elem-title {
+.list-elem-title {
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  background-color: var(--vt-c-black-mute);
-  color: var(--vt-c-white);
+  background-color: var(--color-background-mute);
+  color: var(--color-text);
   transition: background-color 0.2s ease;
   border-radius: 5px;
   font-size: 1.2rem;
 }
 
-.team-elem-title:hover {
+.list-elem-title:hover {
   cursor: pointer;
 }
 
-.team-members {
+.list-elem-a-lot {
   height: 600px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   overflow-y: scroll;
   gap: 10px;
+  padding-right: 10px;
 }
 
-.team-members-low {
+.list-elem-few {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -98,7 +87,7 @@ function showMembers() {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--vt-c-black-mute);
+  background: var(--color-background-mute);
   border-radius: 100px;
 }
 

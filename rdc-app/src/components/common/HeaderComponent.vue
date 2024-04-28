@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import LogoSVG from '@/assets/logo-min.svg';
 import { useStoreAuthorization } from '@/store/authorization';
 
 const store = useStoreAuthorization();
@@ -53,7 +52,9 @@ function logout() {
 
 <template>
   <header>
-    <LogoSVG />
+    <div class="img-container">
+      <img class="logo" src="../../assets/logo_purple.png" alt="logotype" />
+    </div>
     <nav class="wrapper" :class="{ 'wrapper-phone-open': isOpenHeader, 'wrapper-phone-close': !isOpenHeader }">
       <RouterLink to="/map" v-if="store.isAuthorized">Карта</RouterLink>
       <RouterLink to="/personal-account" class="account" v-if="store.isAuthorized">
@@ -127,6 +128,15 @@ nav a:hover,
 
 .menu {
   display: none;
+}
+
+.img-container {
+  height: 60%;
+  margin: auto 0;
+}
+
+.logo {
+  height: 100%;
 }
 
 .pop-up-back {
