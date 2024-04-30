@@ -1,5 +1,4 @@
 import { BASE_URL } from '@/interfaces/variables';
-import router from '@/router';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
@@ -17,12 +16,11 @@ export const useStoreAuthorization = defineStore('storeAuthorization', () => {
         },
         body: JSON.stringify({ token: accessToken }),
       });
-      const response = await tokenVerify.ok;
+      let response = await tokenVerify.ok;
       isAuthorized.value = response;
 
       if (tokenVerify.status === 401) {
-        refreshToken();
-        router.push('/map');
+        response = await refreshToken();
       }
 
       return response;
@@ -50,7 +48,6 @@ export const useStoreAuthorization = defineStore('storeAuthorization', () => {
       if (tokenRefresh.status === 401) {
         localStorage.removeItem('access');
         localStorage.removeItem('refresh');
-        router.push('/');
       }
 
       return response;

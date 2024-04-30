@@ -73,11 +73,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const store = useStoreAuthorization();
-
   const isAuthenticated = await store.checkIfUserIsAuthenticated();
-  if (to.name === 'home' && isAuthenticated) {
-    next('/map');
-  } else if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next('/');
   } else {
     next();
