@@ -52,6 +52,7 @@ let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  padding-bottom: 300px;
 }
 
 .section-element {

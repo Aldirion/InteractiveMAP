@@ -81,16 +81,14 @@ function authorization() {
 <style lang="css" scoped>
 .authorization {
   width: 100%;
-  height: 80vh;
-  position: relative;
+  min-height: 80vh;
+  padding-bottom: 400px;
+  padding-top: 100px;
 }
 
 .authorization-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
+  margin: 0 auto;
   width: 50vw;
   height: 60vh;
   transition: width 0.3s linear;
@@ -212,12 +210,12 @@ function authorization() {
 
   .authorization-title {
     width: 100%;
-    height: 40%;
+    height: 30%;
   }
 
   .authorization-form {
     width: 100%;
-    height: 80%;
+    height: 70%;
   }
 
   .size {
@@ -228,10 +226,6 @@ function authorization() {
 @media only screen and (max-width: 600px) {
   .authorization-container {
     width: 100%;
-  }
-
-  .authorization {
-    height: 90vh;
   }
 
   .size {

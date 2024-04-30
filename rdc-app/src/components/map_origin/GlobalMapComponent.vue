@@ -17,7 +17,8 @@ function onRegionSelected(regionCode: string) {
 .rf-map {
   margin: 0 auto;
   width: 100%;
-  height: 80vh;
+  min-height: 80vh;
+  padding-bottom: 300px;
 }
 
 @media only screen and (max-width: 1440px) {

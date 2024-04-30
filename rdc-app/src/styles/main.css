@@ -4,6 +4,7 @@
 #app {
   width: 100%;
   font-weight: normal;
+  position: relative;
   color: var(--color-text);
   background: var(--color-background);
   transition: background .2s linear, color .2s linear;

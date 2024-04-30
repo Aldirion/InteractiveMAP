@@ -69,6 +69,7 @@ onMounted(async () => {
 
       if (value >= color.from && value <= color.to) {
         region.style.fill = color.color;
+        region.style.opacity = '0.8';
         region.style.stroke = 'var(--color-text)';
       }
     });
@@ -138,17 +139,18 @@ onUnmounted(() => {
 [data-code] {
   fill: rgba(149, 145, 253, 1);
   stroke: rgb(245, 246, 250);
-  transition: fill 0.3s linear;
+  transition: opacity 0.3s linear;
   margin: 0 auto;
 }
 
 [data-code]:hover {
-  fill: rgb(99, 94, 138);
+  opacity: 1 !important;
   cursor: pointer;
 }
 
 .map-container {
   display: flex;
   justify-content: center;
+  height: 100%;
 }
 </style>

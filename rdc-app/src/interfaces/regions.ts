@@ -5,6 +5,8 @@ export type Region = {
   title: string;
   codegibdd: string;
   codegost: string;
+  rrc_address: null | string;
+  rrc_email: null | string;
   population: number;
   count_school: number;
   count_spo: number;

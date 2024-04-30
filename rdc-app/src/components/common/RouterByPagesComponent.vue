@@ -76,7 +76,7 @@ function redirectTopage(pagePath: string) {
       <a class="page" @click="redirectTopage(pageName.url)">
         {{ pageName.title }}
       </a>
-      <div v-if="idx != titlesRoute.length - 1">>></div>
+      <div class="arrow" v-if="idx != titlesRoute.length - 1">>></div>
     </template>
   </div>
 </template>
@@ -92,9 +92,26 @@ function redirectTopage(pagePath: string) {
 .page {
   text-transform: uppercase;
   user-select: none;
+  text-align: center;
+  margin: auto 0;
 }
 
 .page:hover {
   cursor: pointer;
+}
+
+.arrow {
+  margin: auto 0;
+}
+
+@media only screen and (max-width: 550px) {
+  .router-container {
+    margin: 20px 0 30px;
+    gap: 10px;
+  }
+
+  .page {
+    font-size: 0.9rem;
+  }
 }
 </style>

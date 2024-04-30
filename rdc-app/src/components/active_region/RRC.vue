@@ -7,6 +7,8 @@ import { useRoute } from 'vue-router';
 const props = defineProps<{
   regionData: Region;
   supervizorData: EmployeeData;
+  email: string | null;
+  address: string | null;
 }>();
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
@@ -32,10 +34,11 @@ function checkoutToSPO() {
           {{ supervizorData.lastname }} {{ supervizorData.firstname }} {{ supervizorData.patronymic }}
         </h2>
         <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
-        <a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
+        <a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru" v-if="email">
           <span class="material-symbols-outlined">mail</span>
-          {{ supervizorData.email }}
+          {{ email }}
         </a>
+        <p class="coordinator-quote" v-if="address">{{ address }}</p>
         <p class="coordinator-quote" v-if="supervizorData.quote !== 'nan'">{{ supervizorData?.quote }}</p>
       </div>
     </div>

@@ -53,5 +53,6 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  padding-bottom: 300px;
 }
 </style>

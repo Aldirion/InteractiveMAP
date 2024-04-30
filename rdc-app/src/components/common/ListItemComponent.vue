@@ -53,4 +53,15 @@
   text-align: center;
   margin: auto 0;
 }
+
+@media only screen and (max-width: 600px) {
+  :slotted(.item-name) {
+    font-size: 1rem;
+  }
+
+  :slotted(.item-address) {
+    margin-top: 10px;
+    font-size: 0.8rem;
+  }
+}
 </style>
