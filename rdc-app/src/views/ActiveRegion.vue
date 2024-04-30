@@ -54,7 +54,13 @@ function onRegionSelected(regionCode: string) {
       <div class="region-map">
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
-      <RRC v-if="regionData && supervizorData" :region-data="regionData" :supervizor-data="supervizorData" />
+      <RRC
+        v-if="regionData && supervizorData"
+        :address="regionData.rrc_address"
+        :email="regionData.rrc_email"
+        :region-data="regionData"
+        :supervizor-data="supervizorData"
+      />
       <LoaderComponent v-else />
     </div>
 
@@ -134,7 +140,7 @@ function onRegionSelected(regionCode: string) {
     </div>
 
     <h1 class="region-title">Партнеры</h1>
-    <div class="modal-r">
+    <div class="modal-r partners">
       <img style="padding: 5px" src="/partners/unarmy.png" />
       <img style="padding: 5px" src="/partners/unarmy.png" />
       <img style="padding: 5px" src="/partners/unarmy.png" />
@@ -156,6 +162,10 @@ function onRegionSelected(regionCode: string) {
   text-align: center;
   margin: 100px 0;
   font-size: 24px;
+}
+
+.partners {
+  padding-bottom: 300px;
 }
 
 .region-main-data {
