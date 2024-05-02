@@ -7,7 +7,6 @@ const store = useStoreAuthorization();
 
 let currentThemeIcon = ref('light_mode');
 let currentTheme = ref('');
-let isOpenHeader = ref(false);
 let showUserPanel = ref(false);
 let user = ref<UserData | null>(null);
 
@@ -45,10 +44,6 @@ function setTheme() {
   localStorage.setItem('theme', currentTheme.value);
 }
 
-function toggleHeader() {
-  isOpenHeader.value = !isOpenHeader.value;
-}
-
 function logout() {
   localStorage.removeItem('access');
   localStorage.removeItem('refresh');
@@ -60,7 +55,7 @@ function logout() {
     <div class="img-container">
       <img class="logo" src="../../assets/logo_purple.png" alt="logotype" />
     </div>
-    <nav class="wrapper" :class="{ 'wrapper-phone-open': isOpenHeader, 'wrapper-phone-close': !isOpenHeader }">
+    <nav class="wrapper">
       <RouterLink to="/map" v-if="store.isAuthorized">Карта</RouterLink>
       <span class="material-symbols-outlined user" v-if="store.isAuthorized" @click="showUserPanel = !showUserPanel"
         >person</span
@@ -69,7 +64,7 @@ function logout() {
   </header>
 
   <div class="pop-up-account" v-if="showUserPanel">
-    <div class="user">
+    <div class="user-acc">
       <span class="material-symbols-outlined img">account_circle</span>
 
       <div class="user-data">
@@ -79,7 +74,7 @@ function logout() {
     </div>
 
     <div class="user-nav">
-      <RouterLink to="/personal-account" class="account" v-if="store.isAuthorized">
+      <RouterLink to="/personal-account" @click="changeTheme()" class="account" v-if="store.isAuthorized">
         <span class="material-symbols-outlined">person</span>
         <span>Личный кабинет</span>
       </RouterLink>
@@ -95,7 +90,6 @@ function logout() {
       </RouterLink>
     </div>
   </div>
-  <div class="pop-up-back" :style="{ display: isOpenHeader ? 'block' : 'none' }"></div>
 </template>
 
 <style lang="css" scoped>
@@ -122,11 +116,12 @@ header {
   font-size: 18px;
 }
 
-.theme:hover {
+.theme:hover,
+.user:hover {
   cursor: pointer;
 }
 
-.user {
+.user-acc {
   display: flex;
   gap: 10px;
   padding-bottom: 10px;
@@ -211,14 +206,6 @@ nav a:hover {
   transition: display 0.3s linear;
 }
 
-.wrapper-phone-open {
-  right: 0px;
-}
-
-.wrapper-phone-close {
-  right: -60%;
-}
-
 .logout,
 .account,
 .theme {
@@ -238,18 +225,13 @@ nav a:hover {
 @media only screen and (max-width: 1130px) {
   header {
     height: 40px;
-    justify-content: space-between;
     padding: 0 10vw;
   }
+}
 
-  nav a {
-    justify-content: center;
-    width: 100%;
-    height: 50px;
-  }
-
-  .menu {
-    display: block;
+@media only screen and (max-width: 520px) {
+  .pop-up-account {
+    right: 5vw;
   }
 }
 </style>
