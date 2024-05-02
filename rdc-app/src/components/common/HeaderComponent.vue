@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useStoreAuthorization } from '@/store/authorization';
+import type { UserData } from '@/interfaces/user';
 
 const store = useStoreAuthorization();
 
 let currentThemeIcon = ref('light_mode');
 let currentTheme = ref('');
 let isOpenHeader = ref(false);
+let showUserPanel = ref(false);
+let user = ref<UserData | null>(null);
 
-onMounted(() => {
+onMounted(async () => {
   const localTheme = localStorage.getItem('theme');
+
   if (localTheme) {
     currentTheme.value = localTheme === 'dark' ? 'dark' : 'light';
     currentThemeIcon.value = localTheme === 'dark' ? 'dark_mode' : 'light_mode';
@@ -21,6 +25,7 @@ onMounted(() => {
     currentThemeIcon.value = prefersDarkColorScheme ? 'dark_mode' : 'light_mode';
   }
   setTheme();
+  user.value = await store.getUserData();
 });
 
 function changeTheme() {
@@ -57,20 +62,39 @@ function logout() {
     </div>
     <nav class="wrapper" :class="{ 'wrapper-phone-open': isOpenHeader, 'wrapper-phone-close': !isOpenHeader }">
       <RouterLink to="/map" v-if="store.isAuthorized">Карта</RouterLink>
+      <span class="material-symbols-outlined user" v-if="store.isAuthorized" @click="showUserPanel = !showUserPanel"
+        >person</span
+      >
+    </nav>
+  </header>
+
+  <div class="pop-up-account" v-if="showUserPanel">
+    <div class="user">
+      <span class="material-symbols-outlined img">account_circle</span>
+
+      <div class="user-data">
+        <div class="name">{{ user?.lastname }} {{ user?.firstname }} {{ user?.patronymic }}</div>
+        <div class="email">{{ user?.email }}</div>
+      </div>
+    </div>
+
+    <div class="user-nav">
       <RouterLink to="/personal-account" class="account" v-if="store.isAuthorized">
         <span class="material-symbols-outlined">person</span>
-        <span>Кабинет</span>
+        <span>Личный кабинет</span>
       </RouterLink>
+
+      <span class="theme" @click="changeTheme()">
+        <span class="material-symbols-outlined">{{ currentThemeIcon }}</span>
+        Сменить тему
+      </span>
+
       <RouterLink to="/" class="logout" @click="logout" v-if="store.isAuthorized">
         <span class="material-symbols-outlined">logout</span>
         <span>Выйти</span>
       </RouterLink>
-    </nav>
-    <div class="theme-toggle">
-      <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
-      <span class="material-symbols-outlined menu" @click="toggleHeader">{{ !isOpenHeader ? 'menu' : 'close' }}</span>
     </div>
-  </header>
+  </div>
   <div class="pop-up-back" :style="{ display: isOpenHeader ? 'block' : 'none' }"></div>
 </template>
 
@@ -98,6 +122,28 @@ header {
   font-size: 18px;
 }
 
+.theme:hover {
+  cursor: pointer;
+}
+
+.user {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-background-mute);
+}
+
+.user-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.img {
+  font-size: 55px;
+}
+
 nav a {
   display: flex;
   align-items: center;
@@ -107,22 +153,36 @@ nav a {
   color: var(--color-text);
 }
 
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  gap: 30px;
+.pop-up-account {
+  width: 250px;
+  height: 200px;
+  position: absolute;
+  top: 50px;
+  right: 10vw;
+  background-color: var(--color-background-soft);
+  border: 1px solid var(--color-background-mute);
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.theme-toggle:hover {
-  cursor: pointer;
+.name {
+  font-size: 0.8rem;
+}
+
+.email {
+  font-size: 0.7rem;
+  color: var(--vt-orage-light);
+}
+
+.user-data {
+  width: 100px;
 }
 
 nav a.router-link-exact-active {
   color: rgb(70, 70, 182);
 }
 
-nav a:hover,
-.logout:hover {
+nav a:hover {
   color: rgb(94, 94, 192);
 }
 
@@ -160,11 +220,19 @@ nav a:hover,
 }
 
 .logout,
-.account {
+.account,
+.theme {
   display: flex;
   align-items: center;
   gap: 5px;
   transition: color 0.2s linear;
+  color: var(--color-text);
+}
+
+.logout:hover,
+.account:hover,
+.theme:hover {
+  color: var(--vt-orage-light);
 }
 
 @media only screen and (max-width: 1130px) {
@@ -172,17 +240,6 @@ nav a:hover,
     height: 40px;
     justify-content: space-between;
     padding: 0 10vw;
-  }
-
-  .wrapper {
-    position: fixed;
-    flex-direction: column;
-    top: 40px;
-    width: 60%;
-    height: 100%;
-    justify-content: center;
-    background-color: var(--color-background-soft);
-    transition: right 0.2s linear;
   }
 
   nav a {
