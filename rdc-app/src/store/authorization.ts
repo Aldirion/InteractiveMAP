@@ -1,9 +1,12 @@
+import type { UserData } from '@/interfaces/user';
 import { BASE_URL } from '@/interfaces/variables';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useStoreAuthorization = defineStore('storeAuthorization', () => {
   const isAuthorized = ref(false);
+  const userData = ref<null | UserData>(null);
+  const imgPath = ref('');
 
   async function checkIfUserIsAuthenticated() {
     const accessToken = localStorage.getItem('access');
@@ -21,6 +24,11 @@ export const useStoreAuthorization = defineStore('storeAuthorization', () => {
 
       if (tokenVerify.status === 401) {
         response = await refreshToken();
+      }
+
+      if (userData.value === null) {
+        userData.value = await getUserData();
+        imgPath.value = userData.value.avatar;
       }
 
       return response;
@@ -57,5 +65,18 @@ export const useStoreAuthorization = defineStore('storeAuthorization', () => {
     return false;
   }
 
-  return { isAuthorized, checkIfUserIsAuthenticated };
+  async function getUserData(): Promise<UserData> {
+    const userData = await fetch(`${BASE_URL}/users/me/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    });
+    const response: UserData = await userData.json();
+
+    return response;
+  }
+
+  return { isAuthorized, imgPath, userData, checkIfUserIsAuthenticated, getUserData };
 });

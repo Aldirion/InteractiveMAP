@@ -3,6 +3,9 @@ import router from '@/router';
 import DonughtChart from '../charts/DonughtChart.vue';
 import type { EmployeeData, Region } from '@/interfaces/regions';
 import { useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { BASE_URL } from '@/interfaces/variables';
+import type { UserData } from '@/interfaces/user';
 
 const props = defineProps<{
   regionData: Region;
@@ -13,6 +16,7 @@ const props = defineProps<{
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
 const route = useRoute();
+const supervizorImg = ref<null | string>(null);
 
 function checkoutToSchools() {
   router.push(`${route.fullPath}/schools`);
@@ -21,13 +25,26 @@ function checkoutToSchools() {
 function checkoutToSPO() {
   router.push(`${route.fullPath}/spo`);
 }
+
+onMounted(async () => {
+  const userData = await fetch(`${BASE_URL}/users/${props.supervizorData.id}/`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('access')}`,
+    },
+  });
+  const response: UserData = await userData.json();
+
+  supervizorImg.value = response.avatar;
+});
 </script>
 
 <template>
   <div class="region-info">
     <div class="coordinator-about">
       <div class="img-container">
-        <span class="material-symbols-outlined icon">account_circle</span>
+        <img :src="supervizorImg!" class="icon" alt="supervizor image" />
       </div>
       <div class="about-container">
         <h2 class="coordinator-name">
@@ -66,11 +83,17 @@ function checkoutToSPO() {
 .img-container {
   width: 150px;
   height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .icon {
-  font-size: 150px;
-  color: var(--color-background-mute);
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
 }
 
 .coordinator-avatar {

@@ -11,4 +11,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      '/media': 'http://localhost:8000',
+    },
+  },
 });
