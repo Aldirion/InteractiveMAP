@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useStoreAuthorization } from '@/store/authorization';
-import type { UserData } from '@/interfaces/user';
 
 const store = useStoreAuthorization();
 
 let currentThemeIcon = ref('light_mode');
 let currentTheme = ref('');
 let showUserPanel = ref(false);
-let user = ref<UserData | null>(null);
 
 onMounted(async () => {
   const localTheme = localStorage.getItem('theme');
@@ -24,7 +22,6 @@ onMounted(async () => {
     currentThemeIcon.value = prefersDarkColorScheme ? 'dark_mode' : 'light_mode';
   }
   setTheme();
-  user.value = await store.getUserData();
 });
 
 function changeTheme() {
@@ -52,7 +49,7 @@ function logout() {
 
 <template>
   <header>
-    <div class="img-container">
+    <div class="logo-container">
       <img class="logo" src="../../assets/logo_purple.png" alt="logotype" />
     </div>
     <nav class="wrapper">
@@ -65,16 +62,20 @@ function logout() {
 
   <div class="pop-up-account" v-if="showUserPanel">
     <div class="user-acc">
-      <span class="material-symbols-outlined img">account_circle</span>
+      <div class="img-container">
+        <img class="user-img" :src="store.imgPath" alt="user photo" />
+      </div>
 
       <div class="user-data">
-        <div class="name">{{ user?.lastname }} {{ user?.firstname }} {{ user?.patronymic }}</div>
-        <div class="email">{{ user?.email }}</div>
+        <div class="name">
+          {{ store.userData?.lastname }} {{ store.userData?.firstname }} {{ store.userData?.patronymic }}
+        </div>
+        <div class="email">{{ store.userData?.email }}</div>
       </div>
     </div>
 
     <div class="user-nav">
-      <RouterLink to="/personal-account" @click="changeTheme()" class="account" v-if="store.isAuthorized">
+      <RouterLink to="/personal-account" class="account" v-if="store.isAuthorized">
         <span class="material-symbols-outlined">person</span>
         <span>Личный кабинет</span>
       </RouterLink>
@@ -90,6 +91,7 @@ function logout() {
       </RouterLink>
     </div>
   </div>
+  <div v-if="showUserPanel" class="pop-up-back" @click="showUserPanel = false"></div>
 </template>
 
 <style lang="css" scoped>
@@ -131,12 +133,8 @@ header {
 .user-nav {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   margin-top: 10px;
-}
-
-.img {
-  font-size: 55px;
 }
 
 nav a {
@@ -148,16 +146,48 @@ nav a {
   color: var(--color-text);
 }
 
+.img-container {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.logo-container {
+  width: 40px;
+  height: 40px;
+  margin: auto 0;
+}
+
+.user-img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
+}
+
 .pop-up-account {
   width: 250px;
-  height: 200px;
-  position: absolute;
+  height: 230px;
+  position: fixed;
   top: 50px;
   right: 10vw;
+  z-index: 22;
   background-color: var(--color-background-soft);
   border: 1px solid var(--color-background-mute);
   padding: 10px;
   border-radius: 5px;
+}
+
+.pop-up-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 21;
 }
 
 .name {
@@ -174,36 +204,16 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: rgb(70, 70, 182);
+  color: var(--vt-c-purple);
 }
 
 nav a:hover {
-  color: rgb(94, 94, 192);
-}
-
-.menu {
-  display: none;
-}
-
-.img-container {
-  height: 60%;
-  margin: auto 0;
+  color: var(--vt-c-purple);
 }
 
 .logo {
-  height: 100%;
-}
-
-.pop-up-back {
-  display: none;
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0px;
-  right: 0px;
-  z-index: 19;
-  background-color: rgba(0, 0, 0, 0.507);
-  transition: display 0.3s linear;
+  width: 40px;
+  height: 40px;
 }
 
 .logout,
@@ -219,7 +229,7 @@ nav a:hover {
 .logout:hover,
 .account:hover,
 .theme:hover {
-  color: var(--vt-orage-light);
+  color: var(--vt-c-purple);
 }
 
 @media only screen and (max-width: 1130px) {
@@ -227,11 +237,67 @@ nav a:hover {
     height: 40px;
     padding: 0 10vw;
   }
+
+  .logo-container {
+    width: 30px;
+    height: 30px;
+  }
+
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 @media only screen and (max-width: 520px) {
   .pop-up-account {
     right: 5vw;
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+  header {
+    height: 4vh;
+    gap: 30px;
+  }
+
+  nav a,
+  .user {
+    font-size: 1.2vw;
+  }
+
+  .pop-up-account {
+    width: 15vw;
+    height: 17vw;
+    top: 4vh;
+    padding: 1vw;
+  }
+
+  .user-acc {
+    gap: 0.5vw;
+    padding-bottom: 1vw;
+  }
+
+  .user-nav .material-symbols-outlined {
+    font-size: 1.5vw;
+  }
+
+  .user-nav {
+    gap: 1.5vw;
+    margin-top: 1vw;
+    font-size: 1.2vw;
+  }
+
+  .user-data {
+    width: 8.5vw;
+  }
+
+  .name {
+    font-size: 0.9vw;
+  }
+
+  .email {
+    font-size: 0.7vw;
   }
 }
 </style>

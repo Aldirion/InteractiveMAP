@@ -211,4 +211,48 @@ import WebSVG from '@/assets/web.svg';
     font-size: 15px;
   }
 }
+
+@media only screen and (min-width: 2000px) {
+  .footer {
+    height: 10vw;
+  }
+
+  .company-logo-container {
+    width: 6vw;
+    height: 6vw;
+    margin-top: 2vw;
+  }
+
+  .about-container {
+    width: 18vw;
+  }
+
+  .about-company {
+    gap: 0.5vw;
+  }
+
+  .about-company-text {
+    font-size: 0.8vw;
+  }
+
+  .footer-title {
+    font-size: 1.2vw;
+    padding-top: 2vw;
+    padding-bottom: 0.5vw;
+  }
+
+  .navigation {
+    gap: 0.3vw;
+    font-size: 0.7vw;
+  }
+
+  .logo {
+    width: 2vw;
+  }
+
+  .social-container {
+    gap: 0.5vw;
+    padding-top: 0.5vw;
+  }
+}
 </style>
