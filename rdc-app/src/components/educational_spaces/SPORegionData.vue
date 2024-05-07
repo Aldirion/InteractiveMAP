@@ -14,36 +14,41 @@ const store = useStoreRegions();
 
 let isLoaded = ref(false);
 let spoData = ref<RegionSPOData | null>(null);
+let regionName = ref<string | null>(null);
 
 onMounted(async () => {
   const regionsData = await store.getRegions();
-
   const regionId = regionsData[regionCode].id;
+
   spoData.value = await store.getSPOByRegionCode(regionId);
+  regionName.value = regionsData[regionCode].title;
 
   isLoaded.value = true;
 });
 </script>
 
 <template>
-  <RouterByPagesComponent />
   <LoaderComponent v-if="!isLoaded" />
-  <div class="schools-container" v-else>
-    <ListComponent
-      v-for="(students, title) in spoData"
-      :key="title"
-      :title="`${title} (${students.count})`"
-      :opened="students.count < 5"
-    >
-      <ListItemComponent v-for="school in students.spo" :key="school.id">
-        <div class="item-about">
-          <p class="item-name">{{ school.title }}</p>
-          <p class="item-sub">{{ school.sign }}</p>
-          <p class="item-address">{{ school.address }}</p>
-        </div>
-        <div class="item-count" v-if="school.contingent">{{ school.contingent }} учащихся</div>
-      </ListItemComponent>
-    </ListComponent>
+
+  <div v-if="isLoaded">
+    <RouterByPagesComponent :regionName="regionName!" />
+    <div class="schools-container">
+      <ListComponent
+        v-for="(students, title) in spoData"
+        :key="title"
+        :title="`${title} (${students.count})`"
+        :opened="students.count < 5"
+      >
+        <ListItemComponent v-for="school in students.spo" :key="school.id">
+          <div class="item-about">
+            <p class="item-name">{{ school.title }}</p>
+            <p class="item-sub">{{ school.sign }}</p>
+            <p class="item-address">{{ school.address }}</p>
+          </div>
+          <div class="item-count" v-if="school.contingent">{{ school.contingent }} учащихся</div>
+        </ListItemComponent>
+      </ListComponent>
+    </div>
   </div>
 </template>
 
@@ -54,6 +59,5 @@ onMounted(async () => {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  padding-bottom: 300px;
 }
 </style>

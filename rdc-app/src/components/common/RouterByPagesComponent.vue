@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import router from '@/router';
-import { useStoreRegions } from '@/store/store';
-import { computed, onMounted, reactive, ref, type Ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
-const store = useStoreRegions();
 
 const pathTitles: { [key: string]: { title: string; url: string } } = {
   map: {
@@ -33,16 +31,13 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
   },
 };
 
+const props = defineProps<{
+  regionName: string;
+}>();
+
 const path = route.fullPath.split('/');
 path.shift();
-let regionName: Ref<string | null> = ref(null);
 let regionCode = path[1];
-
-onMounted(async () => {
-  const regionsData = await store.getRegions();
-
-  regionName.value = regionsData[regionCode].title;
-});
 
 let titlesRoute = computed(() => {
   let titles: { title: string; url: string }[] = reactive([]);
@@ -57,11 +52,12 @@ let titlesRoute = computed(() => {
 
     if (pageName.includes('RU-') || idx === 1) {
       titles.push({
-        title: pathTitles['region'].title.replace('region', regionName.value!),
+        title: pathTitles['region'].title.replace('region', props.regionName),
         url: pathTitles['region'].url.replace('region', regionCode),
       });
     }
   });
+
   return titles;
 });
 
