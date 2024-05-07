@@ -9,6 +9,7 @@ import PersonalAccountPage from '@/components/pages/PersonalAccountPage.vue';
 import ErrorPage from '@/components/pages/ErrorPage.vue';
 import SchoolsRegionData from '@/components/educational_spaces/SchoolsRegionData.vue';
 import SPORegionData from '@/components/educational_spaces/SPORegionData.vue';
+import UnderDevelopmentPage from '@/components/pages/UnderDevelopmentPage.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +31,12 @@ const router = createRouter({
       name: 'active_region',
       component: ActiveRegion,
       props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/develop',
+      name: 'active_region_develop',
+      component: UnderDevelopmentPage,
       meta: { requiresAuth: true },
     },
     {

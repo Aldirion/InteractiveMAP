@@ -38,6 +38,10 @@ function regionTeam() {
   router.push({ name: 'active_region_team', params: { region_code: `${regionCode}` } });
 }
 
+function underDevelopment() {
+  router.push({ name: 'active_region_develop', params: { region_code: `${regionCode}` } });
+}
+
 function educationalSpaces() {
   router.push({ name: 'active_region_educate', params: { region_code: `${regionCode}` } });
 }
@@ -65,7 +69,7 @@ function onRegionSelected(regionCode: string) {
     </div>
 
     <div class="modal-r">
-      <div class="modal-r-card hover-component" @click="regionTeam()">
+      <div class="modal-r-card hover-component" @click="regionTeam">
         <div class="modal-r-h">Региональная команда</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">{{ allEmployeeCount ?? 'Загрузка...' }}</div>
@@ -73,7 +77,7 @@ function onRegionSelected(regionCode: string) {
         </div>
       </div>
 
-      <div class="modal-r-card hover-component" @click="educationalSpaces()">
+      <div class="modal-r-card hover-component" @click="educationalSpaces">
         <div class="modal-r-h">Воспитательные пространства и объединения</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">{{ allInstitutionsCount ?? 'Загрузка...' }}</div>
@@ -81,7 +85,7 @@ function onRegionSelected(regionCode: string) {
         </div>
       </div>
 
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Повышение квалификации</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">630</div>
@@ -92,35 +96,35 @@ function onRegionSelected(regionCode: string) {
 
     <h1 class="region-title">Проекты Росдетцентра</h1>
     <div class="modal-r">
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Навигаторы детства</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">1254</div>
           <h2 style="text-align: center">Участников конкурса</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Лига Вожатых</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">72</div>
           <h2 style="text-align: center">Участника конкурса</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Добро не уходит на каникулы</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">130</div>
           <h2 style="text-align: center">Заявок на грантовый конкурс</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Орлята России</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">20000</div>
           <h2 style="text-align: center">Орлят</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Профильные смены</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">1000</div>
@@ -195,6 +199,11 @@ function onRegionSelected(regionCode: string) {
   background: var(--color-background-soft);
   text-align: center;
   font-weight: bold;
+  user-select: none;
+}
+
+.modal-r-card:hover {
+  cursor: pointer;
 }
 
 .modal-r-h {
