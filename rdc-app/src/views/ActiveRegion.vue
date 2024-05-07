@@ -11,8 +11,8 @@ import LoaderComponent from '@/components/common/LoaderComponent.vue';
 
 const route = useRoute();
 const store = useStoreRegions();
+const regionCode = route.params.region_code as string;
 
-let regionCode = route.fullPath.split('/')[2];
 let regionData: Ref<Region | null> = ref(null);
 let supervizorData: Ref<EmployeeData | null> = ref(null);
 
@@ -162,10 +162,6 @@ function onRegionSelected(regionCode: string) {
   text-align: center;
   margin: 100px 0;
   font-size: 24px;
-}
-
-.partners {
-  padding-bottom: 300px;
 }
 
 .region-main-data {

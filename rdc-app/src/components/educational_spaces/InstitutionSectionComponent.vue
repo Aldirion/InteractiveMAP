@@ -1,31 +1,20 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, type ComputedRef, type Ref } from 'vue';
-import { useStoreRegions } from '@/store/store';
-import { Section, type RegionCardData } from '@/interfaces/regions';
-import LoaderComponent from '@/components/common/LoaderComponent.vue';
+import { computed, type ComputedRef } from 'vue';
+import { Section, type SPORegion, type SchoolRegion } from '@/interfaces/regions';
+import { TITLES_EDUEVN } from '@/interfaces/variables';
 
 const props = defineProps<{
   institutionSection: Section;
+  schoolSectionData: SchoolRegion;
+  spoSectionData: SPORegion;
 }>();
 
-const store = useStoreRegions();
-let isLoaded = ref(false);
-
-let schoolSectionData: Ref<RegionCardData[]> = ref([]);
-let spoSectionData: Ref<RegionCardData[]> = ref([]);
-
-onMounted(async () => {
-  schoolSectionData.value = await store.getRegionSchoolData();
-  spoSectionData.value = await store.getRegionSPOData();
-  isLoaded.value = true;
-});
-
-let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
+let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
   switch (props.institutionSection) {
     case Section.SCHOOL:
-      return schoolSectionData.value;
+      return props.schoolSectionData;
     case Section.SPO:
-      return spoSectionData.value;
+      return props.spoSectionData;
     default:
       throw Error('Unhandled value');
   }
@@ -35,13 +24,11 @@ let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
 <template>
   <div class="school-title">Воспитательные пространства и объединения</div>
 
-  <LoaderComponent v-if="!isLoaded" />
-
-  <div class="school-section" v-if="isLoaded">
-    <div class="section-element" v-for="elem in sectionData" :key="elem.title">
-      <div class="section-element-title">{{ elem.title }}</div>
-      <div class="section-element-count">{{ elem.value }}</div>
-      <div class="section-element-subtitle">{{ elem.description }}</div>
+  <div class="school-section">
+    <div class="section-element" v-for="(elem, key) in sectionData" :key="key">
+      <div class="section-element-title">{{ TITLES_EDUEVN[key] }}</div>
+      <div class="section-element-count">{{ elem }}</div>
+      <div class="section-element-subtitle">Количество обучающихся, вовлеченных в деятельность</div>
     </div>
   </div>
 </template>
@@ -52,7 +39,6 @@ let sectionData: ComputedRef<RegionCardData[]> = computed(() => {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
-  padding-bottom: 300px;
 }
 
 .section-element {

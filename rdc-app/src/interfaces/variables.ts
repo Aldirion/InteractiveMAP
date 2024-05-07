@@ -57,3 +57,25 @@ export const BASE_MAP_COLORS = [
     to: 100,
   },
 ];
+
+export const TITLES_EDUEVN = {
+  total_kdn: 'Обучающиеся, состоящие на каком-либо учете',
+  total_museum: 'Музей',
+  total_mediacentre: 'Медиацентр',
+  total_theatre: 'Театр',
+  total_tour_club: 'Туристический клуб',
+  total_cinema_club: 'Киноклуб',
+  total_mpc: 'Военно-патриотический клуб',
+  total_yunarmy_participants: 'Зарегистрированных юнармейцев',
+  total_classes_are_eagles: 'Классы, реализующие программу "Орлята России"',
+  total_ssc: 'Школьный спортивный клуб',
+  total_volunteers_squad: 'Волонтерский/добровольческий отряд',
+  total_leaders_squad: 'Вожатский отряд',
+  total_uid: 'Деятельность ЮИД',
+  total_y_rescuers_squad: 'Отряд юных спасателей',
+  total_cdi: 'Центр детских инициатив',
+  total_ssgo: 'Орган студенческого самоуправления',
+  total_leaders_league: 'Конкурсе "Лига вожатых"',
+  total_ccr: 'КВН',
+  total_cyi: 'Центр детских инициатив',
+};

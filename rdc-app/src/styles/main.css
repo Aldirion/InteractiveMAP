@@ -8,6 +8,7 @@
   color: var(--color-text);
   background: var(--color-background);
   transition: background .2s linear, color .2s linear;
+  padding-bottom: 300px;
 }
 
 a {

@@ -21,7 +21,7 @@ onMounted(async () => {
 });
 
 async function saveNewData() {
-  await fetch(`${BASE_URL}/users/me/change`, {
+  await fetch(`${BASE_URL}/users/me/`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ async function saveUserImage() {
     const formData = new FormData();
     formData.append('avatar', userImg.value);
 
-    await fetch(`${BASE_URL}/users/me/change`, {
+    await fetch(`${BASE_URL}/users/me/`, {
       method: 'PUT',
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access')}`,
@@ -133,7 +133,6 @@ async function saveUserImage() {
   gap: 50px;
   min-height: 50vh;
   padding-top: 7vh;
-  padding-bottom: 300px;
 }
 
 .personal-data {

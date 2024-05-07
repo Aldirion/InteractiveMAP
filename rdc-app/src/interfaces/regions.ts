@@ -1,6 +1,5 @@
 export type Region = {
   id: number;
-  regionid: number;
   district: 15;
   title: string;
   codegibdd: string;
@@ -13,6 +12,45 @@ export type Region = {
   comp_count_spo: number;
   comp_count_school: number;
   comp_indicator_count_eduinst: number;
+  school: SchoolRegion;
+  spo: SPORegion;
+};
+
+export type SchoolRegion = {
+  total_kdn: number | null;
+  total_museum: number | null;
+  total_mediacentre: number | null;
+  total_theatre: number | null;
+  total_tour_club: number | null;
+  total_cinema_club: number | null;
+  total_mpc: number | null;
+  total_yunarmy_participants: number | null;
+  total_classes_are_eagles: number | null;
+  total_ssc: number | null;
+  total_volunteers_squad: number | null;
+  total_leaders_squad: number | null;
+  total_uid: number | null;
+  total_y_rescuers_squad: number | null;
+  total_cdi: number | null;
+  total_ssgo: number | null;
+  total_leaders_league: number | null;
+};
+
+export type SPORegion = {
+  total_kdn: number | null;
+  total_museum: number | null;
+  total_mediacentre: number | null;
+  total_theatre: number | null;
+  total_tour_club: number | null;
+  total_cinema_club: number | null;
+  total_mpc: number | null;
+  total_ssc: number | null;
+  total_volunteers_squad: number | null;
+  total_leaders_squad: number | null;
+  total_ccr: number | null;
+  total_cyi: number | null;
+  total_ssgo: number | null;
+  total_leaders_league: number | null;
 };
 
 export type Municipalities = {
