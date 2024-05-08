@@ -93,4 +93,19 @@ onMounted(async () => {
 .border-r {
   border-radius: 0px 5px 5px 0px;
 }
+
+@media only screen and (min-width: 3000px) {
+  .region-educate {
+    width: 7vw;
+    height: 2vw;
+  }
+
+  .border-l {
+    border-radius: 0.3vw 0px 0px 0.3vw;
+  }
+
+  .border-r {
+    border-radius: 0px 0.3vw 0.3vw 0px;
+  }
+}
 </style>

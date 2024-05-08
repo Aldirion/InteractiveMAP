@@ -18,3 +18,10 @@ a {
 .material-symbols-outlined {
   user-select: none;
 }
+
+@media only screen and (min-width: 3000px) {
+  #app {
+    padding-bottom: 12vw;
+    font-size: 1vw;
+  }
+}

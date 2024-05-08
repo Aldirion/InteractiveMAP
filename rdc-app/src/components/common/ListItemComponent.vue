@@ -66,4 +66,19 @@
     font-size: 0.8rem;
   }
 }
+
+@media only screen and (min-width: 3000px) {
+  :slotted(.item-name) {
+    font-size: 1.1vw;
+  }
+
+  :slotted(.item-sub) {
+    font-size: 0.8vw;
+  }
+
+  :slotted(.img-container) {
+    width: 4vw;
+    height: 4vw;
+  }
+}
 </style>

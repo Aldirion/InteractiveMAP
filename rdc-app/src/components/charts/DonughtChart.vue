@@ -47,4 +47,11 @@ const chartOptions = {
     width: 303px;
   }
 }
+
+@media only screen and (min-width: 3000px) {
+  #my-chart-id {
+    height: 750px;
+    width: 700px;
+  }
+}
 </style>

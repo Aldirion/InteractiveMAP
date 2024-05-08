@@ -212,7 +212,7 @@ import WebSVG from '@/assets/web.svg';
   }
 }
 
-@media only screen and (min-width: 2000px) {
+@media only screen and (min-width: 3000px) {
   .footer {
     height: 10vw;
   }
@@ -236,7 +236,7 @@ import WebSVG from '@/assets/web.svg';
   }
 
   .footer-title {
-    font-size: 1.2vw;
+    font-size: 1vw;
     padding-top: 2vw;
     padding-bottom: 0.5vw;
   }

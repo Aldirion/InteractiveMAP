@@ -127,7 +127,8 @@ onUnmounted(() => {
     :mouse-x="mouseCoords[0]"
     :mouse-y="mouseCoords[1]"
   >
-    Кол-во школ: {{ hoveredRegionData?.comp_count_school ?? 'Загрузка...' }}
+    Кол-во школ:
+    {{ hoveredRegionData ? hoveredRegionData.comp_count_school || 0 : 'Загрузка...' }}
     <br />
     Кол-во СПО: {{ hoveredRegionData?.comp_count_spo ?? 'Загрузка...' }}
   </ToolTipComponent>
@@ -151,6 +152,7 @@ onUnmounted(() => {
 .map-container {
   display: flex;
   justify-content: center;
+  width: 100%;
   height: 100%;
 }
 </style>

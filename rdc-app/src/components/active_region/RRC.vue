@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import router from '@/router';
 import DonughtChart from '../charts/DonughtChart.vue';
-import type { EmployeeData, Region } from '@/interfaces/regions';
+import type { Region } from '@/interfaces/regions';
 import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
 import { BASE_URL } from '@/interfaces/variables';
 import type { UserData } from '@/interfaces/user';
+import type { EmployeeData } from '@/interfaces/employee';
 
 const props = defineProps<{
   regionData: Region;
@@ -185,6 +186,50 @@ onMounted(async () => {
 
   .modal-r-indicator-small {
     font-size: 1.5rem;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .img-container {
+    width: 7vw;
+    height: 7vw;
+  }
+
+  .coordinator-name {
+    font-size: 1.2vw;
+  }
+
+  .coordinator-subtitle {
+    font-size: 0.8vw;
+    color: rgb(189, 187, 187);
+  }
+
+  .coordinator-about {
+    gap: 2vw;
+    margin-bottom: 2vw;
+  }
+
+  .coordinator-email {
+    gap: 0.5vw;
+    margin-top: 1vw;
+    font-size: 0.8vw;
+  }
+
+  .coordinator-quote {
+    font-size: 0.8vw;
+  }
+
+  .modal-r-container {
+    width: 50%;
+    padding: 1vw 1vw;
+  }
+
+  .modal-r-indicator-small {
+    font-size: 2.2vw;
+  }
+
+  .modal-r-indicator-light {
+    font-size: 1.2vw;
   }
 }
 </style>

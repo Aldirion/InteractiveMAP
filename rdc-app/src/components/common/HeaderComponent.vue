@@ -255,7 +255,7 @@ nav a:hover {
   }
 }
 
-@media only screen and (min-width: 2000px) {
+@media only screen and (min-width: 3000px) {
   header {
     height: 4vh;
     gap: 30px;
@@ -271,6 +271,8 @@ nav a:hover {
     height: 17vw;
     top: 4vh;
     padding: 1vw;
+    border: 0.2vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
   }
 
   .user-acc {
@@ -298,6 +300,18 @@ nav a:hover {
 
   .email {
     font-size: 0.7vw;
+  }
+
+  .logout,
+  .account,
+  .theme {
+    gap: 0.5vw;
+  }
+
+  .img-container[data-v-c7b76637] {
+    width: 4vw;
+    height: 4vw;
+    border-radius: 50%;
   }
 }
 </style>

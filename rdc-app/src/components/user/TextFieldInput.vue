@@ -105,4 +105,18 @@ function rejectChanges() {
 .textarea {
   height: calc(6.25rem + 2px);
 }
+
+@media only screen and (min-width: 3000px) {
+  .input-text {
+    height: calc(2.25vw + 2px);
+    padding: 0.375vw 0.75vw;
+    font-size: 1vw;
+    border: 0.1vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
+  }
+
+  .textarea {
+    height: calc(6.25vw + 2px);
+  }
+}
 </style>

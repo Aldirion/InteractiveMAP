@@ -254,4 +254,46 @@ async function saveUserImage() {
   cursor: pointer;
   background-color: var(--color-background-mute);
 }
+
+@media only screen and (min-width: 3000px) {
+  .img-container {
+    width: 7vw;
+    height: 7vw;
+  }
+
+  .img-title {
+    font-size: 1.2vw;
+  }
+  .inputfile {
+    font-size: 1vw;
+  }
+
+  .inputfile::file-selector-button {
+    border-radius: 0.3vw;
+    padding: 0 1vw;
+    height: 2vw;
+    border: 0.1vw solid var(--color-background-mute);
+    box-shadow: 0px 0.1vw 0px var(--color-background-mute);
+    margin-right: 1vw;
+  }
+
+  .title {
+    font-size: 1.1vw;
+    margin-bottom: 1vw;
+  }
+
+  .user-photo {
+    border-bottom: 0.1vw solid var(--color-background-mute);
+    padding: 0.5vw 0.5vw 1vw;
+    margin-bottom: 1vw;
+    gap: 0.5vw;
+  }
+
+  .file-save {
+    border: 0.1vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
+    width: 2.5vw;
+    font-size: 1.2vw;
+  }
+}
 </style>

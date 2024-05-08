@@ -33,7 +33,7 @@ let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
   </div>
 </template>
 
-<style lang="css">
+<style lang="css" scoped>
 .school-section {
   display: flex;
   flex-wrap: wrap;
@@ -84,5 +84,30 @@ let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
   text-align: center;
   margin: 50px 0;
   font-size: 24px;
+}
+
+@media only screen and (min-width: 3000px) {
+  .school-title {
+    text-align: center;
+    margin: 50px 0;
+    font-size: 1.2vw;
+  }
+
+  .section-element-title {
+    height: 4vw;
+    padding: 0 0.3vw;
+    font-size: 1vw;
+    border-radius: 0.3vw 0.3vw 0px 0px;
+  }
+
+  .section-element-count {
+    font-size: 3vw;
+  }
+
+  .section-element {
+    width: 20%;
+    gap: 0.3vw;
+    border-radius: 0.3vw;
+  }
 }
 </style>

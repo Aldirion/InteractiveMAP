@@ -6,8 +6,9 @@ import { useStoreRegions } from '@/store/store';
 import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
-import type { EmployeeData, Region } from '@/interfaces/regions';
+import type { Region } from '@/interfaces/regions';
 import LoaderComponent from '@/components/common/LoaderComponent.vue';
+import type { EmployeeData } from '@/interfaces/employee';
 
 const route = useRoute();
 const store = useStoreRegions();
@@ -154,7 +155,7 @@ function onRegionSelected(regionCode: string) {
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 .region {
   width: 100%;
   display: flex;
@@ -176,8 +177,8 @@ function onRegionSelected(regionCode: string) {
 }
 
 .region-map {
-  width: 40vw;
-  max-height: 700px;
+  width: 50vw;
+  min-height: 700px;
 }
 
 .region-map-title {
@@ -274,6 +275,46 @@ function onRegionSelected(regionCode: string) {
 @media only screen and (max-width: 675px) {
   .modal-r-card {
     width: 100%;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .region-map {
+    max-height: 40vw;
+    width: 60%;
+  }
+
+  .region-map-title {
+    font-size: 1.3vw;
+    padding: 1vw 0 3vw;
+  }
+
+  .region-main-data {
+    margin-bottom: 5vw;
+  }
+
+  .modal-r {
+    width: 100%;
+  }
+
+  .modal-r-h {
+    padding: 1vw;
+    font-size: 1vw;
+    letter-spacing: 1px;
+    border-radius: 0.5vw 0.5vw 0px 0px;
+  }
+
+  .modal-r-container {
+    padding: 2vw 1vw;
+  }
+
+  .region-title {
+    margin: 5vw 0;
+    font-size: 1.3vw;
+  }
+
+  .modal-r-indicator {
+    font-size: 3.5vw;
   }
 }
 </style>

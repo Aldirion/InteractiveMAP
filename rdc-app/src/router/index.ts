@@ -10,6 +10,7 @@ import ErrorPage from '@/components/pages/ErrorPage.vue';
 import SchoolsRegionData from '@/components/educational_spaces/SchoolsRegionData.vue';
 import SPORegionData from '@/components/educational_spaces/SPORegionData.vue';
 import UnderDevelopmentPage from '@/components/pages/UnderDevelopmentPage.vue';
+import ActiveMunicipality from '@/components/municipalities/ActiveMunicipality.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +31,13 @@ const router = createRouter({
       path: '/map/:region_code',
       name: 'active_region',
       component: ActiveRegion,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/:municipality_code',
+      name: 'active_municipality',
+      component: ActiveMunicipality,
       props: true,
       meta: { requiresAuth: true },
     },

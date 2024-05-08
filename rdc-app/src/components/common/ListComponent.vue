@@ -111,4 +111,26 @@ const isOpened = ref(props.opened);
     width: 10px;
   }
 }
+
+@media only screen and (min-width: 3000px) {
+  .list-elem-title {
+    font-size: 1vw;
+    padding: 0.5vw;
+    border-radius: 0.3vw;
+  }
+
+  .arrow {
+    font-size: 2vw;
+  }
+
+  .list-elem-a-lot {
+    height: 1000px;
+    gap: 0.5vw;
+    padding-right: 20px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+}
 </style>

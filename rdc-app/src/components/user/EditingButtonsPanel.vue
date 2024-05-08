@@ -46,4 +46,13 @@ let showPanel = defineModel({ default: false });
   display: flex;
   gap: 10px;
 }
+
+@media only screen and (min-width: 3000px) {
+  .btn {
+    border: 0.1vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
+    width: 2.5vw;
+    font-size: 1.2vw;
+  }
+}
 </style>

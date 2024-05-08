@@ -71,4 +71,23 @@ function logout() {
 .link {
   color: var(--color-tex);
 }
+
+@media only screen and (min-width: 3000px) {
+  .control-panel {
+    width: 15vw;
+    height: 35vw;
+    border: 0.1vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
+    padding: 1vw;
+  }
+
+  .panel-title {
+    gap: 0.5vw;
+    padding: 0.2vw;
+  }
+
+  .material-symbols-outlined {
+    font-size: 1vw;
+  }
+}
 </style>
