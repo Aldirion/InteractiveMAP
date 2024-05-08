@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { EmployeeTeam } from '@/interfaces/regions';
 import { useStoreRegions } from '@/store/store';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import type { EmployeeTeam } from '@/interfaces/employee';
 import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.vue';
 import ListComponent from '@/components/common/ListComponent.vue';
 import LoaderComponent from '@/components/common/LoaderComponent.vue';
@@ -44,7 +44,9 @@ onMounted(async () => {
             <p class="item-name">{{ worker.lastname }} {{ worker.firstname }} {{ worker.patronymic }}</p>
             <p class="item-email">{{ worker.email }} {{ worker.region_id }}</p>
           </div>
-          <span class="material-symbols-outlined item-img">account_circle</span>
+          <div class="img-container">
+            <img :src="worker.avatar" class="item-img" alt="worker photo" />
+          </div>
         </ListItemComponent>
       </ListComponent>
     </div>

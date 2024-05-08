@@ -8,7 +8,7 @@ export type UserData = {
   tab_number: string;
   email: string;
   bio: null | string;
-  quote: string;
+  quote: string | null;
   phone_number: string;
   telegram_username: string;
   avatar: string;
@@ -16,8 +16,16 @@ export type UserData = {
     id: number;
     title: string;
   };
+  posts: UserPost[];
+  eduinstitutions: [];
   user: {
     id: number;
     username: string;
   };
+};
+
+export type UserPost = {
+  post_title: string;
+  subdivision_title: string;
+  tab_number: string;
 };

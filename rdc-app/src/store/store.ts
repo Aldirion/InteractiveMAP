@@ -1,4 +1,5 @@
-import type { EmployeeTeam, Municipalities, Region, RegionSPOData, RegionSchoolsData } from '@/interfaces/regions';
+import type { EmployeeTeam } from '@/interfaces/employee';
+import type { Municipalities, Region, RegionSPOData, RegionSchoolsData } from '@/interfaces/regions';
 import { BASE_URL } from '@/interfaces/variables';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -26,12 +27,12 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     }
   }
 
-  async function getMunicipalities(regionCode: number): Promise<{ [key: string]: Municipalities }> {
+  async function getMunicipalities(regionCode: number): Promise<{ [key: number]: Municipalities }> {
     const response = await fetch(`${BASE_URL}/region/${regionCode}/municipalities/`);
     const data: Municipalities[] = await response.json();
 
-    const municipalityData = data.reduce<{ [key: string]: Municipalities }>((acc, curr) => {
-      acc[curr.title] = curr;
+    const municipalityData = data.reduce<{ [key: number]: Municipalities }>((acc, curr) => {
+      acc[curr.id] = curr;
 
       return acc;
     }, {});

@@ -63,25 +63,8 @@ export type Municipalities = {
   comp_count_school: number;
   comp_count_spo: number;
   comp_indicator_count_eduinst: number;
-};
-
-export type EmployeeData = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  patronymic: string;
-  email: string;
-  quote: string;
-  region_id: number;
-};
-
-export type EmployeeTeamData = {
-  count: number;
-  data: EmployeeData[];
-};
-
-export type EmployeeTeam = {
-  [key: string]: EmployeeTeamData;
+  school: SchoolRegion;
+  spo: SPORegion;
 };
 
 export type DataSchool = {

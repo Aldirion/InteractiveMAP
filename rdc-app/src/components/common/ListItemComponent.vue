@@ -15,11 +15,18 @@
   padding: 10px;
 }
 
-:slotted(.item-icon) {
+:slotted(.img-container) {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background-color: var(--vt-c-divider-dark-1);
+}
+
+:slotted(.item-img) {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
 }
 
 :slotted(.item-name) {
@@ -39,11 +46,6 @@
 :slotted(.item-address) {
   margin-top: 20px;
   color: var(--vt-orage-light);
-}
-
-:slotted(.item-img) {
-  color: var(--vt-purple-light);
-  font-size: 5rem;
 }
 
 :slotted(.item-count) {
