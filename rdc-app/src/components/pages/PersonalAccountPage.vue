@@ -87,8 +87,10 @@ async function saveUserImage() {
             <h4 class="img-title">
               {{ store.userData.lastname }} {{ store.userData.firstname }} {{ store.userData.patronymic }}
             </h4>
-            <p class="user-post-sub">{{ store.userData.post_subdivision }}</p>
-            <p class="user-post">{{ store.userData.post_title }}</p>
+            <span v-for="post in store.userData.posts" :key="post.tab_number">
+              <p class="user-post">{{ post.post_title }}</p>
+              <p class="user-post-sub">{{ post.subdivision_title }}</p>
+            </span>
           </div>
 
           <div class="file-container">
