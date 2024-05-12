@@ -3,9 +3,6 @@ import router from '@/router';
 import DonughtChart from '../charts/DonughtChart.vue';
 import type { Region } from '@/interfaces/regions';
 import { useRoute } from 'vue-router';
-import { onMounted, ref } from 'vue';
-import { BASE_URL } from '@/interfaces/variables';
-import type { UserData } from '@/interfaces/user';
 import type { EmployeeData } from '@/interfaces/employee';
 
 const props = defineProps<{
@@ -17,7 +14,6 @@ const props = defineProps<{
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
 const route = useRoute();
-const supervizorImg = ref<null | string>(null);
 
 function checkoutToSchools() {
   router.push(`${route.fullPath}/schools`);
@@ -26,26 +22,13 @@ function checkoutToSchools() {
 function checkoutToSPO() {
   router.push(`${route.fullPath}/spo`);
 }
-
-onMounted(async () => {
-  const userData = await fetch(`${BASE_URL}/users/${props.supervizorData.id}/`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('access')}`,
-    },
-  });
-  const response: UserData = await userData.json();
-
-  supervizorImg.value = response.avatar;
-});
 </script>
 
 <template>
   <div class="region-info">
     <div class="coordinator-about">
       <div class="img-container">
-        <img :src="supervizorImg!" class="icon" alt="supervizor image" />
+        <img :src="supervizorData.avatar" class="icon" alt="supervizor image" />
       </div>
       <div class="about-container">
         <h2 class="coordinator-name">

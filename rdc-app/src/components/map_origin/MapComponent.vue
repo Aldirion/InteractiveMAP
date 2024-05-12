@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { watch, onMounted, onUnmounted, ref } from 'vue';
+import { watch, onMounted, onUnmounted, ref, type Ref } from 'vue';
 import { useStoreRegions } from '@/store/store';
 import ToolTipComponent from '../common/ToolTipComponent.vue';
 import type { Municipalities, Region } from '@/interfaces/regions';
 
+import panzoom, { type PanZoom } from 'panzoom';
 import { svgLoad } from 'virtual:svg-loader';
 import { BASE_MAP_COLORS } from '@/interfaces/variables';
 
@@ -12,6 +13,7 @@ const props = defineProps<{
 }>();
 
 const store = useStoreRegions();
+let mapContainer: Ref<HTMLElement | null> = ref(null);
 
 const emit = defineEmits<{
   regionSelected: [regionCode: string];
@@ -33,11 +35,6 @@ watch(hoveredRegionCode, async () => {
   }
 });
 
-type Listeners = [Element, (event: Event) => void][];
-let onMouseMoveListeners: Listeners = [];
-let onMouseLeaveListeners: Listeners = [];
-let onMouseClickListeners: Listeners = [];
-
 function onMouseMove(region: Element, event: MouseEvent) {
   const regionCode = region.getAttribute('data-code');
 
@@ -48,6 +45,9 @@ function onMouseMove(region: Element, event: MouseEvent) {
 
   mouseCoords.value = [event.pageX, event.pageY];
 }
+
+let panzoomInstance: null | PanZoom = null;
+let eventListeners: [SVGElement, string, (event: Event) => void][] = [];
 
 onMounted(async () => {
   const allRegions = [
@@ -75,47 +75,62 @@ onMounted(async () => {
     });
   });
 
-  onMouseMoveListeners = allRegions.map((region) => {
+  allRegions.map((region) => {
     const cb = (event: Event) => onMouseMove(region, event as MouseEvent);
     region.addEventListener('mousemove', cb);
 
-    return [region, cb];
+    eventListeners.push([region, 'mousemove', cb]);
   });
 
-  onMouseLeaveListeners = allRegions.map((region) => {
+  allRegions.map((region) => {
     const cb = () => {
       showToolTip.value = false;
       hoveredRegionCode.value = null;
     };
     region.addEventListener('mouseleave', cb);
 
-    return [region, cb];
+    eventListeners.push([region, 'mouseleave', cb]);
   });
 
-  onMouseClickListeners = allRegions.map((region) => {
+  allRegions.map((region) => {
     const activeRegionCode = region.getAttribute('data-code')!;
-    const cb = () => {
-      if (props.componentRegionCode == 'global') {
-        emit('regionSelected', activeRegionCode);
+
+    let startClick: number;
+    let endClick: number;
+
+    const mouseDownCb = () => {
+      startClick = new Date().getTime();
+    };
+
+    region.addEventListener('mousedown', mouseDownCb);
+    region.addEventListener('touchstart', mouseDownCb);
+
+    eventListeners.push([region, 'mousedown', mouseDownCb]);
+    eventListeners.push([region, 'touchstart', mouseDownCb]);
+
+    const mouseUpCb = () => {
+      endClick = new Date().getTime();
+
+      if (endClick! - startClick! < 100) {
+        if (props.componentRegionCode == 'global') {
+          emit('regionSelected', activeRegionCode);
+        }
       }
     };
-    region.addEventListener('click', cb);
 
-    return [region, cb];
+    region.addEventListener('mouseup', mouseUpCb);
+    region.addEventListener('touchend', mouseUpCb);
+
+    eventListeners.push([region, 'mouseup', mouseUpCb]);
+    eventListeners.push([region, 'touchend', mouseUpCb]);
   });
+
+  panzoomInstance = panzoom(mapContainer.value!, { transformOrigin: { x: 0.5, y: 0.5 }, minZoom: 1, maxZoom: 3 });
 });
 
 onUnmounted(() => {
-  onMouseMoveListeners.forEach(([region, cb]) => {
-    region.removeEventListener('mousemove', cb);
-  });
-
-  onMouseLeaveListeners.forEach(([region, cb]) => {
-    region.removeEventListener('mouseleave', cb);
-  });
-
-  onMouseClickListeners.forEach(([region, cb]) => {
-    region.removeEventListener('click', cb);
+  eventListeners.forEach(([region, eventName, cb]) => {
+    region.removeEventListener(eventName, cb);
   });
 });
 </script>
@@ -133,7 +148,23 @@ onUnmounted(() => {
     Кол-во СПО: {{ hoveredRegionData?.comp_count_spo ?? 'Загрузка...' }}
   </ToolTipComponent>
 
-  <div class="map-container" v-html="mapSvg"></div>
+  <div class="container">
+    <div class="zoom-panel">
+      <span class="material-symbols-outlined zoom" @click="panzoomInstance?.zoomTo(0, 0, 1.2)">zoom_in</span>
+      <span class="material-symbols-outlined zoom" @click="panzoomInstance?.zoomTo(0, 0, 0.8)">zoom_out</span>
+      <span
+        class="material-symbols-outlined zoom"
+        @click="
+          panzoomInstance?.zoomTo(0, 0, 0);
+          panzoomInstance?.moveTo(0, 0);
+        "
+      >
+        restart_alt
+      </span>
+    </div>
+
+    <div ref="mapContainer" class="map-container" v-html="mapSvg"></div>
+  </div>
 </template>
 
 <style>
@@ -141,7 +172,6 @@ onUnmounted(() => {
   fill: rgba(149, 145, 253, 1);
   stroke: rgb(245, 246, 250);
   transition: opacity 0.3s linear;
-  margin: 0 auto;
 }
 
 [data-code]:hover {
@@ -149,10 +179,51 @@ onUnmounted(() => {
   cursor: pointer;
 }
 
+.container {
+  position: relative;
+}
+
 .map-container {
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 100%;
+  max-height: 700px;
+}
+
+.zoom-panel {
+  position: absolute;
+  z-index: 19;
+}
+
+.zoom {
+  border: 1px solid var(--color-background-mute);
+  padding: 2.5px 20px;
+  background-color: var(--color-background);
+  transition: background-color 0.3s ease;
+}
+
+.zoom:hover {
+  background-color: var(--color-background-soft);
+  cursor: pointer;
+}
+
+.zoom:first-child {
+  border-right: none;
+}
+
+.zoom:last-child {
+  border-left: none;
+}
+
+@media only screen and (max-width: 850px) {
+  .map-container {
+    max-height: 550px;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .map-container {
+    max-height: 40vw;
+  }
 }
 </style>

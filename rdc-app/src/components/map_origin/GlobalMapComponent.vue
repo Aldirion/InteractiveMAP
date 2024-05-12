@@ -18,6 +18,7 @@ function onRegionSelected(regionCode: string) {
   margin: 0 auto;
   width: 100%;
   min-height: 80vh;
+  overflow: hidden;
 }
 
 @media only screen and (max-width: 1440px) {

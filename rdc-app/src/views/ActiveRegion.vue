@@ -177,8 +177,10 @@ function onRegionSelected(regionCode: string) {
 }
 
 .region-map {
-  width: 50vw;
-  min-height: 700px;
+  width: 50%;
+  height: 700px;
+  overflow: hidden;
+  border-right: 1px solid var(--color-background-mute);
 }
 
 .region-map-title {
@@ -228,6 +230,29 @@ function onRegionSelected(regionCode: string) {
 .hover-component:hover {
   cursor: pointer;
 }
+@media only screen and (max-width: 1350px) {
+  .region-map {
+    border-right: none;
+    border-top: 1px solid var(--color-background-mute);
+    padding-top: 20px;
+  }
+
+  .region-main-data {
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+
+  .region-map {
+    width: 100%;
+    order: 2;
+  }
+
+  .region-info {
+    width: 100%;
+    order: 1;
+  }
+}
 
 @media only screen and (max-width: 1050px) {
   .modal-r {
@@ -240,21 +265,6 @@ function onRegionSelected(regionCode: string) {
 
   .region-main-data {
     margin-bottom: 80px;
-  }
-}
-
-@media only screen and (max-width: 1050px) {
-  .region-main-data {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .region-map {
-    order: 2;
-  }
-
-  .region-info {
-    order: 1;
   }
 
   .modal-r-indicator {
@@ -270,6 +280,15 @@ function onRegionSelected(regionCode: string) {
   .modal-r-card {
     width: 250px;
   }
+
+  .region-map {
+    margin-bottom: 20px;
+    height: 570px;
+  }
+
+  .region-main-data {
+    margin-bottom: 20px;
+  }
 }
 
 @media only screen and (max-width: 675px) {
@@ -280,8 +299,7 @@ function onRegionSelected(regionCode: string) {
 
 @media only screen and (min-width: 3000px) {
   .region-map {
-    max-height: 40vw;
-    width: 60%;
+    height: 40vw;
   }
 
   .region-map-title {
