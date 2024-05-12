@@ -78,5 +78,18 @@ export const useStoreAuthorization = defineStore('storeAuthorization', () => {
     return response;
   }
 
-  return { isAuthorized, imgPath, userData, checkIfUserIsAuthenticated, getUserData };
+  async function getAnotherUserData(id: string): Promise<UserData> {
+    const userData = await fetch(`${BASE_URL}/users/${id}/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+    });
+    const response: UserData = await userData.json();
+
+    return response;
+  }
+
+  return { isAuthorized, imgPath, userData, getAnotherUserData, checkIfUserIsAuthenticated, getUserData };
 });

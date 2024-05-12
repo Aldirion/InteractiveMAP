@@ -7,6 +7,7 @@ export type EmployeeData = {
   quote: string;
   region_id: number;
   avatar: string;
+  user: number;
 };
 
 export type EmployeeTeamData = {

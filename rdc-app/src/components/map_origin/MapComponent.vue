@@ -111,7 +111,7 @@ onMounted(async () => {
     const mouseUpCb = () => {
       endClick = new Date().getTime();
 
-      if (endClick! - startClick! < 100) {
+      if (endClick! - startClick! < 150) {
         if (props.componentRegionCode == 'global') {
           emit('regionSelected', activeRegionCode);
         }

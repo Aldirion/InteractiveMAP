@@ -11,6 +11,7 @@ import SchoolsRegionData from '@/components/educational_spaces/SchoolsRegionData
 import SPORegionData from '@/components/educational_spaces/SPORegionData.vue';
 import UnderDevelopmentPage from '@/components/pages/UnderDevelopmentPage.vue';
 import ActiveMunicipality from '@/components/municipalities/ActiveMunicipality.vue';
+import UserProfileView from '@/components/user/UserProfileView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -69,6 +70,13 @@ const router = createRouter({
       path: '/map/:region_code/team',
       name: 'active_region_team',
       component: RegionTeam,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/team/worker/:user_id',
+      name: 'active_region_worker',
+      component: UserProfileView,
+      props: true,
       meta: { requiresAuth: true },
     },
     {

@@ -7,6 +7,7 @@ import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.v
 import ListComponent from '@/components/common/ListComponent.vue';
 import LoaderComponent from '@/components/common/LoaderComponent.vue';
 import ListItemComponent from '@/components/common/ListItemComponent.vue';
+import router from '@/router';
 
 const route = useRoute();
 const regionCode = route.params.region_code as string;
@@ -24,6 +25,10 @@ onMounted(async () => {
   employeeTeam.value = await store.getEmployeeByRegionCode(regionId);
   isLoaded.value = true;
 });
+
+function routedToUserProfile(userId: number) {
+  router.push({ name: 'active_region_worker', params: { region_code: `${regionCode}`, user_id: `${userId}` } });
+}
 </script>
 
 <template>
@@ -39,7 +44,7 @@ onMounted(async () => {
         :team="employee"
         :opened="employee.count < 5"
       >
-        <ListItemComponent v-for="worker in employee.data" :key="worker.id">
+        <ListItemComponent v-for="worker in employee.data" :key="worker.id" @click="routedToUserProfile(worker.user)">
           <div class="item-about">
             <p class="item-name">{{ worker.lastname }} {{ worker.firstname }} {{ worker.patronymic }}</p>
             <p class="item-email">{{ worker.email }} {{ worker.region_id }}</p>
