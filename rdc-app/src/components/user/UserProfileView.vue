@@ -119,4 +119,11 @@ onMounted(async () => {
   border-radius: 5px;
   margin: 0 auto;
 }
+
+@media only screen and (max-width: 520px) {
+  .user {
+    flex-direction: column;
+    align-items: center;
+  }
+}
 </style>

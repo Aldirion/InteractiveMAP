@@ -87,7 +87,7 @@ async function saveUserImage() {
             <h4 class="img-title">
               {{ store.userData.lastname }} {{ store.userData.firstname }} {{ store.userData.patronymic }}
             </h4>
-            <span v-for="post in store.userData.posts" :key="post.tab_number">
+            <span v-for="post in store.userData.posts" :key="post.tab_number" class="post">
               <p class="user-post">{{ post.post_title }}</p>
               <p class="user-post-sub">{{ post.subdivision_title }}</p>
             </span>
@@ -139,6 +139,7 @@ async function saveUserImage() {
 
 .personal-data {
   width: 100%;
+  margin-bottom: 50px;
 }
 
 .user-photo {
@@ -294,6 +295,65 @@ async function saveUserImage() {
     border-radius: 0.3vw;
     width: 2.5vw;
     font-size: 1.2vw;
+  }
+}
+
+@media only screen and (max-width: 1120px) {
+  .img-container {
+    width: 150px;
+    height: 150px;
+  }
+
+  .img-title {
+    font-size: 1.3rem;
+  }
+
+  .user-general-info {
+    gap: 20px;
+  }
+
+  .inputfile::file-selector-button {
+    padding: 0 10px;
+    height: 30px;
+    margin-right: 10px;
+  }
+
+  .file-container {
+    gap: 10px;
+  }
+}
+
+@media only screen and (max-width: 890px) {
+  .profile {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 570px) {
+  .img-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .img-title {
+    font-size: 1.1rem;
+  }
+
+  .inputfile::file-selector-button {
+    padding: 0 5px;
+    font-size: 0.7rem;
+  }
+
+  .inputfile {
+    width: 100px;
+  }
+
+  .file-container {
+    gap: 5px;
+  }
+
+  .post {
+    font-size: 0.9rem;
   }
 }
 </style>

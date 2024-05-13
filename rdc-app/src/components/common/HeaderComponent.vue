@@ -82,7 +82,7 @@ function logout() {
 
       <span class="theme" @click="changeTheme()">
         <span class="material-symbols-outlined">{{ currentThemeIcon }}</span>
-        Сменить тему
+        {{ currentTheme == 'dark' ? 'Темная тема' : 'Светлая тема' }}
       </span>
 
       <RouterLink to="/" class="logout" @click="logout" v-if="store.isAuthorized">

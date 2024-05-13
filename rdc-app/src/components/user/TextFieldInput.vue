@@ -106,6 +106,18 @@ function rejectChanges() {
   height: calc(6.25rem + 2px);
 }
 
+@media only screen and (max-width: 1120px) {
+  .input-text {
+    height: calc(2.1rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .textarea {
+    height: calc(6.25rem + 2px);
+  }
+}
+
 @media only screen and (min-width: 3000px) {
   .input-text {
     height: calc(2.25vw + 2px);

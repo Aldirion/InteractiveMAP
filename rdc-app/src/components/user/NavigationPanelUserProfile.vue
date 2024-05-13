@@ -39,6 +39,7 @@ function logout() {
   border-radius: 0.25rem;
   padding: 15px;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .control-panel-nav {
@@ -88,6 +89,20 @@ function logout() {
 
   .material-symbols-outlined {
     font-size: 1vw;
+  }
+}
+
+@media only screen and (max-width: 1120px) {
+  .control-panel {
+    width: 220px;
+    height: 620px;
+  }
+}
+
+@media only screen and (max-width: 890px) {
+  .control-panel {
+    width: 100%;
+    height: 200px;
   }
 }
 </style>

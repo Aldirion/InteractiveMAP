@@ -15,6 +15,10 @@
   padding: 10px;
 }
 
+.item {
+  cursor: pointer;
+}
+
 :slotted(.img-container) {
   width: 80px;
   height: 80px;
