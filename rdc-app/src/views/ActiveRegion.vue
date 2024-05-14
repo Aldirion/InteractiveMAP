@@ -50,7 +50,7 @@ function educationalSpaces() {
 }
 
 function onRegionSelected(regionCode: string) {
-  router.push({ name: 'active_region', params: { region_code: `${regionCode}` } });
+  router.push({ name: 'active_municipality', params: { municipality_code: `${regionCode}` } });
 }
 </script>
 

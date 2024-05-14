@@ -42,7 +42,7 @@ watch(hoveredRegionCode, async () => {
 function onMouseMove(region: Element, event: MouseEvent) {
   const regionCode = region.getAttribute('data-code');
 
-  if (hoveredRegionCode.value != regionCode) {
+  if (hoveredRegionCode.value !== regionCode) {
     showToolTip.value = true;
     hoveredRegionCode.value = region.getAttribute('data-code');
   }
@@ -124,9 +124,7 @@ onMounted(async () => {
       endClick = new Date().getTime();
 
       if (endClick! - startClick! < 150) {
-        if (props.componentRegionCode == 'global') {
-          emit('regionSelected', activeRegionCode);
-        }
+        emit('regionSelected', activeRegionCode);
       }
     };
 

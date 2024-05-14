@@ -13,6 +13,10 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
     title: 'region',
     url: '/map/region',
   },
+  municipality: {
+    title: 'municipality',
+    url: '/map/region/municipality',
+  },
   'educational-spaces': {
     title: 'Воспитательные пространства',
     url: '/map/region/educational-spaces',
@@ -37,11 +41,13 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
 
 const props = defineProps<{
   regionName: string;
+  municipalityName?: string;
 }>();
 
 const path = route.fullPath.split('/');
 path.shift();
 let regionCode = path[1];
+let municipalityCode = path[2];
 
 let titlesRoute = computed(() => {
   let titles: { title: string; url: string }[] = reactive([]);
@@ -54,7 +60,14 @@ let titlesRoute = computed(() => {
       });
     }
 
-    if (pageName.includes('RU-') || idx === 1) {
+    if (pageName.includes(regionCode.split('-')[1] + '-') && idx === 2) {
+      titles.push({
+        title: pathTitles['municipality'].title.replace('municipality', props.municipalityName!),
+        url: pathTitles['municipality'].url.replace('municipality', municipalityCode),
+      });
+    }
+
+    if (pageName.includes('RU-') && idx === 1) {
       titles.push({
         title: pathTitles['region'].title.replace('region', props.regionName),
         url: pathTitles['region'].url.replace('region', regionCode),
