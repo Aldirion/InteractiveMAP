@@ -2,6 +2,9 @@
 import VkSVG from '@/assets/vk.svg';
 import TelegramSVG from '@/assets/telegram.svg';
 import WebSVG from '@/assets/web.svg';
+import { useStoreAuthorization } from '@/store/authorization';
+
+const store = useStoreAuthorization();
 </script>
 
 <template>
@@ -19,11 +22,11 @@ import WebSVG from '@/assets/web.svg';
       </div>
     </div>
 
-    <div class="navigation">
+    <div class="navigation" v-if="store.isAuthorized">
       <h4 class="footer-title">О сайте</h4>
-      <a class="footer-link" href="#">Личный кабинет</a>
-      <a class="footer-link" href="#">Главная</a>
-      <a class="footer-link" href="#">Выбрать регион</a>
+      <RouterLink to="/personal-account" class="footer-link">Личный кабинет</RouterLink>
+      <RouterLink to="/map" class="footer-link">Главная</RouterLink>
+      <RouterLink to="/map" class="footer-link">Выбрать регион</RouterLink>
     </div>
 
     <div class="social">
@@ -49,7 +52,9 @@ import WebSVG from '@/assets/web.svg';
   justify-content: space-around;
   align-items: start;
   gap: 50px;
-  margin-top: 200px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
   padding: 0 10vw;
   width: 100%;
   height: 250px;
@@ -207,6 +212,50 @@ import WebSVG from '@/assets/web.svg';
 
   .footer-title {
     font-size: 15px;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .footer {
+    height: 10vw;
+  }
+
+  .company-logo-container {
+    width: 6vw;
+    height: 6vw;
+    margin-top: 2vw;
+  }
+
+  .about-container {
+    width: 18vw;
+  }
+
+  .about-company {
+    gap: 0.5vw;
+  }
+
+  .about-company-text {
+    font-size: 0.8vw;
+  }
+
+  .footer-title {
+    font-size: 1vw;
+    padding-top: 2vw;
+    padding-bottom: 0.5vw;
+  }
+
+  .navigation {
+    gap: 0.3vw;
+    font-size: 0.7vw;
+  }
+
+  .logo {
+    width: 2vw;
+  }
+
+  .social-container {
+    gap: 0.5vw;
+    padding-top: 0.5vw;
   }
 }
 </style>

@@ -4,9 +4,11 @@
 #app {
   width: 100%;
   font-weight: normal;
+  position: relative;
   color: var(--color-text);
   background: var(--color-background);
   transition: background .2s linear, color .2s linear;
+  padding-bottom: 300px;
 }
 
 a {
@@ -15,4 +17,11 @@ a {
 
 .material-symbols-outlined {
   user-select: none;
+}
+
+@media only screen and (min-width: 3000px) {
+  #app {
+    padding-bottom: 12vw;
+    font-size: 1vw;
+  }
 }

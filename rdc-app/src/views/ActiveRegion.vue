@@ -6,13 +6,14 @@ import { useStoreRegions } from '@/store/store';
 import RRC from '@/components/active_region/RRC.vue';
 import MapComponent from '@/components/map_origin/MapComponent.vue';
 import LineChart from '@/components/charts/LineChart.vue';
-import type { EmployeeData, Region } from '@/interfaces/regions';
+import type { Region } from '@/interfaces/regions';
 import LoaderComponent from '@/components/common/LoaderComponent.vue';
+import type { EmployeeData } from '@/interfaces/employee';
 
 const route = useRoute();
 const store = useStoreRegions();
+const regionCode = route.params.region_code as string;
 
-let regionCode = route.fullPath.split('/')[2];
 let regionData: Ref<Region | null> = ref(null);
 let supervizorData: Ref<EmployeeData | null> = ref(null);
 
@@ -31,11 +32,17 @@ onMounted(async () => {
     totalCount += employee[post].count;
   }
   allEmployeeCount.value = totalCount;
-  supervizorData.value = employee['Главный эксперт'].data[0];
+  if ('Главный эксперт' in employee) {
+    supervizorData.value = employee['Главный эксперт'].data[0];
+  }
 });
 
 function regionTeam() {
   router.push({ name: 'active_region_team', params: { region_code: `${regionCode}` } });
+}
+
+function underDevelopment() {
+  router.push({ name: 'active_region_develop', params: { region_code: `${regionCode}` } });
 }
 
 function educationalSpaces() {
@@ -43,7 +50,7 @@ function educationalSpaces() {
 }
 
 function onRegionSelected(regionCode: string) {
-  router.push({ name: 'active_region', params: { region_code: `${regionCode}` } });
+  router.push({ name: 'active_municipality', params: { municipality_code: `${regionCode}` } });
 }
 </script>
 
@@ -54,12 +61,18 @@ function onRegionSelected(regionCode: string) {
       <div class="region-map">
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
-      <RRC v-if="regionData && supervizorData" :region-data="regionData" :supervizor-data="supervizorData" />
+      <RRC
+        v-if="regionData"
+        :address="regionData.rrc_address"
+        :email="regionData.rrc_email"
+        :region-data="regionData"
+        :supervizor-data="supervizorData"
+      />
       <LoaderComponent v-else />
     </div>
 
     <div class="modal-r">
-      <div class="modal-r-card hover-component" @click="regionTeam()">
+      <div class="modal-r-card hover-component" @click="regionTeam">
         <div class="modal-r-h">Региональная команда</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">{{ allEmployeeCount ?? 'Загрузка...' }}</div>
@@ -67,7 +80,7 @@ function onRegionSelected(regionCode: string) {
         </div>
       </div>
 
-      <div class="modal-r-card hover-component" @click="educationalSpaces()">
+      <div class="modal-r-card hover-component" @click="educationalSpaces">
         <div class="modal-r-h">Воспитательные пространства и объединения</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">{{ allInstitutionsCount ?? 'Загрузка...' }}</div>
@@ -75,7 +88,7 @@ function onRegionSelected(regionCode: string) {
         </div>
       </div>
 
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Повышение квалификации</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">630</div>
@@ -86,35 +99,35 @@ function onRegionSelected(regionCode: string) {
 
     <h1 class="region-title">Проекты Росдетцентра</h1>
     <div class="modal-r">
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Навигаторы детства</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">1254</div>
           <h2 style="text-align: center">Участников конкурса</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Лига Вожатых</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">72</div>
           <h2 style="text-align: center">Участника конкурса</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Добро не уходит на каникулы</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">130</div>
           <h2 style="text-align: center">Заявок на грантовый конкурс</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Орлята России</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">20000</div>
           <h2 style="text-align: center">Орлят</h2>
         </div>
       </div>
-      <div class="modal-r-card">
+      <div class="modal-r-card" @click="underDevelopment">
         <div class="modal-r-h">Профильные смены</div>
         <div class="modal-r-container">
           <div class="modal-r-indicator">1000</div>
@@ -134,7 +147,7 @@ function onRegionSelected(regionCode: string) {
     </div>
 
     <h1 class="region-title">Партнеры</h1>
-    <div class="modal-r">
+    <div class="modal-r partners">
       <img style="padding: 5px" src="/partners/unarmy.png" />
       <img style="padding: 5px" src="/partners/unarmy.png" />
       <img style="padding: 5px" src="/partners/unarmy.png" />
@@ -144,7 +157,7 @@ function onRegionSelected(regionCode: string) {
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="css">
 .region {
   width: 100%;
   display: flex;
@@ -166,8 +179,10 @@ function onRegionSelected(regionCode: string) {
 }
 
 .region-map {
-  width: 40vw;
-  max-height: 700px;
+  width: 50%;
+  height: 700px;
+  overflow: hidden;
+  border-right: 1px solid var(--color-background-mute);
 }
 
 .region-map-title {
@@ -189,6 +204,11 @@ function onRegionSelected(regionCode: string) {
   background: var(--color-background-soft);
   text-align: center;
   font-weight: bold;
+  user-select: none;
+}
+
+.modal-r-card:hover {
+  cursor: pointer;
 }
 
 .modal-r-h {
@@ -213,6 +233,37 @@ function onRegionSelected(regionCode: string) {
   cursor: pointer;
 }
 
+.vacation {
+  width: 45%;
+  height: 100%;
+  text-align: center;
+  margin: auto 0;
+}
+
+@media only screen and (max-width: 1350px) {
+  .region-map {
+    border-right: none;
+    border-top: 1px solid var(--color-background-mute);
+    padding-top: 20px;
+  }
+
+  .region-main-data {
+    flex-direction: column;
+    align-items: center;
+    gap: 100px;
+  }
+
+  .region-map {
+    width: 100%;
+    order: 2;
+  }
+
+  .region-info {
+    width: 100%;
+    order: 1;
+  }
+}
+
 @media only screen and (max-width: 1050px) {
   .modal-r {
     gap: 20px;
@@ -224,21 +275,6 @@ function onRegionSelected(regionCode: string) {
 
   .region-main-data {
     margin-bottom: 80px;
-  }
-}
-
-@media only screen and (max-width: 1050px) {
-  .region-main-data {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .region-map {
-    order: 2;
-  }
-
-  .region-info {
-    order: 1;
   }
 
   .modal-r-indicator {
@@ -254,11 +290,59 @@ function onRegionSelected(regionCode: string) {
   .modal-r-card {
     width: 250px;
   }
+
+  .region-map {
+    margin-bottom: 20px;
+    height: 570px;
+  }
+
+  .region-main-data {
+    margin-bottom: 20px;
+  }
 }
 
 @media only screen and (max-width: 675px) {
   .modal-r-card {
     width: 100%;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .region-map {
+    height: 40vw;
+  }
+
+  .region-map-title {
+    font-size: 1.3vw;
+    padding: 1vw 0 3vw;
+  }
+
+  .region-main-data {
+    margin-bottom: 5vw;
+  }
+
+  .modal-r {
+    width: 100%;
+  }
+
+  .modal-r-h {
+    padding: 1vw;
+    font-size: 1vw;
+    letter-spacing: 1px;
+    border-radius: 0.5vw 0.5vw 0px 0px;
+  }
+
+  .modal-r-container {
+    padding: 2vw 1vw;
+  }
+
+  .region-title {
+    margin: 5vw 0;
+    font-size: 1.3vw;
+  }
+
+  .modal-r-indicator {
+    font-size: 3.5vw;
   }
 }
 </style>

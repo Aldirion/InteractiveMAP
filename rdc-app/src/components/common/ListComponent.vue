@@ -65,6 +65,7 @@ const isOpened = ref(props.opened);
 
 .arrow {
   font-size: 2rem;
+  margin: auto 0;
 }
 
 .v-enter-active,
@@ -93,5 +94,43 @@ const isOpened = ref(props.opened);
 
 ::-webkit-scrollbar-thumb:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 1050px) {
+  .list-elem {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .list-elem-title {
+    font-size: 1.1rem;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .list-elem-title {
+    font-size: 1vw;
+    padding: 0.5vw;
+    border-radius: 0.3vw;
+  }
+
+  .arrow {
+    font-size: 2vw;
+  }
+
+  .list-elem-a-lot {
+    height: 1000px;
+    gap: 0.5vw;
+    padding-right: 20px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
 }
 </style>

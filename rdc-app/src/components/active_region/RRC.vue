@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import router from '@/router';
 import DonughtChart from '../charts/DonughtChart.vue';
-import type { EmployeeData, Region } from '@/interfaces/regions';
+import type { Region } from '@/interfaces/regions';
 import { useRoute } from 'vue-router';
+import type { EmployeeData } from '@/interfaces/employee';
 
 const props = defineProps<{
   regionData: Region;
-  supervizorData: EmployeeData;
+  supervizorData: EmployeeData | null;
+  email: string | null;
+  address: string | null;
 }>();
 const allInstitunions = props.regionData.count_school + props.regionData.count_spo;
 const notCoveredInstitunions = allInstitunions - (props.regionData.comp_count_school + props.regionData.comp_count_spo);
@@ -23,20 +26,28 @@ function checkoutToSPO() {
 
 <template>
   <div class="region-info">
-    <div class="coordinator-about">
+    <div class="coordinator-about" v-if="supervizorData">
       <div class="img-container">
-        <span class="material-symbols-outlined icon">account_circle</span>
+        <img :src="supervizorData.avatar" class="icon" alt="supervizor image" />
       </div>
       <div class="about-container">
         <h2 class="coordinator-name">
           {{ supervizorData.lastname }} {{ supervizorData.firstname }} {{ supervizorData.patronymic }}
         </h2>
         <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
-        <a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru">
+        <a class="coordinator-email" href="mailto:navigatory.detstva.24@rosdetcentr.ru" v-if="email">
           <span class="material-symbols-outlined">mail</span>
-          {{ supervizorData.email }}
+          {{ email }}
         </a>
+        <p class="coordinator-quote" v-if="address">{{ address }}</p>
         <p class="coordinator-quote" v-if="supervizorData.quote !== 'nan'">{{ supervizorData?.quote }}</p>
+      </div>
+    </div>
+    <div class="coordinator-about" v-else>
+      <span class="material-symbols-outlined icon-acc">account_circle</span>
+      <div class="about-container">
+        <h2 class="coordinator-name">Вакансия доступна</h2>
+        <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
       </div>
     </div>
 
@@ -63,9 +74,20 @@ function checkoutToSPO() {
 .img-container {
   width: 150px;
   height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 .icon {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
+}
+
+.icon-acc {
   font-size: 150px;
   color: var(--color-background-mute);
 }
@@ -142,6 +164,10 @@ function checkoutToSPO() {
     height: 120px;
   }
 
+  .icon-acc {
+    font-size: 120px;
+  }
+
   .coordinator-avatar {
     width: 120px;
     height: 120px;
@@ -159,6 +185,54 @@ function checkoutToSPO() {
 
   .modal-r-indicator-small {
     font-size: 1.5rem;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  .img-container {
+    width: 7vw;
+    height: 7vw;
+  }
+
+  .icon-acc {
+    font-size: 7vw;
+  }
+
+  .coordinator-name {
+    font-size: 1.2vw;
+  }
+
+  .coordinator-subtitle {
+    font-size: 0.8vw;
+    color: rgb(189, 187, 187);
+  }
+
+  .coordinator-about {
+    gap: 2vw;
+    margin-bottom: 2vw;
+  }
+
+  .coordinator-email {
+    gap: 0.5vw;
+    margin-top: 1vw;
+    font-size: 0.8vw;
+  }
+
+  .coordinator-quote {
+    font-size: 0.8vw;
+  }
+
+  .modal-r-container {
+    width: 50%;
+    padding: 1vw 1vw;
+  }
+
+  .modal-r-indicator-small {
+    font-size: 2.2vw;
+  }
+
+  .modal-r-indicator-light {
+    font-size: 1.2vw;
   }
 }
 </style>

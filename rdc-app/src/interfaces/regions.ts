@@ -1,16 +1,56 @@
 export type Region = {
   id: number;
-  regionid: number;
   district: 15;
   title: string;
   codegibdd: string;
   codegost: string;
+  rrc_address: null | string;
+  rrc_email: null | string;
   population: number;
   count_school: number;
   count_spo: number;
   comp_count_spo: number;
   comp_count_school: number;
   comp_indicator_count_eduinst: number;
+  school: SchoolRegion;
+  spo: SPORegion;
+};
+
+export type SchoolRegion = {
+  total_kdn: number | null;
+  total_museum: number | null;
+  total_mediacentre: number | null;
+  total_theatre: number | null;
+  total_tour_club: number | null;
+  total_cinema_club: number | null;
+  total_mpc: number | null;
+  total_yunarmy_participants: number | null;
+  total_classes_are_eagles: number | null;
+  total_ssc: number | null;
+  total_volunteers_squad: number | null;
+  total_leaders_squad: number | null;
+  total_uid: number | null;
+  total_y_rescuers_squad: number | null;
+  total_cdi: number | null;
+  total_ssgo: number | null;
+  total_leaders_league: number | null;
+};
+
+export type SPORegion = {
+  total_kdn: number | null;
+  total_museum: number | null;
+  total_mediacentre: number | null;
+  total_theatre: number | null;
+  total_tour_club: number | null;
+  total_cinema_club: number | null;
+  total_mpc: number | null;
+  total_ssc: number | null;
+  total_volunteers_squad: number | null;
+  total_leaders_squad: number | null;
+  total_ccr: number | null;
+  total_cyi: number | null;
+  total_ssgo: number | null;
+  total_leaders_league: number | null;
 };
 
 export type Municipalities = {
@@ -18,30 +58,14 @@ export type Municipalities = {
   title: string;
   region: number;
   oktmo5: string;
+  codegost: string;
   count_school: null;
   count_spo: null;
   comp_count_school: number;
   comp_count_spo: number;
   comp_indicator_count_eduinst: number;
-};
-
-export type EmployeeData = {
-  id: number;
-  firstname: string;
-  lastname: string;
-  patronymic: string;
-  email: string;
-  quote: string;
-  region_id: number;
-};
-
-export type EmployeeTeamData = {
-  count: number;
-  data: EmployeeData[];
-};
-
-export type EmployeeTeam = {
-  [key: string]: EmployeeTeamData;
+  school: SchoolRegion;
+  spo: SPORegion;
 };
 
 export type DataSchool = {

@@ -17,7 +17,7 @@ const topPosition = computed(() => {
 });
 const leftPosition = computed(() => {
   const width = container.value?.clientWidth!;
-  if (props.mouseX + width >= window.innerWidth) {
+  if (props.mouseX + width >= window.innerWidth - 20) {
     return props.mouseX - width;
   }
 

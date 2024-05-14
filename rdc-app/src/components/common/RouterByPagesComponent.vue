@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import router from '@/router';
-import { useStoreRegions } from '@/store/store';
-import { computed, onMounted, reactive, ref, type Ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 const route = useRoute();
-const store = useStoreRegions();
 
 const pathTitles: { [key: string]: { title: string; url: string } } = {
   map: {
@@ -15,6 +13,10 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
     title: 'region',
     url: '/map/region',
   },
+  municipality: {
+    title: 'municipality',
+    url: '/map/region/municipality',
+  },
   'educational-spaces': {
     title: 'Воспитательные пространства',
     url: '/map/region/educational-spaces',
@@ -22,6 +24,10 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
   team: {
     title: 'Региональная команда',
     url: '/map/region/team',
+  },
+  worker: {
+    title: 'Работник',
+    url: '/map/region/team/worker',
   },
   schools: {
     title: 'Школы',
@@ -33,16 +39,15 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
   },
 };
 
+const props = defineProps<{
+  regionName: string;
+  municipalityName?: string;
+}>();
+
 const path = route.fullPath.split('/');
 path.shift();
-let regionName: Ref<string | null> = ref(null);
 let regionCode = path[1];
-
-onMounted(async () => {
-  const regionsData = await store.getRegions();
-
-  regionName.value = regionsData[regionCode].title;
-});
+let municipalityCode = path[2];
 
 let titlesRoute = computed(() => {
   let titles: { title: string; url: string }[] = reactive([]);
@@ -55,13 +60,21 @@ let titlesRoute = computed(() => {
       });
     }
 
-    if (pageName.includes('RU-') || idx === 1) {
+    if (pageName.includes(regionCode.split('-')[1] + '-') && idx === 2) {
       titles.push({
-        title: pathTitles['region'].title.replace('region', regionName.value!),
+        title: pathTitles['municipality'].title.replace('municipality', props.municipalityName!),
+        url: pathTitles['municipality'].url.replace('municipality', municipalityCode),
+      });
+    }
+
+    if (pageName.includes('RU-') && idx === 1) {
+      titles.push({
+        title: pathTitles['region'].title.replace('region', props.regionName),
         url: pathTitles['region'].url.replace('region', regionCode),
       });
     }
   });
+
   return titles;
 });
 
@@ -76,7 +89,7 @@ function redirectTopage(pagePath: string) {
       <a class="page" @click="redirectTopage(pageName.url)">
         {{ pageName.title }}
       </a>
-      <div v-if="idx != titlesRoute.length - 1">>></div>
+      <div class="arrow" v-if="idx != titlesRoute.length - 1">>></div>
     </template>
   </div>
 </template>
@@ -92,9 +105,26 @@ function redirectTopage(pagePath: string) {
 .page {
   text-transform: uppercase;
   user-select: none;
+  text-align: center;
+  margin: auto 0;
 }
 
 .page:hover {
   cursor: pointer;
+}
+
+.arrow {
+  margin: auto 0;
+}
+
+@media only screen and (max-width: 550px) {
+  .router-container {
+    margin: 20px 0 30px;
+    gap: 10px;
+  }
+
+  .page {
+    font-size: 0.9rem;
+  }
 }
 </style>

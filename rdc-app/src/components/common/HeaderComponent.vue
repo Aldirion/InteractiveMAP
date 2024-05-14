@@ -6,10 +6,11 @@ const store = useStoreAuthorization();
 
 let currentThemeIcon = ref('light_mode');
 let currentTheme = ref('');
-let isOpenHeader = ref(false);
+let showUserPanel = ref(false);
 
-onMounted(() => {
+onMounted(async () => {
   const localTheme = localStorage.getItem('theme');
+
   if (localTheme) {
     currentTheme.value = localTheme === 'dark' ? 'dark' : 'light';
     currentThemeIcon.value = localTheme === 'dark' ? 'dark_mode' : 'light_mode';
@@ -40,10 +41,6 @@ function setTheme() {
   localStorage.setItem('theme', currentTheme.value);
 }
 
-function toggleHeader() {
-  isOpenHeader.value = !isOpenHeader.value;
-}
-
 function logout() {
   localStorage.removeItem('access');
   localStorage.removeItem('refresh');
@@ -52,26 +49,49 @@ function logout() {
 
 <template>
   <header>
-    <div class="img-container">
+    <div class="logo-container">
       <img class="logo" src="../../assets/logo_purple.png" alt="logotype" />
     </div>
-    <nav class="wrapper" :class="{ 'wrapper-phone-open': isOpenHeader, 'wrapper-phone-close': !isOpenHeader }">
+    <nav class="wrapper">
       <RouterLink to="/map" v-if="store.isAuthorized">Карта</RouterLink>
+      <span class="material-symbols-outlined user" v-if="store.isAuthorized" @click="showUserPanel = !showUserPanel"
+        >person</span
+      >
+    </nav>
+  </header>
+
+  <div class="pop-up-account" v-if="showUserPanel">
+    <div class="user-acc">
+      <div class="img-container">
+        <img class="user-img" :src="store.imgPath" alt="user photo" />
+      </div>
+
+      <div class="user-data">
+        <div class="name">
+          {{ store.userData?.lastname }} {{ store.userData?.firstname }} {{ store.userData?.patronymic }}
+        </div>
+        <div class="email">{{ store.userData?.email }}</div>
+      </div>
+    </div>
+
+    <div class="user-nav">
       <RouterLink to="/personal-account" class="account" v-if="store.isAuthorized">
         <span class="material-symbols-outlined">person</span>
-        <span>Кабинет</span>
+        <span>Личный кабинет</span>
       </RouterLink>
+
+      <span class="theme" @click="changeTheme()">
+        <span class="material-symbols-outlined">{{ currentThemeIcon }}</span>
+        {{ currentTheme == 'dark' ? 'Темная тема' : 'Светлая тема' }}
+      </span>
+
       <RouterLink to="/" class="logout" @click="logout" v-if="store.isAuthorized">
         <span class="material-symbols-outlined">logout</span>
         <span>Выйти</span>
       </RouterLink>
-    </nav>
-    <div class="theme-toggle">
-      <span @click="changeTheme()" class="material-symbols-outlined">{{ currentThemeIcon }}</span>
-      <span class="material-symbols-outlined menu" @click="toggleHeader">{{ !isOpenHeader ? 'menu' : 'close' }}</span>
     </div>
-  </header>
-  <div class="pop-up-back" :style="{ display: isOpenHeader ? 'block' : 'none' }"></div>
+  </div>
+  <div v-if="showUserPanel" class="pop-up-back" @click="showUserPanel = false"></div>
 </template>
 
 <style lang="css" scoped>
@@ -98,6 +118,25 @@ header {
   font-size: 18px;
 }
 
+.theme:hover,
+.user:hover {
+  cursor: pointer;
+}
+
+.user-acc {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-background-mute);
+}
+
+.user-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+}
+
 nav a {
   display: flex;
   align-items: center;
@@ -107,92 +146,172 @@ nav a {
   color: var(--color-text);
 }
 
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  gap: 30px;
-}
-
-.theme-toggle:hover {
-  cursor: pointer;
-}
-
-nav a.router-link-exact-active {
-  color: rgb(70, 70, 182);
-}
-
-nav a:hover,
-.logout:hover {
-  color: rgb(94, 94, 192);
-}
-
-.menu {
-  display: none;
-}
-
 .img-container {
-  height: 60%;
+  position: relative;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.logo-container {
+  width: 40px;
+  height: 40px;
   margin: auto 0;
 }
 
-.logo {
+.user-img {
+  width: 100%;
   height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
+}
+
+.pop-up-account {
+  width: 250px;
+  height: 230px;
+  position: fixed;
+  top: 50px;
+  right: 10vw;
+  z-index: 22;
+  background-color: var(--color-background-soft);
+  border: 1px solid var(--color-background-mute);
+  padding: 10px;
+  border-radius: 5px;
 }
 
 .pop-up-back {
-  display: none;
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
-  top: 0px;
-  right: 0px;
-  z-index: 19;
-  background-color: rgba(0, 0, 0, 0.507);
-  transition: display 0.3s linear;
+  top: 0;
+  left: 0;
+  z-index: 21;
 }
 
-.wrapper-phone-open {
-  right: 0px;
+.name {
+  font-size: 0.8rem;
 }
 
-.wrapper-phone-close {
-  right: -60%;
+.email {
+  font-size: 0.7rem;
+  color: var(--vt-orage-light);
+}
+
+.user-data {
+  width: 100px;
+}
+
+nav a.router-link-exact-active {
+  color: var(--vt-c-purple);
+}
+
+nav a:hover {
+  color: var(--vt-c-purple);
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
 }
 
 .logout,
-.account {
+.account,
+.theme {
   display: flex;
   align-items: center;
   gap: 5px;
   transition: color 0.2s linear;
+  color: var(--color-text);
+}
+
+.logout:hover,
+.account:hover,
+.theme:hover {
+  color: var(--vt-c-purple);
 }
 
 @media only screen and (max-width: 1130px) {
   header {
     height: 40px;
-    justify-content: space-between;
     padding: 0 10vw;
   }
 
-  .wrapper {
-    position: fixed;
-    flex-direction: column;
-    top: 40px;
-    width: 60%;
-    height: 100%;
-    justify-content: center;
-    background-color: var(--color-background-soft);
-    transition: right 0.2s linear;
+  .logo-container {
+    width: 30px;
+    height: 30px;
   }
 
-  nav a {
-    justify-content: center;
-    width: 100%;
-    height: 50px;
+  .logo {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+  .pop-up-account {
+    right: 5vw;
+  }
+}
+
+@media only screen and (min-width: 3000px) {
+  header {
+    height: 4vh;
+    gap: 30px;
   }
 
-  .menu {
-    display: block;
+  nav a,
+  .user {
+    font-size: 1.2vw;
+  }
+
+  .pop-up-account {
+    width: 15vw;
+    height: 17vw;
+    top: 4vh;
+    padding: 1vw;
+    border: 0.2vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
+  }
+
+  .user-acc {
+    gap: 0.5vw;
+    padding-bottom: 1vw;
+  }
+
+  .user-nav .material-symbols-outlined {
+    font-size: 1.5vw;
+  }
+
+  .user-nav {
+    gap: 1.5vw;
+    margin-top: 1vw;
+    font-size: 1.2vw;
+  }
+
+  .user-data {
+    width: 8.5vw;
+  }
+
+  .name {
+    font-size: 0.9vw;
+  }
+
+  .email {
+    font-size: 0.7vw;
+  }
+
+  .logout,
+  .account,
+  .theme {
+    gap: 0.5vw;
+  }
+
+  .img-container[data-v-c7b76637] {
+    width: 4vw;
+    height: 4vw;
+    border-radius: 50%;
   }
 }
 </style>

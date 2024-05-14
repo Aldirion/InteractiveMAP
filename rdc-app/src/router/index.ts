@@ -9,6 +9,9 @@ import PersonalAccountPage from '@/components/pages/PersonalAccountPage.vue';
 import ErrorPage from '@/components/pages/ErrorPage.vue';
 import SchoolsRegionData from '@/components/educational_spaces/SchoolsRegionData.vue';
 import SPORegionData from '@/components/educational_spaces/SPORegionData.vue';
+import UnderDevelopmentPage from '@/components/pages/UnderDevelopmentPage.vue';
+import ActiveMunicipality from '@/components/municipalities/ActiveMunicipality.vue';
+import UserProfileView from '@/components/user/UserProfileView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,6 +33,19 @@ const router = createRouter({
       name: 'active_region',
       component: ActiveRegion,
       props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/:municipality_code',
+      name: 'active_municipality',
+      component: ActiveMunicipality,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/develop',
+      name: 'active_region_develop',
+      component: UnderDevelopmentPage,
       meta: { requiresAuth: true },
     },
     {
@@ -57,6 +73,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: '/map/:region_code/team/worker/:user_id',
+      name: 'active_region_worker',
+      component: UserProfileView,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/personal-account',
       name: 'personal_account',
       component: PersonalAccountPage,
@@ -73,11 +96,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const store = useStoreAuthorization();
-
   const isAuthenticated = await store.checkIfUserIsAuthenticated();
-  if (to.name === 'home' && isAuthenticated) {
-    next('/map');
-  } else if (to.matched.some((record) => record.meta.requiresAuth) && !isAuthenticated) {
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
     next('/');
   } else {
     next();

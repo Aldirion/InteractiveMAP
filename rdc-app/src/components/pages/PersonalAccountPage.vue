@@ -1,94 +1,134 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useStoreAuthorization } from '@/store/authorization';
+import { onMounted, ref } from 'vue';
+import NavigationPanelUserProfile from '@/components/user/NavigationPanelUserProfile.vue';
+import LoaderComponent from '../common/LoaderComponent.vue';
+import TextFieldInput from '@/components/user/TextFieldInput.vue';
+import { BASE_URL } from '@/interfaces/variables';
+
+const store = useStoreAuthorization();
+let userEmail = ref('');
+let userBio = ref('');
+let userTelegram = ref('');
+let userPhone = ref('');
+let userImg = ref<null | File>(null);
+
+onMounted(async () => {
+  userEmail.value = store.userData!.email !== 'nan' ? store.userData!.email : '';
+  userBio.value = store.userData!.bio ? store.userData!.bio : '';
+  userTelegram.value = store.userData!.telegram_username !== 'nan' ? store.userData!.telegram_username : '';
+  userPhone.value = store.userData!.phone_number !== 'nan' ? store.userData!.phone_number : '';
+});
+
+async function saveNewData() {
+  await fetch(`${BASE_URL}/users/me/`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('access')}`,
+    },
+    body: JSON.stringify({
+      email: userEmail.value,
+      bio: userBio.value,
+      phone_number: userPhone.value,
+      telegram_username: userTelegram.value,
+    }),
+  });
+}
+
+const toBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = reject;
+  });
+
+async function onFileChange(e: Event) {
+  let target = e.target as HTMLInputElement;
+  let files = target.files || [];
+
+  if (!files.length) return;
+
+  userImg.value = files[0];
+}
+
+async function saveUserImage() {
+  if (userImg.value) {
+    const formData = new FormData();
+    formData.append('avatar', userImg.value);
+
+    await fetch(`${BASE_URL}/users/me/`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access')}`,
+      },
+      body: formData,
+    });
+
+    store.imgPath = await toBase64(userImg.value);
+  }
+}
+</script>
+
 <template>
   <div class="profile">
-    <div class="control-panel">
-      <div class="panel-title active-title">
-        <span class="material-symbols-outlined">person</span>
-        <span>Личные данные</span>
-      </div>
-      <div class="panel-title">
-        <span class="material-symbols-outlined">post</span>
-        <span>Должность</span>
-      </div>
-    </div>
+    <NavigationPanelUserProfile />
 
-    <div class="personal-data">
+    <LoaderComponent v-if="store.userData === null" />
+    <div class="personal-data" v-else>
       <div class="user-photo">
-        <span class="material-symbols-outlined img">account_circle</span>
-        <div>
-          <h4 class="img-title">ФИО</h4>
-          <p>должность</p>
-          <span class="img-subtitle">Редактировать изображение</span>
+        <div class="img-container">
+          <img class="user-img" :src="store.imgPath" alt="user photo" />
+        </div>
+
+        <div class="user-general-info">
+          <div>
+            <h4 class="img-title">
+              {{ store.userData.lastname }} {{ store.userData.firstname }} {{ store.userData.patronymic }}
+            </h4>
+            <span v-for="post in store.userData.posts" :key="post.tab_number" class="post">
+              <p class="user-post">{{ post.post_title }}</p>
+              <p class="user-post-sub">{{ post.subdivision_title }}</p>
+            </span>
+          </div>
+
+          <div class="file-container">
+            <input type="file" name="file" class="inputfile" accept="image/png, image/jpeg" @change="onFileChange" />
+            <button @click="saveUserImage" class="material-symbols-outlined file-save">done</button>
+          </div>
         </div>
       </div>
 
       <form @submit.prevent="" class="user-data">
         <fieldset class="form-part">
-          <legend class="title">Личные данные</legend>
-
-          <label class="label-inputs">
-            Фамилия
-            <input class="input-text" type="text" name="lastname" />
-          </label>
-
-          <label class="label-inputs">
-            Имя
-            <input class="input-text" type="text" name="firstname" />
-          </label>
-
-          <label class="label-inputs">
-            Отчество
-            <input class="input-text" type="text" name="patronymic" />
-          </label>
-
-          <label class="label-inputs">
-            Снилс
-            <input class="input-text" type="number" name="snils" />
-          </label>
-
-          <div class="put-in-one-line">
-            <label class="label-inputs">
-              Дата рождения
-              <input class="input-text" type="date" name="birthday" />
-            </label>
-
-            <label class="label-inputs">
-              Пол
-              <select name="gender">
-                <option value="male">Мужской</option>
-                <option value="female">Женский</option>
-              </select>
-            </label>
-          </div>
-        </fieldset>
-
-        <fieldset class="form-part">
           <legend class="title">Контактная информация</legend>
 
-          <label class="label-inputs">
-            Электронная почта
-            <input class="input-text" type="email" name="email" />
-          </label>
+          <TextFieldInput
+            @accept="saveNewData"
+            title="Электронная почта"
+            type="email"
+            v-model="userEmail"
+            name="email"
+          />
+          <TextFieldInput @accept="saveNewData" title="Телеграм" v-model="userTelegram" name="telegram" />
 
-          <label class="label-inputs">
-            Телеграм
-            <input class="input-text" type="text" name="telegram" />
-          </label>
+          <TextFieldInput
+            title="Номер телефона"
+            v-model="userPhone"
+            type="tel"
+            @accept="saveNewData"
+            name="phone"
+            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+          />
 
-          <label class="label-inputs">
-            Номер телефона
-            <input class="input-text" type="tel" name="phone" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" />
-          </label>
-
-          <label class="label-inputs">
-            БИО
-            <textarea class="input-text textarea" name="BIO"></textarea>
-          </label>
+          <TextFieldInput @accept="saveNewData" name="bio" title="БИО" type="textarea" v-model="userBio" />
         </fieldset>
       </form>
     </div>
   </div>
 </template>
+
 <style lang="css" scoped>
 .profile {
   display: flex;
@@ -97,19 +137,9 @@
   padding-top: 7vh;
 }
 
-.control-panel {
-  width: 300px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  border: 1px solid var(--color-subtext);
-  border-radius: 0.25rem;
-  padding: 15px;
-}
-
 .personal-data {
   width: 100%;
+  margin-bottom: 50px;
 }
 
 .user-photo {
@@ -120,8 +150,20 @@
   gap: 20px;
 }
 
-.img {
-  font-size: 125px;
+.img-container {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.user-img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
 }
 
 .img-title {
@@ -135,15 +177,14 @@
 }
 
 .img-subtitle:hover {
-  color: var(--vt-orage-light);
+  color: var(--color-background-mute);
   cursor: pointer;
 }
 
-.panel-title {
+.user-general-info {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 5px;
+  flex-direction: column;
+  gap: 50px;
 }
 
 .user-data {
@@ -151,66 +192,168 @@
   gap: 20px;
 }
 
-.form-part {
-  width: 45%;
+.user-post {
+  color: var(--vt-orage-light);
 }
 
-.label-inputs {
+.user-post:hover {
+  cursor: pointer;
+}
+
+.user-post-sub {
+  color: var(--color-subtext);
+}
+
+.form-part {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  width: 100%;
-}
-
-.put-in-one-line {
-  display: flex;
   gap: 10px;
 }
 
 .title {
-  margin-bottom: 20px;
   font-size: 1.2rem;
+  margin-bottom: 20px;
 }
 
-.input-text {
-  outline: none;
-  width: 100%;
-  height: calc(2.25rem + 2px);
-  padding: 0.375rem 0.75rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
+.inputfile::file-selector-button {
+  border-radius: 4px;
+  padding: 0 16px;
+  height: 40px;
+  cursor: pointer;
   color: var(--color-text);
   background-color: var(--color-background);
-  background-clip: padding-box;
-  border: 1px solid var(--color-subtext);
-  border-radius: 0.25rem;
-  transition:
-    border-color 0.15s ease-in-out,
-    box-shadow 0.15s ease-in-out;
+  border: 1px solid var(--color-background-mute);
+  box-shadow: 0px 1px 0px var(--color-background-mute);
+  margin-right: 16px;
+  transition: background-color 0.3s ease;
 }
 
-.input-text::placeholder {
-  color: #212529;
-  opacity: 0.4;
-}
-
-.input-text:focus {
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem var(--color-background-mute);
-}
-
-.input-text:disabled,
-.input-text[readonly] {
-  background-color: var(--vt-c-subtext-dark-1);
-  opacity: 1;
-}
-
-.active-title {
+.inputfile::file-selector-button:hover {
   background-color: var(--color-background-mute);
-  border-radius: 0.25rem;
 }
 
-.textarea {
-  height: calc(4.25rem + 2px);
+.inputfile::file-selector-button:active {
+  background-color: var(--color-background-soft);
+}
+
+.file-container {
+  display: flex;
+  gap: 20px;
+}
+
+.file-save {
+  border: 1px solid var(--color-background-mute);
+  background-color: var(--color-background);
+  border-radius: 5px;
+  color: var(--vt-accept-color);
+  transition: background-color 0.3s linear;
+}
+
+.file-save:hover,
+.custom-file-upload:hover {
+  cursor: pointer;
+  background-color: var(--color-background-mute);
+}
+
+@media only screen and (min-width: 3000px) {
+  .img-container {
+    width: 7vw;
+    height: 7vw;
+  }
+
+  .img-title {
+    font-size: 1.2vw;
+  }
+  .inputfile {
+    font-size: 1vw;
+  }
+
+  .inputfile::file-selector-button {
+    border-radius: 0.3vw;
+    padding: 0 1vw;
+    height: 2vw;
+    border: 0.1vw solid var(--color-background-mute);
+    box-shadow: 0px 0.1vw 0px var(--color-background-mute);
+    margin-right: 1vw;
+  }
+
+  .title {
+    font-size: 1.1vw;
+    margin-bottom: 1vw;
+  }
+
+  .user-photo {
+    border-bottom: 0.1vw solid var(--color-background-mute);
+    padding: 0.5vw 0.5vw 1vw;
+    margin-bottom: 1vw;
+    gap: 0.5vw;
+  }
+
+  .file-save {
+    border: 0.1vw solid var(--color-background-mute);
+    border-radius: 0.3vw;
+    width: 2.5vw;
+    font-size: 1.2vw;
+  }
+}
+
+@media only screen and (max-width: 1120px) {
+  .img-container {
+    width: 150px;
+    height: 150px;
+  }
+
+  .img-title {
+    font-size: 1.3rem;
+  }
+
+  .user-general-info {
+    gap: 20px;
+  }
+
+  .inputfile::file-selector-button {
+    padding: 0 10px;
+    height: 30px;
+    margin-right: 10px;
+  }
+
+  .file-container {
+    gap: 10px;
+  }
+}
+
+@media only screen and (max-width: 890px) {
+  .profile {
+    flex-direction: column;
+  }
+}
+
+@media only screen and (max-width: 570px) {
+  .img-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .img-title {
+    font-size: 1.1rem;
+  }
+
+  .inputfile::file-selector-button {
+    padding: 0 5px;
+    font-size: 0.7rem;
+  }
+
+  .inputfile {
+    width: 100px;
+  }
+
+  .file-container {
+    gap: 5px;
+  }
+
+  .post {
+    font-size: 0.9rem;
+  }
 }
 </style>

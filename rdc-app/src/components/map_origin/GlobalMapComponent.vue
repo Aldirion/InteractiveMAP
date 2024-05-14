@@ -17,24 +17,25 @@ function onRegionSelected(regionCode: string) {
 .rf-map {
   margin: 0 auto;
   width: 100%;
-  height: 80vh;
+  min-height: 80vh;
+  overflow: hidden;
 }
 
 @media only screen and (max-width: 1440px) {
   .rf-map {
-    height: 70vh;
+    min-height: 70vh;
   }
 }
 
 @media only screen and (max-width: 1280px) {
   .rf-map {
-    height: 60vh;
+    min-height: 60vh;
   }
 }
 
 @media only screen and (max-width: 1280px) {
   .rf-map {
-    height: 50vh;
+    min-height: 50vh;
   }
 }
 </style>
