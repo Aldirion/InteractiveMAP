@@ -7,7 +7,7 @@ import type { EmployeeData } from '@/interfaces/employee';
 
 const props = defineProps<{
   regionData: Region;
-  supervizorData: EmployeeData;
+  supervizorData: EmployeeData | null;
   email: string | null;
   address: string | null;
 }>();
@@ -26,7 +26,7 @@ function checkoutToSPO() {
 
 <template>
   <div class="region-info">
-    <div class="coordinator-about">
+    <div class="coordinator-about" v-if="supervizorData">
       <div class="img-container">
         <img :src="supervizorData.avatar" class="icon" alt="supervizor image" />
       </div>
@@ -41,6 +41,13 @@ function checkoutToSPO() {
         </a>
         <p class="coordinator-quote" v-if="address">{{ address }}</p>
         <p class="coordinator-quote" v-if="supervizorData.quote !== 'nan'">{{ supervizorData?.quote }}</p>
+      </div>
+    </div>
+    <div class="coordinator-about" v-else>
+      <span class="material-symbols-outlined icon-acc">account_circle</span>
+      <div class="about-container">
+        <h2 class="coordinator-name">Вакансия доступна</h2>
+        <h3 class="coordinator-subtitle">Региональный координатор проекта</h3>
       </div>
     </div>
 
@@ -78,6 +85,11 @@ function checkoutToSPO() {
   -o-object-fit: cover;
   object-fit: cover;
   object-position: center;
+}
+
+.icon-acc {
+  font-size: 150px;
+  color: var(--color-background-mute);
 }
 
 .coordinator-avatar {
@@ -152,6 +164,10 @@ function checkoutToSPO() {
     height: 120px;
   }
 
+  .icon-acc {
+    font-size: 120px;
+  }
+
   .coordinator-avatar {
     width: 120px;
     height: 120px;
@@ -176,6 +192,10 @@ function checkoutToSPO() {
   .img-container {
     width: 7vw;
     height: 7vw;
+  }
+
+  .icon-acc {
+    font-size: 7vw;
   }
 
   .coordinator-name {

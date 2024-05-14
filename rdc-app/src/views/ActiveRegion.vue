@@ -62,7 +62,7 @@ function onRegionSelected(regionCode: string) {
         <MapComponent v-on:regionSelected="onRegionSelected" :component-region-code="regionCode" />
       </div>
       <RRC
-        v-if="regionData && supervizorData"
+        v-if="regionData"
         :address="regionData.rrc_address"
         :email="regionData.rrc_email"
         :region-data="regionData"
