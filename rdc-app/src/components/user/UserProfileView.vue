@@ -117,7 +117,9 @@ onMounted(async () => {
   background-color: var(--color-background-soft);
   padding: 20px;
   border-radius: 5px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 @media only screen and (max-width: 520px) {

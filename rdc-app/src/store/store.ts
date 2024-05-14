@@ -27,12 +27,12 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     }
   }
 
-  async function getMunicipalities(regionCode: number): Promise<{ [key: number]: Municipalities }> {
+  async function getMunicipalities(regionCode: number): Promise<{ [key: string]: Municipalities }> {
     const response = await fetch(`${BASE_URL}/region/${regionCode}/municipalities/`);
     const data: Municipalities[] = await response.json();
 
-    const municipalityData = data.reduce<{ [key: number]: Municipalities }>((acc, curr) => {
-      acc[curr.id] = curr;
+    const municipalityData = data.reduce<{ [key: string]: Municipalities }>((acc, curr) => {
+      acc[curr.codegost] = curr;
 
       return acc;
     }, {});

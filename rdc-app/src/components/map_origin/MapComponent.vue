@@ -27,11 +27,15 @@ const mapSvg = svgLoad[props.componentRegionCode];
 let hoveredRegionCode = ref<string | null>(null);
 let hoveredRegionData = ref<Region | Municipalities | null>(null);
 
-watch(hoveredRegionCode, async () => {
-  const regionsData = await store.getRegions();
+let regionsData: { [key: string]: Region };
+let municipalitiesData: { [key: string]: Municipalities };
 
+watch(hoveredRegionCode, async () => {
   if (hoveredRegionCode.value && props.componentRegionCode === 'global') {
     hoveredRegionData.value = regionsData[hoveredRegionCode.value];
+  }
+  if (hoveredRegionCode.value && props.componentRegionCode !== 'global') {
+    hoveredRegionData.value = municipalitiesData[hoveredRegionCode.value];
   }
 });
 
@@ -55,11 +59,19 @@ onMounted(async () => {
     ...Array.from(document.querySelectorAll<SVGElement>('g[data-code]')),
   ];
 
-  const regionsData = await store.getRegions();
+  regionsData = await store.getRegions();
+  if (props.componentRegionCode !== 'global') {
+    municipalitiesData = await store.getMunicipalities(regionsData[props.componentRegionCode].id);
+  }
 
   allRegions.forEach(async (region) => {
     BASE_MAP_COLORS.forEach((color) => {
-      const currentRegion = regionsData[region.dataset.code!];
+      let currentRegion;
+      if (props.componentRegionCode === 'global') {
+        currentRegion = regionsData[region.dataset.code!];
+      } else {
+        currentRegion = municipalitiesData[region.dataset.code!];
+      }
 
       if (!currentRegion) {
         return;

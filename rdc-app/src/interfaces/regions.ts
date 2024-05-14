@@ -58,6 +58,7 @@ export type Municipalities = {
   title: string;
   region: number;
   oktmo5: string;
+  codegost: string;
   count_school: null;
   count_spo: null;
   comp_count_school: number;

@@ -32,7 +32,9 @@ onMounted(async () => {
     totalCount += employee[post].count;
   }
   allEmployeeCount.value = totalCount;
-  supervizorData.value = employee['Главный эксперт'].data[0];
+  if ('Главный эксперт' in employee) {
+    supervizorData.value = employee['Главный эксперт'].data[0];
+  }
 });
 
 function regionTeam() {
@@ -230,6 +232,14 @@ function onRegionSelected(regionCode: string) {
 .hover-component:hover {
   cursor: pointer;
 }
+
+.vacation {
+  width: 45%;
+  height: 100%;
+  text-align: center;
+  margin: auto 0;
+}
+
 @media only screen and (max-width: 1350px) {
   .region-map {
     border-right: none;
