@@ -2,6 +2,9 @@
 import VkSVG from '@/assets/vk.svg';
 import TelegramSVG from '@/assets/telegram.svg';
 import WebSVG from '@/assets/web.svg';
+import { useStoreAuthorization } from '@/store/authorization';
+
+const store = useStoreAuthorization();
 </script>
 
 <template>
@@ -19,11 +22,11 @@ import WebSVG from '@/assets/web.svg';
       </div>
     </div>
 
-    <div class="navigation">
+    <div class="navigation" v-if="store.isAuthorized">
       <h4 class="footer-title">О сайте</h4>
-      <a class="footer-link" href="#">Личный кабинет</a>
-      <a class="footer-link" href="#">Главная</a>
-      <a class="footer-link" href="#">Выбрать регион</a>
+      <RouterLink to="/personal-account" class="footer-link">Личный кабинет</RouterLink>
+      <RouterLink to="/map" class="footer-link">Главная</RouterLink>
+      <RouterLink to="/map" class="footer-link">Выбрать регион</RouterLink>
     </div>
 
     <div class="social">
