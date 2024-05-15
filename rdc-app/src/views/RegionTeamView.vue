@@ -27,7 +27,7 @@ onMounted(async () => {
 });
 
 function routedToUserProfile(userId: number) {
-  router.push({ name: 'active_region_worker', params: { region_code: `${regionCode}`, user_id: `${userId}` } });
+  router.push({ name: 'active_region_employee', params: { region_code: `${regionCode}`, user_id: `${userId}` } });
 }
 </script>
 

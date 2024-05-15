@@ -25,9 +25,9 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
     title: 'Региональная команда',
     url: '/map/region/team',
   },
-  worker: {
+  employee: {
     title: 'Работник',
-    url: '/map/region/team/worker',
+    url: '/map/region/team/employee',
   },
   schools: {
     title: 'Школы',

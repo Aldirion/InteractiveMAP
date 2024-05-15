@@ -73,8 +73,8 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: '/map/:region_code/team/worker/:user_id',
-      name: 'active_region_worker',
+      path: '/map/:region_code/team/employee/:user_id',
+      name: 'active_region_employee',
       component: UserProfileView,
       props: true,
       meta: { requiresAuth: true },
