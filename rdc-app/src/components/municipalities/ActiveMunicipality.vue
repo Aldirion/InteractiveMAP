@@ -8,8 +8,8 @@ import UnderDevelopmentPage from '../pages/UnderDevelopmentPage.vue';
 const store = useStoreRegions();
 const route = useRoute();
 
-let regionName = ref<string | ''>('');
-let municipalityName = ref<string | ''>('');
+let regionName = ref('');
+let municipalityName = ref('');
 
 const regionCode = route.params.region_code as string;
 const municipalityCode = route.params.municipality_code as string;

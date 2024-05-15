@@ -17,40 +17,89 @@ export type Region = {
 };
 
 export type SchoolRegion = {
-  total_kdn: number | null;
-  total_museum: number | null;
-  total_mediacentre: number | null;
-  total_theatre: number | null;
-  total_tour_club: number | null;
-  total_cinema_club: number | null;
-  total_mpc: number | null;
-  total_yunarmy_participants: number | null;
-  total_classes_are_eagles: number | null;
-  total_ssc: number | null;
-  total_volunteers_squad: number | null;
-  total_leaders_squad: number | null;
-  total_uid: number | null;
-  total_y_rescuers_squad: number | null;
-  total_cdi: number | null;
-  total_ssgo: number | null;
-  total_leaders_league: number | null;
+  total_kdn: number;
+  total_museum: number;
+  total_mediacentre: number;
+  total_theatre: number;
+  total_tour_club: number;
+  total_cinema_club: number;
+  total_mpc: number;
+  total_yunarmy_participants: number;
+  total_classes_are_eagles: number;
+  total_ssc: number;
+  total_volunteers_squad: number;
+  total_leaders_squad: number;
+  total_uid: number;
+  total_y_rescuers_squad: number;
+  total_cdi: boolean;
+  total_ssgo: boolean;
+  total_leaders_league: boolean;
+};
+
+export type Eduinstitutions = {
+  id: number;
+  sign: string;
+  type: string;
+  title: string;
+  inn: string;
+  kpp: string;
+  contingent: number;
+  address: string;
+  eduenv: SchoolEduenv | SPOEduenv;
+};
+
+export type SchoolEduenv = {
+  cdi: boolean;
+  kdn: number;
+  mpc: number;
+  ssc: number;
+  uid: number;
+  rddm: string;
+  ssgo: boolean;
+  museum: number;
+  theatre: number;
+  tour_club: number;
+  cinema_club: number;
+  mediacentre: number;
+  leaders_squad: number;
+  volunteers_squad: number;
+  y_rescuers_squad: number;
+  classes_are_eagles: number;
+  yunarmy_participants: number;
+};
+
+export type SPOEduenv = {
+  ccr: number;
+  cyi: boolean;
+  kdn: number;
+  mpc: number;
+  ssc: number;
+  rddm: string;
+  ssgo: boolean;
+  museum: number;
+  theatre: number;
+  tour_club: number;
+  cinema_club: number;
+  mediacentre: number;
+  leaders_squad: number;
+  volunteers_squad: number;
 };
 
 export type SPORegion = {
-  total_kdn: number | null;
-  total_museum: number | null;
-  total_mediacentre: number | null;
-  total_theatre: number | null;
-  total_tour_club: number | null;
-  total_cinema_club: number | null;
-  total_mpc: number | null;
-  total_ssc: number | null;
-  total_volunteers_squad: number | null;
-  total_leaders_squad: number | null;
-  total_ccr: number | null;
-  total_cyi: number | null;
-  total_ssgo: number | null;
-  total_leaders_league: number | null;
+  total_kdn: number;
+  total_museum: number;
+  total_mediacentre: number;
+  total_theatre: number;
+  total_tour_club: number;
+  total_cinema_club: number;
+  total_mpc: number;
+  total_ssc: number;
+  total_volunteers_squad: number;
+  total_leaders_squad: number;
+  total_ccr: number;
+  total_cyi: boolean;
+  total_ssgo: boolean;
+  total_leaders_league: boolean;
 };
 
 export type Municipalities = {

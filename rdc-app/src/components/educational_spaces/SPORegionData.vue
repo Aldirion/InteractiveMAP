@@ -2,6 +2,7 @@
 import { useStoreRegions } from '@/store/store';
 import { useRoute } from 'vue-router';
 import { onMounted, ref } from 'vue';
+import router from '@/router';
 import type { RegionSPOData } from '@/interfaces/regions';
 import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.vue';
 import ListComponent from '@/components/common/ListComponent.vue';
@@ -40,7 +41,15 @@ onMounted(async () => {
         :opened="students.count < 5"
       >
         <ListItemComponent v-for="school in students.spo" :key="school.id">
-          <div class="item-about">
+          <div
+            class="item-about"
+            @click="
+              router.push({
+                name: 'active_spo_eduenv',
+                params: { institution_eduenv: `${school.id}` },
+              })
+            "
+          >
             <p class="item-name">{{ school.title }}</p>
             <p class="item-sub">{{ school.sign }}</p>
             <p class="item-address">{{ school.address }}</p>

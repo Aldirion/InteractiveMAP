@@ -78,4 +78,5 @@ export const TITLES_EDUEVN = {
   total_leaders_league: 'Конкурсе "Лига вожатых"',
   total_ccr: 'КВН',
   total_cyi: 'Центр детских инициатив',
+  total_rddm: 'Открыто в учреждении первичное отделение рддм',
 };

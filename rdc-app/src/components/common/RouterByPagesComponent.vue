@@ -37,11 +37,16 @@ const pathTitles: { [key: string]: { title: string; url: string } } = {
     title: 'СПО',
     url: '/map/region/spo',
   },
+  schoolId: {
+    title: 'schoolId',
+    url: '/map/region/schools/schoolId',
+  },
 };
 
 const props = defineProps<{
   regionName: string;
   municipalityName?: string;
+  institutionName?: string;
 }>();
 
 const path = route.fullPath.split('/');
@@ -62,7 +67,7 @@ let titlesRoute = computed(() => {
 
     if (pageName.includes(regionCode.split('-')[1] + '-') && idx === 2) {
       titles.push({
-        title: pathTitles['municipality'].title.replace('municipality', props.municipalityName!),
+        title: pathTitles['municipality'].title.replace('municipality', props.municipalityName as string),
         url: pathTitles['municipality'].url.replace('municipality', municipalityCode),
       });
     }
@@ -71,6 +76,13 @@ let titlesRoute = computed(() => {
       titles.push({
         title: pathTitles['region'].title.replace('region', props.regionName),
         url: pathTitles['region'].url.replace('region', regionCode),
+      });
+    }
+
+    if (idx === 3 && (path[2] === 'schools' || path[2] === 'spo')) {
+      titles.push({
+        title: pathTitles['schoolId'].title.replace('schoolId', props.institutionName as string),
+        url: pathTitles['schoolId'].url.replace('schoolId', regionCode),
       });
     }
   });
@@ -120,7 +132,12 @@ function redirectTopage(pagePath: string) {
 @media only screen and (max-width: 550px) {
   .router-container {
     margin: 20px 0 30px;
+    flex-direction: column;
     gap: 10px;
+  }
+
+  .arrow {
+    text-align: center;
   }
 
   .page {

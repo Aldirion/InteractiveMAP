@@ -12,6 +12,8 @@ import SPORegionData from '@/components/educational_spaces/SPORegionData.vue';
 import UnderDevelopmentPage from '@/components/pages/UnderDevelopmentPage.vue';
 import ActiveMunicipality from '@/components/municipalities/ActiveMunicipality.vue';
 import UserProfileView from '@/components/user/UserProfileView.vue';
+import EduenRegionSPO from '@/components/educational_spaces/EduenRegionSPO.vue';
+import EduenvRegionSchools from '@/components/educational_spaces/EduenvRegionSchools.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -58,6 +60,20 @@ const router = createRouter({
       path: '/map/:region_code/spo',
       name: 'active_region_spo',
       component: SPORegionData,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/spo/:institution_eduenv',
+      name: 'active_spo_eduenv',
+      component: EduenRegionSPO,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/map/:region_code/schools/:institution_eduenv',
+      name: 'active_school_eduenv',
+      component: EduenvRegionSchools,
+      props: true,
       meta: { requiresAuth: true },
     },
     {
