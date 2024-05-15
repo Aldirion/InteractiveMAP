@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineProps<{
+  postName?: string | null;
+}>();
+
 function logout() {
   localStorage.removeItem('access');
   localStorage.removeItem('refresh');
@@ -13,9 +17,9 @@ function logout() {
         <span>Личные данные</span>
       </div>
 
-      <div class="panel-title">
+      <div class="panel-title" v-if="postName">
         <span class="material-symbols-outlined">post</span>
-        <span>Должность</span>
+        <span>{{ postName }}</span>
       </div>
     </div>
 

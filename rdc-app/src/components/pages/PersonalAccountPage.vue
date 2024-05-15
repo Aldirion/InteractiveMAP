@@ -13,11 +13,16 @@ let userTelegram = ref('');
 let userPhone = ref('');
 let userImg = ref<null | File>(null);
 
+let expertPost = ref<null | { edu_inst_title: string }>(null);
+
 onMounted(async () => {
   userEmail.value = store.userData!.email !== 'nan' ? store.userData!.email : '';
   userBio.value = store.userData!.bio ? store.userData!.bio : '';
   userTelegram.value = store.userData!.telegram_username !== 'nan' ? store.userData!.telegram_username : '';
   userPhone.value = store.userData!.phone_number !== 'nan' ? store.userData!.phone_number : '';
+
+  const eduinst = store.userData?.eduinstitutions[0];
+  expertPost.value = store.userData?.posts[0].post_title === 'Эксперт' && eduinst ? eduinst : null;
 });
 
 async function saveNewData() {
@@ -73,7 +78,7 @@ async function saveUserImage() {
 
 <template>
   <div class="profile">
-    <NavigationPanelUserProfile />
+    <NavigationPanelUserProfile :post-name="expertPost?.edu_inst_title" />
 
     <LoaderComponent v-if="store.userData === null" />
     <div class="personal-data" v-else>
