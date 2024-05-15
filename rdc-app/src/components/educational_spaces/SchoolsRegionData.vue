@@ -40,11 +40,12 @@ onMounted(async () => {
         :title="`${title} (${students.count})`"
         :opened="students.count < 5"
       >
-        <ListItemComponent v-for="school in students.schools" :key="school.id">
-          <div
-            class="item-about"
-            @click="router.push({ name: 'active_school_eduenv', params: { institution_eduenv: `${school.id}` } })"
-          >
+        <ListItemComponent
+          v-for="school in students.schools"
+          :key="school.id"
+          @click="router.push({ name: 'active_school_eduenv', params: { institution_eduenv: `${school.id}` } })"
+        >
+          <div class="item-about">
             <p class="item-name">{{ school.title }}</p>
             <p class="item-sub">{{ school.sign }}</p>
             <p class="item-address">{{ school.address }}</p>
