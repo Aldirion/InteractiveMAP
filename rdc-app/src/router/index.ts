@@ -14,6 +14,7 @@ import ActiveMunicipality from '@/components/municipalities/ActiveMunicipality.v
 import UserProfileView from '@/components/user/UserProfileView.vue';
 import EduenRegionSPO from '@/components/educational_spaces/EduenRegionSPO.vue';
 import EduenvRegionSchools from '@/components/educational_spaces/EduenvRegionSchools.vue';
+import RdcTeamView from '@/views/RdcTeamView.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -28,6 +29,12 @@ const router = createRouter({
       path: '/map',
       name: 'map',
       component: GlobalMapComponent,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/rdc-team',
+      name: 'rdc_team',
+      component: RdcTeamView,
       meta: { requiresAuth: true },
     },
     {
@@ -91,6 +98,13 @@ const router = createRouter({
     {
       path: '/map/:region_code/team/employee/:user_id',
       name: 'active_region_employee',
+      component: UserProfileView,
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/rdc-team/:user_id',
+      name: 'rdc_employee',
       component: UserProfileView,
       props: true,
       meta: { requiresAuth: true },

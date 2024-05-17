@@ -25,7 +25,7 @@ const store = useStoreAuthorization();
     <div class="navigation" v-if="store.isAuthorized">
       <h4 class="footer-title">О сайте</h4>
       <RouterLink to="/personal-account" class="footer-link">Личный кабинет</RouterLink>
-      <RouterLink to="/map" class="footer-link">Главная</RouterLink>
+      <RouterLink to="/rdc-team" class="footer-link">Федеральная команда</RouterLink>
       <RouterLink to="/map" class="footer-link">Выбрать регион</RouterLink>
     </div>
 

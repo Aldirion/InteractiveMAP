@@ -22,9 +22,12 @@ const store = useStoreRegions();
 const storeAuthorization = useStoreAuthorization();
 
 onMounted(async () => {
-  const regionsData = await store.getRegions();
+  if (regionCode) {
+    const regionsData = await store.getRegions();
+    regionName.value = regionsData[regionCode].title;
+  }
+
   userData.value = await storeAuthorization.getAnotherUserData(userId);
-  regionName.value = regionsData[regionCode].title;
   isLoaded.value = true;
 });
 </script>
@@ -32,7 +35,7 @@ onMounted(async () => {
 <template>
   <LoaderComponent v-if="!isLoaded" />
   <div v-else>
-    <RouterByPagesComponent :region-name="regionName!" />
+    <RouterByPagesComponent :region-name="regionName!" v-if="regionCode" />
     <div class="user">
       <div class="container-img">
         <img :src="userData?.avatar" alt="user photo" class="img" />
@@ -70,6 +73,7 @@ onMounted(async () => {
   justify-content: center;
   gap: 50px;
   margin-bottom: 50px;
+  margin-top: 20px;
 }
 
 .container-img {
