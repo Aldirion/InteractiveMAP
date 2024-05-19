@@ -1,33 +1,25 @@
 <script setup lang="ts">
 import { useStoreRegions } from '@/store/store';
 import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
 import type { EmployeeTeam } from '@/interfaces/employee';
-import RouterByPagesComponent from '@/components/common/RouterByPagesComponent.vue';
 import ListComponent from '@/components/common/ListComponent.vue';
 import LoaderComponent from '@/components/common/LoaderComponent.vue';
 import ListItemComponent from '@/components/common/ListItemComponent.vue';
 import router from '@/router';
 
-const route = useRoute();
-const regionCode = route.params.region_code as string;
 let employeeTeam = ref<EmployeeTeam | null>(null);
 let isLoaded = ref(false);
-let regionName = ref<string | null>(null);
 
 const store = useStoreRegions();
 
 onMounted(async () => {
-  const regionsData = await store.getRegions();
+  employeeTeam.value = await store.getEmployeeByRegionCode(91);
 
-  regionName.value = regionsData[regionCode].title;
-  const regionId = regionsData[regionCode].id;
-  employeeTeam.value = await store.getEmployeeByRegionCode(regionId);
   isLoaded.value = true;
 });
 
 function routedToUserProfile(userId: number) {
-  router.push({ name: 'active_region_employee', params: { region_code: `${regionCode}`, user_id: `${userId}` } });
+  router.push({ name: 'rdc_employee', params: { user_id: `${userId}` } });
 }
 </script>
 
@@ -35,7 +27,8 @@ function routedToUserProfile(userId: number) {
   <LoaderComponent v-if="!isLoaded" />
 
   <div v-if="isLoaded">
-    <RouterByPagesComponent :regionName="regionName!" />
+    <h1 class="team-title">Федеральная команда</h1>
+
     <div class="team-container">
       <ListComponent
         v-for="(employee, title) in employeeTeam"
@@ -65,5 +58,11 @@ function routedToUserProfile(userId: number) {
   flex-direction: column;
   align-items: center;
   gap: 20px;
+}
+
+.team-title {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 1.5rem;
 }
 </style>

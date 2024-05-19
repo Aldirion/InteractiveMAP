@@ -3,7 +3,9 @@ import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStoreRegions } from '@/store/store';
 import RouterByPagesComponent from '../common/RouterByPagesComponent.vue';
-import LoaderComponent from '../common/LoaderComponent.vue';
+import ListComponent from '@/components/common/ListComponent.vue';
+import LoaderComponent from '@/components/common/LoaderComponent.vue';
+import ListItemComponent from '@/components/common/ListItemComponent.vue';
 import { useStoreAuthorization } from '@/store/authorization';
 import type { UserData } from '@/interfaces/user';
 
@@ -20,9 +22,12 @@ const store = useStoreRegions();
 const storeAuthorization = useStoreAuthorization();
 
 onMounted(async () => {
-  const regionsData = await store.getRegions();
+  if (regionCode) {
+    const regionsData = await store.getRegions();
+    regionName.value = regionsData[regionCode].title;
+  }
+
   userData.value = await storeAuthorization.getAnotherUserData(userId);
-  regionName.value = regionsData[regionCode].title;
   isLoaded.value = true;
 });
 </script>
@@ -30,7 +35,7 @@ onMounted(async () => {
 <template>
   <LoaderComponent v-if="!isLoaded" />
   <div v-else>
-    <RouterByPagesComponent :region-name="regionName!" />
+    <RouterByPagesComponent :region-name="regionName!" v-if="regionCode" />
     <div class="user">
       <div class="container-img">
         <img :src="userData?.avatar" alt="user photo" class="img" />
@@ -45,17 +50,19 @@ onMounted(async () => {
         </span>
       </div>
     </div>
-    <h2 v-if="userData?.eduinstitutions.length !== 0" class="edunstitution-title">
-      Список образовательных учреждений под руководством:
-    </h2>
-    <div class="edunstitution">
-      <span
-        v-for="institution in userData?.eduinstitutions"
-        :key="institution.edu_inst_title"
-        class="edunstitution-item"
+
+    <div class="institutions-container">
+      <ListComponent
+        v-if="userData?.eduinstitutions.length"
+        :title="`Список образовательных учреждений под руководством (${userData?.eduinstitutions.length})`"
+        :opened="userData?.eduinstitutions.length < 5"
       >
-        <span class="institution">{{ institution.edu_inst_title }}</span>
-      </span>
+        <ListItemComponent v-for="institution in userData?.eduinstitutions" :key="institution.edu_inst_title">
+          <div class="item-about">
+            <p class="item-name">{{ institution.edu_inst_title }}</p>
+          </div>
+        </ListItemComponent>
+      </ListComponent>
     </div>
   </div>
 </template>
@@ -65,6 +72,8 @@ onMounted(async () => {
   display: flex;
   justify-content: center;
   gap: 50px;
+  margin-bottom: 50px;
+  margin-top: 20px;
 }
 
 .container-img {
@@ -73,6 +82,11 @@ onMounted(async () => {
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
+}
+
+.institutions-container {
+  display: flex;
+  justify-content: center;
 }
 
 .img {
@@ -99,27 +113,10 @@ onMounted(async () => {
   color: var(--color-subtext);
 }
 
-.edunstitution {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 10px;
-}
-
 .edunstitution-title {
   text-align: center;
   font-size: 1.4rem;
   margin: 30px 0;
-}
-
-.edunstitution-item {
-  width: 50%;
-  background-color: var(--color-background-soft);
-  padding: 20px;
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 @media only screen and (max-width: 520px) {

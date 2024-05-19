@@ -1,5 +1,5 @@
 import type { EmployeeTeam } from '@/interfaces/employee';
-import type { Municipalities, Region, RegionSPOData, RegionSchoolsData } from '@/interfaces/regions';
+import type { Eduinstitutions, Municipalities, Region, RegionSPOData, RegionSchoolsData } from '@/interfaces/regions';
 import { BASE_URL } from '@/interfaces/variables';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
@@ -62,6 +62,13 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     return data.data;
   }
 
+  async function getEduenv(institutionId: string, regionId: number): Promise<Eduinstitutions> {
+    const response = await fetch(`${BASE_URL}/region/${regionId}/eduinstitutions/${institutionId}`);
+    const data: Eduinstitutions = await response.json();
+
+    return data;
+  }
+
   return {
     regions,
     employeeTeam,
@@ -70,5 +77,6 @@ export const useStoreRegions = defineStore('storeRigions', () => {
     getSchoolsByRegionCode,
     getSPOByRegionCode,
     getMunicipalities,
+    getEduenv,
   };
 });

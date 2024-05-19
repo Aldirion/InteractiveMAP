@@ -211,11 +211,20 @@ function onRegionSelected(regionCode: string) {
   cursor: pointer;
 }
 
+.modal-r-card:hover .modal-r-h {
+  background: var(--vt-orage-light);
+}
+
+.modal-r-card:hover .modal-r-indicator {
+  color: var(--vt-orage-light);
+}
+
 .modal-r-h {
   padding: 10px;
   color: var(--color-text);
   font-size: 1rem;
   background: var(--color-background-mute);
+  transition: background-color 0.3s ease;
   border-radius: 5px 5px 0px 0px;
 }
 
@@ -226,6 +235,7 @@ function onRegionSelected(regionCode: string) {
 
 .modal-r-indicator {
   color: rgba(149, 145, 253, 1);
+  transition: color 0.3s ease;
   font-size: 5rem;
 }
 

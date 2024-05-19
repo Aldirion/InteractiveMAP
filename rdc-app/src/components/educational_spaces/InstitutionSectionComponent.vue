@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { computed, type ComputedRef } from 'vue';
-import { Section, type SPORegion, type SchoolRegion } from '@/interfaces/regions';
+import { Section, type SPOEduenv, type SPORegion, type SchoolEduenv, type SchoolRegion } from '@/interfaces/regions';
 import { TITLES_EDUEVN } from '@/interfaces/variables';
 
 const props = defineProps<{
   institutionSection: Section;
-  schoolSectionData: SchoolRegion;
-  spoSectionData: SPORegion;
+  schoolSectionData: SchoolRegion | null | SchoolEduenv;
+  spoSectionData: SPORegion | null | SPOEduenv;
+  eduenv?: boolean;
 }>();
 
-let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
+let sectionData: ComputedRef<SchoolRegion | SchoolEduenv | SPORegion | SPOEduenv | null> = computed(() => {
   switch (props.institutionSection) {
     case Section.SCHOOL:
       return props.schoolSectionData;
@@ -26,9 +27,13 @@ let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
 
   <div class="school-section">
     <div class="section-element" v-for="(elem, key) in sectionData" :key="key">
-      <div class="section-element-title">{{ TITLES_EDUEVN[key] }}</div>
-      <div class="section-element-count">{{ elem }}</div>
-      <div class="section-element-subtitle">Количество обучающихся, вовлеченных в деятельность</div>
+      <div class="section-element-title" v-if="eduenv">{{ TITLES_EDUEVN[`total_${key}`] }}</div>
+      <div class="section-element-title" v-else>{{ TITLES_EDUEVN[key] }}</div>
+      <span class="material-symbols-outlined check" v-if="typeof elem == 'boolean'"> check </span>
+      <div class="" v-else>
+        <div class="section-element-count">{{ elem }}</div>
+        <div class="section-element-subtitle">Количество обучающихся, вовлеченных в деятельность</div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,8 +52,15 @@ let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  position: relative;
   background-color: var(--color-background-soft);
   border-radius: 5px;
+}
+
+.check {
+  color: var(--vt-accept-color);
+  font-size: 5rem;
+  padding-top: 35px;
 }
 
 .section-element-title {
@@ -75,7 +87,7 @@ let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
 
 .section-element-subtitle {
   color: var(--color-subtext);
-  width: 80%;
+  width: 100%;
   text-align: center;
   padding-bottom: 10px;
 }
@@ -108,6 +120,56 @@ let sectionData: ComputedRef<SchoolRegion | SPORegion | null> = computed(() => {
     width: 20%;
     gap: 0.3vw;
     border-radius: 0.3vw;
+  }
+}
+
+@media only screen and (max-width: 1600px) {
+  .section-element {
+    width: 30%;
+  }
+}
+
+@media only screen and (max-width: 1350px) {
+  .section-element-count {
+    font-size: 3rem;
+  }
+
+  .check {
+    padding-top: 20px;
+  }
+}
+
+@media only screen and (max-width: 1120px) {
+  .section-element-title {
+    font-size: 0.9rem;
+  }
+
+  .section-element-count {
+    font-size: 2.5rem;
+  }
+
+  .section-element-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .check {
+    font-size: 4rem;
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .section-element {
+    width: 45%;
+  }
+}
+
+@media only screen and (max-width: 690px) {
+  .section-element {
+    width: 100%;
+  }
+
+  .check {
+    padding: 10px 0;
   }
 }
 </style>

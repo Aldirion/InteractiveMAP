@@ -49,9 +49,9 @@ function logout() {
 
 <template>
   <header>
-    <div class="logo-container">
+    <RouterLink to="/map" class="logo-container">
       <img class="logo" src="../../assets/logo_purple.png" alt="logotype" />
-    </div>
+    </RouterLink>
     <nav class="wrapper">
       <RouterLink to="/map" v-if="store.isAuthorized">Карта</RouterLink>
       <span class="material-symbols-outlined user" v-if="store.isAuthorized" @click="showUserPanel = !showUserPanel"
@@ -158,6 +158,10 @@ nav a {
   width: 40px;
   height: 40px;
   margin: auto 0;
+}
+
+.logo-container:hover {
+  cursor: pointer;
 }
 
 .user-img {
