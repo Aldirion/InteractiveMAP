@@ -60,9 +60,16 @@ onMounted(async () => {
 <style lang="css" scoped>
 .schools-container {
   min-height: 50vh;
+  padding: 0 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+}
+
+@media only screen and (max-width: 1050px) {
+  .schools-container {
+    padding: 0 0;
+  }
 }
 </style>

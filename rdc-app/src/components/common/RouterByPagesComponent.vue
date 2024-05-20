@@ -133,7 +133,7 @@ function redirectTopage(pagePath: string) {
   .router-container {
     margin: 20px 0 30px;
     flex-direction: column;
-    gap: 10px;
+    gap: 5px;
   }
 
   .arrow {

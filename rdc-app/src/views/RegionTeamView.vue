@@ -41,7 +41,6 @@ function routedToUserProfile(userId: number) {
         v-for="(employee, title) in employeeTeam"
         :key="title"
         :title="`${title} (${employee.count})`"
-        :team="employee"
         :opened="employee.count < 5"
       >
         <ListItemComponent v-for="worker in employee.data" :key="worker.id" @click="routedToUserProfile(worker.user)">
@@ -61,9 +60,16 @@ function routedToUserProfile(userId: number) {
 <style lang="css" scoped>
 .team-container {
   min-height: 50vh;
+  padding: 0 10vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 20px;
+}
+
+@media only screen and (max-width: 1050px) {
+  .team-container {
+    padding: 0 0;
+  }
 }
 </style>

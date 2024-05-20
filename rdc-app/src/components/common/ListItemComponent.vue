@@ -13,16 +13,21 @@
   background-color: var(--color-background-soft);
   border-radius: 5px;
   padding: 10px;
+  transition: background-color 0.3s linear;
 }
 
-.item {
+.item:hover {
   cursor: pointer;
+  background-color: var(--color-background-mute);
 }
 
 :slotted(.img-container) {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  object-position: center;
 }
 
 :slotted(.item-img) {

@@ -158,7 +158,7 @@ function checkoutToSPO() {
   border-top: 2px solid var(--color-border);
 }
 
-@media only screen and (max-width: 520px) {
+@media only screen and (max-width: 535px) {
   .img-container {
     width: 120px;
     height: 120px;
@@ -185,6 +185,27 @@ function checkoutToSPO() {
 
   .modal-r-indicator-small {
     font-size: 1.5rem;
+  }
+
+  .coordinator-email {
+    font-size: 0.8rem;
+    margin-top: 10px;
+    gap: 5px;
+  }
+
+  .coordinator-quote {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 435px) {
+  .img-container {
+    width: 150px;
+    height: 150px;
+  }
+
+  .coordinator-about {
+    flex-direction: column;
   }
 }
 
