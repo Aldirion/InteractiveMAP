@@ -49,7 +49,7 @@ function routedToUserProfile(userId: number) {
           </div>
         </ListItemComponent>
 
-        <div v-if="Object.keys(employee.departments).length > 0">
+        <div v-if="Object.keys(employee.departments).length > 0" class="sub-list">
           <ListComponent
             v-for="(department, title) in employee.departments as EmpoloyeeDepartments"
             :key="title"
@@ -91,6 +91,12 @@ function routedToUserProfile(userId: number) {
   text-align: center;
   margin: 30px 0;
   font-size: 1.5rem;
+}
+
+.sub-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 @media only screen and (max-width: 1050px) {
