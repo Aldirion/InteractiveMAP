@@ -317,7 +317,7 @@ function onRegionSelected(regionCode: string) {
   }
 }
 
-@media only screen and (min-width: 3000px) {
+@media only screen and (min-width: 2300px) {
   .region-map {
     height: 40vw;
   }
