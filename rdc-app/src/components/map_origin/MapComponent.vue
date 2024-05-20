@@ -305,9 +305,9 @@ onUnmounted(() => {
   }
 }
 
-@media only screen and (min-width: 2300px) {
+/* @media only screen and (min-width: 2300px) {
   .map-container {
     min-height: 40vw;
   }
-}
+} */
 </style>
