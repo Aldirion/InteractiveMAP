@@ -16,6 +16,14 @@ export type Region = {
   spo: SPORegion;
 };
 
+export type RegionData = {
+  [key: string]: Region;
+};
+
+export type MunicipalitiesData = {
+  [key: string]: Municipalities;
+};
+
 export type SchoolRegion = {
   total_kdn: number;
   total_museum: number;

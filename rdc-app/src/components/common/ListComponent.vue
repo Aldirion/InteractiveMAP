@@ -25,7 +25,7 @@ const isOpened = ref(props.opened);
 
 <style lang="css" scoped>
 .list-elem {
-  width: 70%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
