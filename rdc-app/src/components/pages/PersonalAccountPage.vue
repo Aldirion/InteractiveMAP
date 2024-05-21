@@ -12,6 +12,7 @@ let userBio = ref('');
 let userTelegram = ref('');
 let userPhone = ref('');
 let userImg = ref<null | File>(null);
+let isOpenListOfPost = ref(false);
 
 let expertPost = ref<null | { edu_inst_title: string }>(null);
 
@@ -92,10 +93,25 @@ async function saveUserImage() {
             <h4 class="img-title">
               {{ store.userData.lastname }} {{ store.userData.firstname }} {{ store.userData.patronymic }}
             </h4>
-            <span v-for="post in store.userData.posts" :key="post.tab_number" class="post">
-              <p class="user-post">{{ post.post_title }}</p>
-              <p class="user-post-sub">{{ post.subdivision_title }}</p>
-            </span>
+            <div class="posts" :class="{ open: isOpenListOfPost }">
+              <span
+                class="material-symbols-outlined arrow"
+                @click="isOpenListOfPost = !isOpenListOfPost"
+                v-if="store.userData.posts.length >= 1"
+              >
+                {{ isOpenListOfPost ? 'arrow_drop_up' : 'arrow_drop_down' }}
+              </span>
+              <div class="container-posts">
+                <span v-for="post in store.userData.posts" :key="post.tab_number" class="post">
+                  <p class="user-post">{{ post.post_title }}</p>
+                  <p class="user-post-sub">{{ post.subdivision_title }}</p>
+                </span>
+                <span v-for="post in store.userData.posts" :key="post.tab_number" class="post">
+                  <p class="user-post">{{ post.post_title }}</p>
+                  <p class="user-post-sub">{{ post.subdivision_title }}</p>
+                </span>
+              </div>
+            </div>
           </div>
 
           <div class="file-container">
@@ -163,6 +179,33 @@ async function saveUserImage() {
   flex-shrink: 0;
 }
 
+.posts {
+  position: relative;
+  overflow: hidden;
+  height: 50px;
+}
+
+.container-posts {
+  min-height: 50px;
+  overflow: hidden;
+  padding-right: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.arrow {
+  position: absolute;
+  right: 15px;
+  top: 20px;
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.open {
+  height: auto;
+}
+
 .user-img {
   width: 100%;
   height: 100%;
@@ -183,7 +226,6 @@ async function saveUserImage() {
 
 .img-subtitle:hover {
   color: var(--color-background-mute);
-  cursor: pointer;
 }
 
 .user-general-info {
