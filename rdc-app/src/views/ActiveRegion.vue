@@ -137,13 +137,8 @@ function onRegionSelected(regionCode: string) {
     </div>
 
     <h1 class="region-title">Мероприятия календарного плана воспитательной работы</h1>
-    <div class="modal-r">
-      <div class="modal-r-container">
-        <LineChart />
-      </div>
-      <div class="modal-r-container">
-        <!-- Календарь -->
-      </div>
+    <div class="line-chart">
+      <LineChart />
     </div>
 
     <h1 class="region-title">Партнеры</h1>
@@ -205,6 +200,11 @@ function onRegionSelected(regionCode: string) {
   text-align: center;
   font-weight: bold;
   user-select: none;
+}
+
+.line-chart {
+  width: 100%;
+  height: 200px;
 }
 
 .modal-r-card:hover {
@@ -321,7 +321,9 @@ function onRegionSelected(regionCode: string) {
   .region-map {
     height: 40vw;
   }
+}
 
+@media only screen and (min-width: 2500px) {
   .region-map-title {
     font-size: 1.3vw;
     padding: 1vw 0 3vw;

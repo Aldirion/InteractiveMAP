@@ -209,7 +209,7 @@ function checkoutToSPO() {
   }
 }
 
-@media only screen and (min-width: 3000px) {
+@media only screen and (min-width: 2500px) {
   .img-container {
     width: 7vw;
     height: 7vw;

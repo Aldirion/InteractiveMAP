@@ -70,4 +70,11 @@ function optionSelect(regionName: string, regionCode: string) {
   background-color: var(--color-background);
   color: var(--color-text);
 }
+
+@media only screen and (min-width: 2300px) {
+  .dropdown-wrapper {
+    cursor: pointer;
+    min-width: 400px;
+  }
+}
 </style>

@@ -311,6 +311,13 @@ onUnmounted(() => {
   left: 200px;
 }
 
+@media only screen and (max-width: 750px) {
+  .search {
+    top: 35px;
+    left: 0;
+  }
+}
+
 @media only screen and (max-width: 850px) {
   .map-container {
     max-height: 550px;
@@ -320,6 +327,19 @@ onUnmounted(() => {
 @media only screen and (min-width: 2300px) {
   .map-container {
     min-height: 40vw;
+  }
+
+  .search {
+    left: 350px;
+  }
+
+  .container {
+    font-size: 1vw;
+  }
+
+  .zoom {
+    font-size: 1.2vw;
+    padding: 10px 30px;
   }
 }
 </style>
