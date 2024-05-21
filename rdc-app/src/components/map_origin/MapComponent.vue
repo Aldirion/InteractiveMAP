@@ -202,6 +202,18 @@ onUnmounted(() => {
   eventListeners.forEach(([region, eventName, cb]) => {
     region.removeEventListener(eventName, cb);
   });
+
+  if (animationInterval) {
+    clearInterval(animationInterval);
+
+    animationInterval = null;
+  }
+
+  if (animationTimeout) {
+    clearTimeout(animationTimeout);
+
+    animationTimeout = null;
+  }
 });
 </script>
 
@@ -233,8 +245,8 @@ onUnmounted(() => {
       </span>
     </div>
     <CustomSelectComponent
-      :regions-data="componentRegionCode !== 'global' ? municipalitiesData! : regionsData"
       v-if="regionsData"
+      :regions-data="componentRegionCode !== 'global' ? municipalitiesData : regionsData"
       class="search"
       v-on:regionNameSelected="onRegionNameSelected"
     />

@@ -2,7 +2,7 @@
 import { type MunicipalitiesData, type RegionData } from '@/interfaces/regions';
 import { ref } from 'vue';
 defineProps<{
-  regionsData: RegionData | MunicipalitiesData;
+  regionsData: RegionData | MunicipalitiesData | null;
 }>();
 
 const emit = defineEmits<{
@@ -20,7 +20,7 @@ function optionSelect(regionName: string, regionCode: string) {
 </script>
 
 <template>
-  <div class="dropdown-wrapper">
+  <div class="dropdown-wrapper" v-if="regionsData">
     <div class="dropdown-selected" @click="isOpen = !isOpen">
       {{ selectedRegion || 'Выбрать регион' }}
     </div>
